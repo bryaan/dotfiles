@@ -54,6 +54,15 @@ https://www.slant.co/topics/1324/~diff-tools-for-git
 
 
 
+in ./install.sh  in link function, add option to stash changes in git, instead of backup with orig.backup
+Also, would be nice to just let them be merged
+
+
+To merge changes:
+- first pull from remote, if breaking changes now will have to merge
+- then run install if neccesaary to resymlink.
+
+
 
 # REFS
 
