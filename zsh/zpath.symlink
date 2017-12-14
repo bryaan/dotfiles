@@ -1,0 +1,88 @@
+
+# TODO Clear the PATH - PROBLEM When a program is installed and adds itself, we wont know until we get errors and debug.
+# So we should have something monitoring the PATH var for changes, then add those changes to some tmp file.  Maybe trigger an inotify message...
+# PATH=""
+# unset PATH
+
+# TODO Might want to move some of these to /etc/environment so they are available system wide.
+# * Dosent mean user will have permission to run it.
+
+
+# Java Env
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+
+
+# Java and SBT
+export PATH=$PATH:$JAVA_HOME/bin
+export PATH=$PATH:/home/bryan/bin/sbt
+
+# Ruby and RVM
+export PATH=$PATH:/home/bryan/.rvm/gems/ruby-2.4.1/bin
+export PATH=$PATH:/home/bryan/.rvm/gems/ruby-2.4.1@global/bin
+export PATH=$PATH:/home/bryan/.rvm/rubies/ruby-2.4.1/bin
+export PATH=$PATH:/home/bryan/.rvm/bin
+export PATH=$PATH:/usr/lib64/qt-3.3/bin
+
+# FZF - Fuzzy Search
+export PATH=$PATH:/home/bryan/.fzf/bin
+
+# Commons
+export PATH=$PATH:/home/bryan/bin
+export PATH=$PATH:/home/bryan/.local/bin
+export PATH=$PATH:/usr/local/bin
+export PATH=$PATH:/usr/local/sbin
+export PATH=$PATH:/usr/bin
+export PATH=$PATH:/usr/sbin
+export PATH=$PATH:/bin
+export PATH=$PATH:/sbin
+
+
+# # set PATH so it includes user's private bin if it exists
+# if [ -d "$HOME/bin" ] ; then
+#     PATH="$HOME/bin:$PATH"
+# fi
+
+
+# export PATH=$PATH:/your/new/path/here
+
+
+
+# export HOME=/home/bryan
+
+# export PATH=$PATH:$HOME/bin/sbt
+
+# # Ruby and RVM
+# export PATH=$PATH:$HOME/.rvm/gems/ruby-2.4.1/bin
+# export PATH=$PATH:$HOME/.rvm/gems/ruby-2.4.1@global/bin
+# export PATH=$PATH:$HOME/.rvm/rubies/ruby-2.4.1/bin
+# export PATH=$PATH:$HOME/.rvm/bin
+
+# # FZF - Fuzzy Search
+# export PATH=$PATH:$HOME/.fzf/bin
+
+# # Commons
+# export PATH=$PATH:$HOME/bin
+# export PATH=$PATH:$HOME/.local/bin
+
+
+
+
+# # Java Env
+# # export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+
+
+# # Java
+# export PATH=$PATH:$JAVA_HOME/bin
+
+# # Qt
+# export PATH=$PATH:/usr/lib64/qt-3.3/bin
+
+# # Commons
+# export PATH=$PATH:/usr/local/bin
+# export PATH=$PATH:/usr/local/sbin
+# export PATH=$PATH:/usr/bin
+# export PATH=$PATH:/usr/sbin
+# export PATH=$PATH:/bin
+# export PATH=$PATH:/sbin
+
+

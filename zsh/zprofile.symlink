@@ -1,0 +1,6 @@
+# This file is only sourced if we are a login shell.
+
+# See explanation in .zshenv
+if [[ $SHLVL == 1 ]]; then
+    [[ -f ~/.zpath ]] && source ~/.zpath
+fi
