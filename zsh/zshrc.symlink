@@ -26,6 +26,7 @@ export ZSH=/home/bryan/.oh-my-zsh
 
 
 
+
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
 # cause zsh load theme from this variable instead of
@@ -115,6 +116,71 @@ source $ZSH/custom/plugins/zsh-interactive-cd/zsh-interactive-cd.plugin.zsh
 
 
 
+# Prompt Custimization
+# https://code.tutsplus.com/tutorials/how-to-customize-your-command-prompt--net-24083
+
+# # If I'm in the home directory, I don't want to see /Users/andrew, I want to see ~ instead. So, here's that function:
+# function get_pwd() {
+#   echo "${PWD/$HOME/~}"
+# }
+
+# ZSH_THEME_GIT_PROMPT_PREFIX="[git:"
+# ZSH_THEME_GIT_PROMPT_SUFFIX="]$reset_color"
+# ZSH_THEME_GIT_PROMPT_DIRTY="$fg[red]+"
+# ZSH_THEME_GIT_PROMPT_CLEAN="$fg[green]"
+
+# function git_prompt_info() {
+#   ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+#   echo "$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_PREFIX$(current_branch)$ZSH_THEME_GIT_PROMPT_SUFFIX"
+# }
+
+# # If file doesn't exist emit ''.
+# function battery_charge() {
+#     if [ -e ~/bin/batcharge.py ]
+#     then
+#         echo `python ~/bin/batcharge.py`
+#     else
+#         echo '';
+#     fi
+# }
+
+# # Calculate central spacing.
+# function put_spacing() {
+#   local git=$(git_prompt_info)
+#   if [ ${#git} != 0 ]; then
+#       ((git=${#git} - 10))
+#   else
+#       git=0
+#   fi
+
+#   local bat=$(battery_charge)
+#   if [ ${#bat} != 0 ]; then
+#       ((bat = ${#bat} - 18))
+#   else
+#       bat=0
+#   fi
+
+#   local termwidth
+#   (( termwidth = ${COLUMNS} - 3 - ${#HOST} - ${#$(get_pwd)} - ${bat} - ${git} ))
+
+#   local spacing=""
+#   for i in {1..$termwidth}; do
+#       spacing="${spacing} "
+#   done
+#   echo $spacing
+# }
+
+# export PROMPT='
+# $fg[cyan]%m: $fg[yellow]$(get_pwd)$(put_spacing)$(git_prompt_info)
+# $reset_color$(echo -e "\u03BB") '
+
+
+# export PROMPT=$PROMPT'
+# $fg[magenta]$(echo -e "\u03BB")$reset_color '
+
+# export PROMPT='$fg[cyan]%c $(git_prompt_info)
+# $fg[magenta]$(echo -e "\u03BB")$reset_color '
+
 
 # User configuration
 
@@ -154,10 +220,32 @@ export PATH="$PATH:$HOME/.rvm/bin"
 # rvm use ruby-2.4.1
 
 
-
+# http://zsh.sourceforge.net/Doc/Release/Options.html#History
 # Disable shared history.
 # Must come at end of .zshrc
 # Reason we need this is oh-my-zsh enables it:  master/lib/history.zsh
 unsetopt share_history
 unsetopt inc_append_history
+setopt EXTENDED_HISTORY # Add additional data to history like timestamp
 
+# When searching for history entries in the line editor, do not display duplicates of a line previously found, even if the duplicates are not contiguous.
+setopt HIST_FIND_NO_DUPS
+
+# Remove superfluous blanks from each command line being added to the history list.
+setopt HIST_REDUCE_BLANKS
+
+setopt NO_HIST_BEEP # Don't beep
+
+# Try to correct the spelling of commands.
+setopt CORRECT
+# Try to correct the spelling of all arguments in a line.
+setopt CORRECT_ALL
+
+
+# Output hexadecimal numbers in the standard C format, for example ‘0xFF’ instead of the usual ‘16#FF’.
+# If the option OCTAL_ZEROES is also set octal numbers will be treated similarly and hence appear as ‘077’
+setopt C_BASES
+setopt OCTAL_ZEROES
+
+# Debug option. zsh will print an informational message announcing the name of each file it loads.
+unsetopt SOURCE_TRACE

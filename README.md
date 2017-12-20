@@ -19,6 +19,11 @@ git pull
 
 =========================================================
 
+# TODO Common Software Install/Update Script
+- pip install howdoi
+- sublime settings.
+
+
 # Discussion / TODO
 
 bc we may need something other than direct extraction of all files, this git approach isnt going to work out best.
@@ -62,6 +67,10 @@ To merge changes:
 - first pull from remote, if breaking changes now will have to merge
 - then run install if neccesaary to resymlink.
 
+
+Specific Env Configs:
+Detect appened env options similar to yadm
+ 
 
 
 # REFS

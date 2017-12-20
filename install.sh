@@ -7,7 +7,7 @@
 # This script should then check/install node and any other deps.
 
 
-# Sets DOTFILES_ROOT to the root of dotfiles project on machine. 
+# Sets DOTFILES_ROOT to the root of dotfiles project on machine.
 # Must be full path, no rel.
 cd "$(dirname "$0")" # TODO if this moves into scripts, then this becomes cd "$(dirname "$0")/.."
 DOTFILES_ROOT=$(pwd -P)

@@ -1,5 +1,19 @@
 # https://unix.stackexchange.com/questions/71253/what-should-shouldnt-go-in-zshenv-zshrc-zlogin-zprofile-zlogout
 
+# Some people insist on setting their PATH in .zshenv to affect things like ssh.
+# Those that do should probably use $SHLVL to ensure that this only happens
+# the first time the shell is started (to avoid overriding a customized
+# environment).  Also, the various profile/rc/login files all get sourced
+# *after* this file, so they will override this value.  One solution is to
+# put your path-setting code into a file named .zpath, and source it from
+# both here (if we're not a login shell) and from the .zprofile file (which
+# is only sourced if we are a login shell).
+if [[ $SHLVL == 1 && ! -o LOGIN ]]; then
+    [[ -f ~/.zpath ]] && source ~/.zpath
+    echo "Sourced zshenv"
+fi
+
+
 
 # TODO prob shouldnt export these vars.  Instead, call them in .zshenv where they are loded for every zsh session anyway
 export EDITOR='subl'
@@ -18,18 +32,6 @@ export BROWSER=/usr/bin/google-chrome
 
 
 
-# Some people insist on setting their PATH in .zshenv to affect things like ssh.
-# Those that do should probably use $SHLVL to ensure that this only happens
-# the first time the shell is started (to avoid overriding a customized
-# environment).  Also, the various profile/rc/login files all get sourced
-# *after* this file, so they will override this value.  One solution is to
-# put your path-setting code into a file named .zpath, and source it from
-# both here (if we're not a login shell) and from the .zprofile file (which
-# is only sourced if we are a login shell).
-if [[ $SHLVL == 1 && ! -o LOGIN ]]; then
-    [[ -f ~/.zpath ]] && source ~/.zpath
-fi
-
 
 
 # Allows aliases to be run under sudo.
@@ -39,7 +41,6 @@ alias c='clear'
 alias cl='clear && ll'
 alias edit='$EDITOR'
 alias hibernate='systemctl --no-wall hybrid-sleep'
-
 
 
 
