@@ -30,6 +30,37 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
+# Location where go is installed.
+export GOROOT=/opt/go-1.9.2
+# Location of project directory.  This public one is for any 3rd party forked go repos.
+export GOPATH_PUBLIC=$HOME/src/go/public
+# GOPATH="/home/peter/gopath:/home/peter/public/gopath"
+export GOPATH=GOPATH_PUBLIC
+
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+
+# Go Install
+# yum update
+# wget ttps://storage.googleapis.com/golang/go1.9.2.linux-amd64.tar.gz
+# tar -xzf go1.9.2.linux-amd64.tar.gz
+# mv go /opt/go-1.9.2
+# Check
+# go version
+# go env
+
+# Forking 3rd party golibs
+# mkdir -p $GOPATH_PUBLIC/src/github.com/kubernetes-incubator
+# cd $_ # or cd $GOPATH_PUBLIC/src/github.com/kubernetes-incubator
+# git clone https://github.com/kubernetes-incubator/cri-o # or your fork
+# cd cri-o
+
+
+
+# if [ -d "$HOME/bin" ] ; then
+#   PATH="$PATH:$HOME/bin"
+# fi
+
+
 # Ruby and RVM
 export PATH=$PATH:/home/bryan/.rvm/gems/ruby-2.4.1/bin
 export PATH=$PATH:/home/bryan/.rvm/gems/ruby-2.4.1@global/bin

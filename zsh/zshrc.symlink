@@ -77,28 +77,33 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  common-aliases 
-  git 
-  python 
-  scala 
-  docker 
-  tmuxinator 
-  sudo 
-  sublime 
-  tig  
-  tugboat 
-  yarn 
+  common-aliases
+  git
+  python
+  scala
+  docker
+  tmuxinator
+  sudo
+  sublime
+  tig
+  tugboat
+  yarn
   npm
   docker-compose
   zsh-autosuggestions
+  zsh-completions
+  kubectl
 )
+
+# Reload Completeions
+autoload -U compinit && compinit
 
 
 # Load oh-my-zsh stuff.
 source $ZSH/oh-my-zsh.sh
 
 ################################################3
-# Fuzzy Search / cd 
+# Fuzzy Search / cd
 ################################################
 
 # Enabled 'enhancd' - interactive `cd`

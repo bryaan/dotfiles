@@ -8,6 +8,11 @@
 
 # sudo dmidecode --type chassis
 
+# TODO Install/Check useful Gnome Shell Extensions
+# - Desktop Scroller
+# - Docker Integration
+# - Jump List, but requires install of zeitgeist
+
 
 git config --global user.name "Bryan A. Rivera"
 git config --global user.email "brivera@ncl.com" # TODO Should be label='work_ncl' specific.
