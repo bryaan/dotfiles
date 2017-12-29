@@ -1,4 +1,5 @@
 # https://unix.stackexchange.com/questions/71253/what-should-shouldnt-go-in-zshenv-zshrc-zlogin-zprofile-zlogout
+# https://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.html
 
 # Some people insist on setting their PATH in .zshenv to affect things like ssh.
 # Those that do should probably use $SHLVL to ensure that this only happens
@@ -10,40 +11,202 @@
 # is only sourced if we are a login shell).
 if [[ $SHLVL == 1 && ! -o LOGIN ]]; then
     [[ -f ~/.zpath ]] && source ~/.zpath
-    echo "Sourced zshenv"
+    echo "Sourced ~/.zshenv..."
 fi
-
-
-
-# TODO prob shouldnt export these vars.  Instead, call them in .zshenv where they are loded for every zsh session anyway
-export EDITOR='subl'
-export BROWSER=/usr/bin/google-chrome
-# BROWSER=/usr/bin/firefox
-# BROWSER=/usr/bin/chrome-gnome-shell  # Try this, not sure if this is chrome in the shell or what?
-
-# PAGER=
-
-# EDITOR=subl
-# VISUAL=subl
-# SUDO_EDITOR=subl
 
 # Also, you can set $ZDOTDIR in .zshenv to specify an alternative location for the rest of your zsh configuration.
 # This means you can transfer all the ,z*** files to their own folder instead of strewn about the home folder.
 
 
 
+# TODO prob shouldnt export these vars. Just let them be inherited by subprocs.
+export EDITOR='subl'
+export VISUAL=subl
+export SUDO_EDITOR=subl
+# PAGER=
+
+export BROWSER=/usr/bin/google-chrome
+# BROWSER=/usr/bin/firefox
+# BROWSER=/usr/bin/chrome-gnome-shell  # Try this, not sure if this is chrome in the shell or what?
+
+# ssh
+export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 
 # Allows aliases to be run under sudo.
 alias sudo='sudo '
 
+# Commands to proxy thru sudo when not su.
+if [ $UID -ne 0 ]; then
+    alias reboot='sudo reboot'
+    alias update='sudo yum upgrade'
+fi
+
+
 alias c='clear'
 alias cl='clear && ll'
 alias edit='$EDITOR'
+alias browser='$BROWSER'
 alias hibernate='systemctl --no-wall hybrid-sleep'
+alias h='history'
+alias j='jobs -l'
+alias path='echo -e ${PATH//:/\\n}'
+alias now='date +"%T"'
+alias nowtime=now
+alias nowdate='date +"%d-%m-%Y"'
+alias su='sudo -i'
+
+# TODO So dont put password here, maybe use a golang proxy?
+alias rebootlinksys="curl -u 'admin:my-super-password' 'http://192.168.1.2/setup.cgi?todo=reboot'"
+
+## replace mac with your actual server mac address #
+# alias wakeupnas01='/usr/bin/wakeonlan 00:11:32:11:15:FC'
+
+# TODO Check colordiff command exists.
+alias diff='colordiff'
+
+# Cryptographic Hashes
+alias sha1='openssl sha1'
+
+function runSilent() {
+  nohup "$@" &>/dev/null 2>&1 &
+}
+
+####################################################3
+# Utility
+####################################################
+
+## set some other defaults ##
+alias df='df -H'
+alias du='du -ch'
+
+## Colorize the ls output ##
+alias ls='ls --color=auto'
+
+## Use a long listing format ##
+alias ll='ls -la'
+
+## Show hidden files ##
+alias l.='ls -d .* --color=auto'
+
+# Create parent directories if not exist.
+alias mkdir='mkdir -pv'
 
 
+## Colorize the grep command output for ease of use (good for log files)##
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+# Open calc in math mode...?
+alias bc='bc -l'
+
+# Make mount command output pretty and human readable format
+alias mount='mount |column -t'
+
+####################################################3
+# Net Test
+####################################################
+
+# Stop after sending count ECHO_REQUEST packets #
+alias ping='ping -c 5'
+
+# Do not wait interval 1 second, go fast #
+alias fastping='ping -c 100 -s.2'
+
+# Show open ports.
+alias ports='netstat -tulanp'
+
+####################################################3
+# System Perf
+####################################################
+
+# top is atop, just like vi is vim
+alias top='atop'
+
+## pass options to free ##
+alias meminfo='free -m -l -t'
+
+## get top process eating memory
+alias psmem='ps auxf | sort -nr -k 4'
+alias psmem10='ps auxf | sort -nr -k 4 | head -10'
+
+## get top process eating cpu ##
+alias pscpu='ps auxf | sort -nr -k 3'
+alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
+
+## Get server cpu info ##
+alias cpuinfo='lscpu'
+
+## older system use /proc/cpuinfo ##
+##alias cpuinfo='less /proc/cpuinfo' ##
+
+## get GPU ram on desktop / laptop##
+alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
+
+####################################################3
+# IpTables
+####################################################
+
+## shortcut  for iptables and pass it via sudo#
+alias ipt='sudo /sbin/iptables'
+
+# display all rules #
+alias iptlist='sudo /sbin/iptables -L -n -v --line-numbers'
+alias iptlistin='sudo /sbin/iptables -L INPUT -n -v --line-numbers'
+alias iptlistout='sudo /sbin/iptables -L OUTPUT -n -v --line-numbers'
+alias iptlistfw='sudo /sbin/iptables -L FORWARD -n -v --line-numbers'
+alias firewall=iptlist
+
+####################################################3
+# Curl
+####################################################
+
+# get web server headers #
+alias header='curl -I'
+
+# find out if remote server supports gzip / mod_deflate or not #
+alias headerc='curl -I --compress'
+
+# Resume downloads by default
+alias wget='wget -c'
+
+####################################################3
+# Safety Nets
+####################################################
+
+# do not delete / or prompt if deleting more than 3 files at a time #
+alias rm='rm -I --preserve-root'
+
+# confirmation #
+alias mv='mv -i'
+alias cp='cp -i'
+alias ln='ln -i'
+
+# Parenting changing perms on / #
+alias chown='chown --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
 
 
+####################################################3
+# For Debain
+####################################################
+
+# # distro specific  - Debian / Ubuntu and friends #
+# # install with apt-get
+# alias apt-get="sudo apt-get"
+# alias updatey="sudo apt-get --yes"
+
+# # update on one command
+# alias update='sudo apt-get update && sudo apt-get upgrade'
+
+## Fedora/RHEL/CentOS ##
+alias update='yum update'
+alias updatey='yum -y update'
+
+####################################################3
+# Source
+####################################################
 
 source ~/.devrc

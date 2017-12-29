@@ -1,10 +1,9 @@
 # https://www.alfredapp.com/
 # https://github.com/sdegutis/hydra
 
-# Gitkraken pass
+# Gitkraken ssap
 # hqfaf@slipry.net11
 
-# pip install howdoi
 
 # sudo dmidecode --type chassis
 
@@ -12,37 +11,40 @@
 # - Desktop Scroller
 # - Docker Integration
 # - Jump List, but requires install of zeitgeist
+# pip install howdoi
+
+# Upgrades node+npm. Works great!
+# npx dist-upgrade
+
+# https://github.com/js-n/awesome-npx
+# npx npm-check
 
 
+# Check all configs with:  git config --list
 git config --global user.name "Bryan A. Rivera"
 git config --global user.email "brivera@ncl.com" # TODO Should be label='work_ncl' specific.
 git config --global color.ui "auto"
 git config --global core.editor "subl -n -w"
-# Check all configs with:  git config --list
 
 ############################################################################
 # .devrc
 ############################################################################
 
-alias reload='source ~/.devrc && source ~/.zshrc && source ~/.zshenv'
+alias reload='source ~/.zshenv && source ~/.zshrc && source ~/.devrc'
 alias reloadPath='source ~/.zpath'
 alias reloadTmux='tmux source-file ~/.tmux.conf'
 
-alias be='devrc'
+alias devrc='$EDITOR ~/.devrc'
+
 alias zshrc='$EDITOR ~/.zshrc'
 alias zshenv='$EDITOR ~/.zshenv'
 alias zprofile='$EDITOR ~/.zprofile'
 alias zpath='$EDITOR ~/.zpath'
-
 alias ohmyzsh='$EDITOR ~/.oh-my-zsh/oh-my-zsh.sh'
-alias devrc='$EDITOR ~/.devrc'
-alias editBackup='$EDITOR ~/Desktop/runBackup'
 
 alias terminatorconf='$EDITOR ~/.config/terminator/config'
 alias tmuxconf='$EDITOR ~/.tmux.conf'
 alias mux="rvm use ruby-2.4 && tmuxinator"
-# alias ncldev='mux start ncldev -n ncldev1'
-# alias ncldevedit='mux open ncldev'
 
 alias idea='runSilent ~/bin/idea-IU-173.4127.2/bin/idea.sh'
 alias gitkraken='runSilent /usr/local/src/gitkraken/gitkraken'
@@ -50,16 +52,12 @@ alias gitkraken='runSilent /usr/local/src/gitkraken/gitkraken'
 # TODO Put this on cronjob.
 # TODO Add to git repo.  Using whitelist: https://stackoverflow.com/questions/9162919/whitelisting-and-subdirectories-in-git
 alias runBackup='/home/bryan/Desktop/runBackup'
+alias editBackup='$EDITOR ~/Desktop/runBackup'
 
-#alias openncl='nohup terminator -l scalarun &> /dev/null 2> &1 &'
-
-function runSilent() {
-  nohup "$@" &>/dev/null 2>&1 &
-}
-
-# RVM - Ruby Version Manager
-source ~/.rvm/scripts/rvm
-
+# TODO Backup IntelliJ Settings
+# Linux: .IntelliJIdea2017.2
+# Use regex on first part.
+# https://intellij-support.jetbrains.com/hc/en-us/community/posts/206381509-Export-settings-via-command-line-OS-X-
 
 ###########################################################3
 # NCL DEV
@@ -79,7 +77,6 @@ export NCL_CBE_PATH=$NCL_SRC/cbe-java/cbe
 export NCL_SHOREX_PATH=$NCL_SRC/ncl-shore-excursions
 export NCL_SEARCH_PATH=$NCL_SRC/nclh-search-service
 export NCL_STATIC_PATH=$NCL_SRC/static
-
 
 
 #
@@ -126,7 +123,7 @@ function nclSearch() {
 
 #
 # CBE - Customer Booking Engine
-# 
+#
 
 export CBE_LOG_DIR="/home/bryan/.cbe"
 
@@ -193,7 +190,7 @@ function nclCbeClear() {
 
 #
 # Drupal
-# 
+#
 
 # Check that a running container with given name does not exist.
 dockerRunningContainerExists() {
@@ -215,7 +212,9 @@ function startDrupal() {
   if [ "$(dockerExitedContainerExists drupal)" ]; then
     docker start drupal
   else
-    printf "You must \`buildDrupal\` first.\n"
+    printf "Building drupal first...\n"
+    buildDrupal
+    startDrupal
   fi
 }
 
@@ -250,7 +249,7 @@ alias patchDrupal='cd ~/src/drupal && scripts/patch-drupal'
 alias unPatchDrupal='cd ~/src/drupal && scripts/patch-drupal -r'
 
 
-# from Matti 
+# from Matti
 #alias runDrupal='docker run -d -t -p 8888:80 -i --name drupal -v $HOME/scripts:/tmp  -v $HOME/src/static:/var/www/static  -v $HOME/src/drupal:/var/www/html/ -v $HOME/src/NCL-Dashboard:/var/www/dashboard/ ncl/php53 /bin/bash'
 
 

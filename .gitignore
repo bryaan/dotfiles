@@ -10,3 +10,6 @@ atom.symlink/blob-store
 atom.symlink/recovery
 
 git/gitconfig.local.symlink
+
+node_modules
+npm-debug.log

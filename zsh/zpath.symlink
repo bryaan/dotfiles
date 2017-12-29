@@ -7,20 +7,18 @@
 # TODO Might want to move some of these to /etc/environment so they are available system wide.
 # * Dosent mean user will have permission to run it.
 
-
-
 # TODO
-# Create an add_to_path command that checks if path exists so we dont have a leading `:`
+# Create an add_to_path command that checks if path exists
+# so we dont have a leading `:`.
+# Or do python:  path_append(path), path_prepend(path)
 
 export PATH=''
-
-# Java Env
-export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
 
 # Git v2
 export PATH=$PATH:/usr/local/src/git-2.15.1/bin
 
 # Java and SBT
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
 export PATH=$PATH:$JAVA_HOME/bin
 export PATH=$PATH:/home/bryan/bin/sbt
 
@@ -39,26 +37,6 @@ export GOPATH=GOPATH_PUBLIC
 
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
-# Go Install
-# yum update
-# wget ttps://storage.googleapis.com/golang/go1.9.2.linux-amd64.tar.gz
-# tar -xzf go1.9.2.linux-amd64.tar.gz
-# mv go /opt/go-1.9.2
-# Check
-# go version
-# go env
-
-# Forking 3rd party golibs
-# mkdir -p $GOPATH_PUBLIC/src/github.com/kubernetes-incubator
-# cd $_ # or cd $GOPATH_PUBLIC/src/github.com/kubernetes-incubator
-# git clone https://github.com/kubernetes-incubator/cri-o # or your fork
-# cd cri-o
-
-
-
-# if [ -d "$HOME/bin" ] ; then
-#   PATH="$PATH:$HOME/bin"
-# fi
 
 
 # Ruby and RVM
@@ -68,12 +46,19 @@ export PATH=$PATH:/home/bryan/.rvm/rubies/ruby-2.4.1/bin
 export PATH=$PATH:/home/bryan/.rvm/bin
 export PATH=$PATH:/usr/lib64/qt-3.3/bin
 
+
 # FZF - Fuzzy Search
 export PATH=$PATH:/home/bryan/.fzf/bin
 
 # Commons
-export PATH=$PATH:/home/bryan/bin
-export PATH=$PATH:/home/bryan/.local/bin
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    PATH="$PATH:$HOME/bin"
+fi
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$PATH:$HOME/.local/bin"
+fi
 export PATH=$PATH:/usr/local/bin
 export PATH=$PATH:/usr/local/sbin
 export PATH=$PATH:/usr/bin
@@ -82,52 +67,13 @@ export PATH=$PATH:/bin
 export PATH=$PATH:/sbin
 
 
-# # set PATH so it includes user's private bin if it exists
-# if [ -d "$HOME/bin" ] ; then
-#     PATH="$HOME/bin:$PATH"
-# fi
+# RVM - Ruby Version Manager
+# Comes after path declarations.
+source ~/.rvm/scripts/rvm
+export GEM_HOME=$HOME/.gem
+export GEM_PATH=$HOME/.gem
 
 
-# export PATH=$PATH:/your/new/path/here
-
-
-
-# export HOME=/home/bryan
-
-# export PATH=$PATH:$HOME/bin/sbt
-
-# # Ruby and RVM
-# export PATH=$PATH:$HOME/.rvm/gems/ruby-2.4.1/bin
-# export PATH=$PATH:$HOME/.rvm/gems/ruby-2.4.1@global/bin
-# export PATH=$PATH:$HOME/.rvm/rubies/ruby-2.4.1/bin
-# export PATH=$PATH:$HOME/.rvm/bin
-
-# # FZF - Fuzzy Search
-# export PATH=$PATH:$HOME/.fzf/bin
-
-# # Commons
-# export PATH=$PATH:$HOME/bin
-# export PATH=$PATH:$HOME/.local/bin
-
-
-
-
-# # Java Env
-# # export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
-
-
-# # Java
-# export PATH=$PATH:$JAVA_HOME/bin
 
 # # Qt
 # export PATH=$PATH:/usr/lib64/qt-3.3/bin
-
-# # Commons
-# export PATH=$PATH:/usr/local/bin
-# export PATH=$PATH:/usr/local/sbin
-# export PATH=$PATH:/usr/bin
-# export PATH=$PATH:/usr/sbin
-# export PATH=$PATH:/bin
-# export PATH=$PATH:/sbin
-
-

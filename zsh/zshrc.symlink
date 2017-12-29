@@ -204,18 +204,10 @@ source $ZSH/custom/plugins/zsh-interactive-cd/zsh-interactive-cd.plugin.zsh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
 
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
@@ -230,8 +222,13 @@ export PATH="$PATH:$HOME/.rvm/bin"
 # Must come at end of .zshrc
 # Reason we need this is oh-my-zsh enables it:  master/lib/history.zsh
 unsetopt share_history
-unsetopt inc_append_history
+
+# Do append stuff to history tho, at least on linux, bc when we restart we would just get last used terminals history.
+setopt inc_append_history
+
 setopt EXTENDED_HISTORY # Add additional data to history like timestamp
+
+
 
 # When searching for history entries in the line editor, do not display duplicates of a line previously found, even if the duplicates are not contiguous.
 setopt HIST_FIND_NO_DUPS
@@ -245,6 +242,7 @@ setopt NO_HIST_BEEP # Don't beep
 setopt CORRECT
 # Try to correct the spelling of all arguments in a line.
 setopt CORRECT_ALL
+
 
 
 # Output hexadecimal numbers in the standard C format, for example ‘0xFF’ instead of the usual ‘16#FF’.
