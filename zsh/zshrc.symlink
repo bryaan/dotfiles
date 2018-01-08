@@ -1,3 +1,11 @@
+# .zshrc is for interactive shell configuration. You set options for the
+# interactive shell here with the setopt and unsetopt commands.
+# You can also load shell modules, set your history options, change your
+# prompt, set up zle and completion, et cetera. You also set any variables
+# that are only used in the interactive shell (e.g. $LS_COLORS).
+
+
+
 # TODO `zplug` look like best package man.  however oh-my-zsh also has its own way, zplug allows importing ohmyzsh functions without running ohmyzsh.
 # If we want Zplug then eventually elim oh-my-zsh
 
@@ -209,12 +217,12 @@ source $ZSH/custom/plugins/zsh-interactive-cd/zsh-interactive-cd.plugin.zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-# Load RVM into a shell session *as a function*
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-# rvm use ruby-2.4.1
+# [ Replaced by `asdf` ]
+# # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+# export PATH="$PATH:$HOME/.rvm/bin"
+# # Load RVM into a shell session *as a function*
+# [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+# # rvm use ruby-2.4.1
 
 
 # http://zsh.sourceforge.net/Doc/Release/Options.html#History
@@ -252,3 +260,10 @@ setopt OCTAL_ZEROES
 
 # Debug option. zsh will print an informational message announcing the name of each file it loads.
 unsetopt SOURCE_TRACE
+
+
+#--------------------------------#
+# asdf
+#--------------------------------#
+source $HOME/.asdf/asdf.sh
+source $HOME/.asdf/completions/asdf.bash

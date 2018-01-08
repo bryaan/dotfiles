@@ -1,3 +1,5 @@
+# .zshenv is always sourced, it often contains exported variables that should be available to other programs.
+
 # https://unix.stackexchange.com/questions/71253/what-should-shouldnt-go-in-zshenv-zshrc-zlogin-zprofile-zlogout
 # https://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.html
 
@@ -11,19 +13,14 @@
 # is only sourced if we are a login shell).
 if [[ $SHLVL == 1 && ! -o LOGIN ]]; then
     [[ -f ~/.zpath ]] && source ~/.zpath
-    echo "Sourced ~/.zshenv..."
+    [[ -f ~/.zpath ]] && echo "Sourced ~/.zpath..."
 fi
 
-# Also, you can set $ZDOTDIR in .zshenv to specify an alternative location for the rest of your zsh configuration.
-# This means you can transfer all the ,z*** files to their own folder instead of strewn about the home folder.
 
-
-
-# TODO prob shouldnt export these vars. Just let them be inherited by subprocs.
 export EDITOR='subl'
 export VISUAL=subl
 export SUDO_EDITOR=subl
-# PAGER=
+export PAGER=less
 
 export BROWSER=/usr/bin/google-chrome
 # BROWSER=/usr/bin/firefox
@@ -31,6 +28,13 @@ export BROWSER=/usr/bin/google-chrome
 
 # ssh
 export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+
+# If $ZDOTDIR is defined, we keep the definition, otherwise we define $ZDOTDIR
+# to equal $HOME.  This is so that any other .z* files can refer to files
+# in the current $ZDOTDIR.
+ZDOTDIR=${ZDOTDIR:-$HOME}
+
 
 
 # Allows aliases to be run under sudo.
@@ -41,6 +45,69 @@ if [ $UID -ne 0 ]; then
     alias reboot='sudo reboot'
     alias update='sudo yum upgrade'
 fi
+
+
+
+#########################
+# Autoreload ZSH Files
+#########################
+
+# Everytime a command is run, first check if the zshrc file has
+# changed, if it has then source the file.
+# TODO this really needs to apply to any of the dev files.
+#
+# # For Linux
+# bashrc_sourced=$(stat -c %Y $ZDOTDIR/.zshrc)
+# PROMPT_COMMAND="$PROMPT_COMMAND
+#     test $(stat -c %Y $ZDOTDIR/.zshrc) -ne $bashrc_sourced && source $ZDOTDIR/.zshrc
+# "
+# # For OSX and BSD
+# Change stat command to:  `stat -f %m`
+
+
+# Monitor for a signal 16, if it hits then reload the ZSH files.
+# NOTE: This doesn't seem to affect terminals currently excuting other
+# processes.  It also isnt the best setup, as if a termninal is not
+# set to trap signla 16 it seems to crash/hang.
+
+_reloadAllZSH() {
+	# zshenv Can be sourced in every shell.
+	source $ZDOTDIR/.zshenv
+	# TODO Only source .zshrc when we know its interactive shell.
+	# source $ZDOTDIR/.zshrc
+}
+
+# When SIGUSR1 (16) is sent to running shell, it will exec reloadAll command.
+trap "_reloadAllZSH" 16
+
+# Use this to reload all terminals.
+# Send 16 to all processes running ZSH.
+# TODO should also match for pts/N
+reloadTerminals() {
+  ps ax | grep -i zsh | awk {'print $1'} | xargs kill -16
+}
+
+
+#------------------------------------
+# Utility Commands
+#------------------------------------
+
+warn() {
+	printf "[Warning] $1"
+}
+
+warnProgramNotInstalled() {
+  warn "Package '$1' Not Installed!\nAlternatively, check that it is available on your PATH.\n"
+}
+
+
+commandExists() {
+  command -v $1 >/dev/null
+}
+
+runSilent() {
+  nohup "$@" &>/dev/null 2>&1 &
+}
 
 
 alias c='clear'
@@ -56,7 +123,14 @@ alias nowtime=now
 alias nowdate='date +"%d-%m-%Y"'
 alias su='sudo -i'
 
-# TODO So dont put password here, maybe use a golang proxy?
+# TODO So dont put password here, pull password from system keyring.
+# Linux
+# secret-tool store --label='Password for mydrive' drive mydrive
+# secret-tool lookup drive mydrive
+# Mac
+# security add-generic-password -a ${USER} -s playground -w `pwgen`
+# security delete-generic-password -a ${USER} -s playground
+# security find-generic-password -a ${USER} -s playground -w
 alias rebootlinksys="curl -u 'admin:my-super-password' 'http://192.168.1.2/setup.cgi?todo=reboot'"
 
 ## replace mac with your actual server mac address #
@@ -67,10 +141,6 @@ alias diff='colordiff'
 
 # Cryptographic Hashes
 alias sha1='openssl sha1'
-
-function runSilent() {
-  nohup "$@" &>/dev/null 2>&1 &
-}
 
 ####################################################3
 # Utility

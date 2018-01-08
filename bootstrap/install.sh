@@ -9,7 +9,7 @@
 
 # Sets DOTFILES_ROOT to the root of dotfiles project on machine.
 # Must be full path, no rel.
-cd "$(dirname "$0")" # TODO if this moves into scripts, then this becomes cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/.." # TODO if this moves into scripts, then this becomes cd "$(dirname "$0")/.."
 DOTFILES_ROOT=$(pwd -P)
 
 # I beleive this exits if above fails.

@@ -26,6 +26,16 @@ git config --global user.email "brivera@ncl.com" # TODO Should be label='work_nc
 git config --global color.ui "auto"
 git config --global core.editor "subl -n -w"
 
+#------------------------------------
+# Setup diff-so-fancy
+#------------------------------------
+if commandExists diff-so-fancy; then
+  git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
+else
+  warnProgramNotInstalled 'diff-so-fancy'
+fi
+
+
 ############################################################################
 # .devrc
 ############################################################################
@@ -46,8 +56,13 @@ alias terminatorconf='$EDITOR ~/.config/terminator/config'
 alias tmuxconf='$EDITOR ~/.tmux.conf'
 alias mux="rvm use ruby-2.4 && tmuxinator"
 
-alias idea='runSilent ~/bin/idea-IU-173.4127.2/bin/idea.sh'
+alias idea='runSilent ~/bin/idea-IU-173.4301.1/bin/idea.sh'
 alias gitkraken='runSilent /usr/local/src/gitkraken/gitkraken'
+
+
+alias yi='sudo yum install'
+# alias torrent='transmission-cli -w ~/Downloads '
+# lsblk - Tree like view of block devices.
 
 # TODO Put this on cronjob.
 # TODO Add to git repo.  Using whitelist: https://stackoverflow.com/questions/9162919/whitelisting-and-subdirectories-in-git

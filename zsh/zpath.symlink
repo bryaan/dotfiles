@@ -28,29 +28,57 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
-# Location where go is installed.
-export GOROOT=/opt/go-1.9.2
-# Location of project directory.  This public one is for any 3rd party forked go repos.
-export GOPATH_PUBLIC=$HOME/src/go/public
-# GOPATH="/home/peter/gopath:/home/peter/public/gopath"
-export GOPATH=GOPATH_PUBLIC
+# # Location where go is installed.
+# export GOROOT=/opt/go-1.9.2
+# # Location of project directory.  This public one is for any 3rd party forked go repos.
+# export GOPATH_PUBLIC=$HOME/src/go/public
+# # GOPATH="/home/peter/gopath:/home/peter/public/gopath"
+# export GOPATH=GOPATH_PUBLIC
 
+
+# TODO Only if GOPATH and GOROOT are defined.
+# Alert if they arent?
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+# asdf plugin-add golang
+# asdf install golang 1.9.2
+# asdf global golang 1.9.2
+
+# This should be auto done by asdf-golang plugin.
+# But just in case here they are.
+# export GOROOT=/home/bryan/.asdf/installs/golang/1.9.2/go
+# export GOPATH=/home/bryan/.asdf/installs/golang/1.9.2/packages
 
 
 
-# Ruby and RVM
-export PATH=$PATH:/home/bryan/.rvm/gems/ruby-2.4.1/bin
-export PATH=$PATH:/home/bryan/.rvm/gems/ruby-2.4.1@global/bin
-export PATH=$PATH:/home/bryan/.rvm/rubies/ruby-2.4.1/bin
-export PATH=$PATH:/home/bryan/.rvm/bin
-export PATH=$PATH:/usr/lib64/qt-3.3/bin
+# # Ruby and RVM
+# export PATH=$PATH:/home/bryan/.rvm/gems/ruby-2.4.1/bin
+# export PATH=$PATH:/home/bryan/.rvm/gems/ruby-2.4.1@global/bin
+# export PATH=$PATH:/home/bryan/.rvm/rubies/ruby-2.4.1/bin
+# export PATH=$PATH:/home/bryan/.rvm/bin
+# export PATH=$PATH:/usr/lib64/qt-3.3/bin
 
 
 # FZF - Fuzzy Search
 export PATH=$PATH:/home/bryan/.fzf/bin
 
 # Commons
+
+# /opt  For non-system software.
+# /opt/local For un-vc'd, pre-compiled software.
+# /opt/local/bin For the binaries.
+# /opt/local/sbin For administrative binaries.
+
+# For non-system bundled software binaries.
+export PATH=$PATH:/opt/local/bin
+# For administrative non-system bundled software binaries.
+export PATH=$PATH:/opt/local/sbin
+
+# There should be no /opt/bin.  The local route is for stuff we don't
+# want to pull in via git.  If we do, then it goes in /opt/foo-project.
+# Config goes in /etc/opt/foo-project/xx.conf
+# Logs go in /var/opt/foo-project/xx.log
+
+
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
@@ -67,11 +95,11 @@ export PATH=$PATH:/bin
 export PATH=$PATH:/sbin
 
 
-# RVM - Ruby Version Manager
-# Comes after path declarations.
-source ~/.rvm/scripts/rvm
-export GEM_HOME=$HOME/.gem
-export GEM_PATH=$HOME/.gem
+# # RVM - Ruby Version Manager
+# # Comes after path declarations.
+# source ~/.rvm/scripts/rvm
+# export GEM_HOME=$HOME/.gem
+# export GEM_PATH=$HOME/.gem
 
 
 
