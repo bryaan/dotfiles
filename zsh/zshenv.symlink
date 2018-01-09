@@ -35,35 +35,10 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # in the current $ZDOTDIR.
 ZDOTDIR=${ZDOTDIR:-$HOME}
 
-
-
-# Allows aliases to be run under sudo.
-alias sudo='sudo '
-
-# Commands to proxy thru sudo when not su.
-if [ $UID -ne 0 ]; then
-    alias reboot='sudo reboot'
-    alias update='sudo yum upgrade'
-fi
-
-
-
 #########################
 # Autoreload ZSH Files
+# TODO Should cat this file into this file, maybe a `source` is enough.
 #########################
-
-# Everytime a command is run, first check if the zshrc file has
-# changed, if it has then source the file.
-# TODO this really needs to apply to any of the dev files.
-#
-# # For Linux
-# bashrc_sourced=$(stat -c %Y $ZDOTDIR/.zshrc)
-# PROMPT_COMMAND="$PROMPT_COMMAND
-#     test $(stat -c %Y $ZDOTDIR/.zshrc) -ne $bashrc_sourced && source $ZDOTDIR/.zshrc
-# "
-# # For OSX and BSD
-# Change stat command to:  `stat -f %m`
-
 
 # Monitor for a signal 16, if it hits then reload the ZSH files.
 # NOTE: This doesn't seem to affect terminals currently excuting other
@@ -77,7 +52,8 @@ _reloadAllZSH() {
 	# source $ZDOTDIR/.zshrc
 }
 
-# When SIGUSR1 (16) is sent to running shell, it will exec reloadAll command.
+# When SIGUSR1 (16) is sent to running shell,
+# it will exec reloadAll command.
 trap "_reloadAllZSH" 16
 
 # Use this to reload all terminals.
@@ -87,196 +63,10 @@ reloadTerminals() {
   ps ax | grep -i zsh | awk {'print $1'} | xargs kill -16
 }
 
-
-#------------------------------------
-# Utility Commands
-#------------------------------------
-
-warn() {
-	printf "[Warning] $1"
-}
-
-warnProgramNotInstalled() {
-  warn "Package '$1' Not Installed!\nAlternatively, check that it is available on your PATH.\n"
-}
-
-
-commandExists() {
-  command -v $1 >/dev/null
-}
-
-runSilent() {
-  nohup "$@" &>/dev/null 2>&1 &
-}
-
-
-alias c='clear'
-alias cl='clear && ll'
-alias edit='$EDITOR'
-alias browser='$BROWSER'
-alias hibernate='systemctl --no-wall hybrid-sleep'
-alias h='history'
-alias j='jobs -l'
-alias path='echo -e ${PATH//:/\\n}'
-alias now='date +"%T"'
-alias nowtime=now
-alias nowdate='date +"%d-%m-%Y"'
-alias su='sudo -i'
-
-# TODO So dont put password here, pull password from system keyring.
-# Linux
-# secret-tool store --label='Password for mydrive' drive mydrive
-# secret-tool lookup drive mydrive
-# Mac
-# security add-generic-password -a ${USER} -s playground -w `pwgen`
-# security delete-generic-password -a ${USER} -s playground
-# security find-generic-password -a ${USER} -s playground -w
-alias rebootlinksys="curl -u 'admin:my-super-password' 'http://192.168.1.2/setup.cgi?todo=reboot'"
-
-## replace mac with your actual server mac address #
-# alias wakeupnas01='/usr/bin/wakeonlan 00:11:32:11:15:FC'
-
-# TODO Check colordiff command exists.
-alias diff='colordiff'
-
-# Cryptographic Hashes
-alias sha1='openssl sha1'
-
-####################################################3
-# Utility
-####################################################
-
-## set some other defaults ##
-alias df='df -H'
-alias du='du -ch'
-
-## Colorize the ls output ##
-alias ls='ls --color=auto'
-
-## Use a long listing format ##
-alias ll='ls -la'
-
-## Show hidden files ##
-alias l.='ls -d .* --color=auto'
-
-# Create parent directories if not exist.
-alias mkdir='mkdir -pv'
-
-
-## Colorize the grep command output for ease of use (good for log files)##
-alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
-
-# Open calc in math mode...?
-alias bc='bc -l'
-
-# Make mount command output pretty and human readable format
-alias mount='mount |column -t'
-
-####################################################3
-# Net Test
-####################################################
-
-# Stop after sending count ECHO_REQUEST packets #
-alias ping='ping -c 5'
-
-# Do not wait interval 1 second, go fast #
-alias fastping='ping -c 100 -s.2'
-
-# Show open ports.
-alias ports='netstat -tulanp'
-
-####################################################3
-# System Perf
-####################################################
-
-# top is atop, just like vi is vim
-alias top='atop'
-
-## pass options to free ##
-alias meminfo='free -m -l -t'
-
-## get top process eating memory
-alias psmem='ps auxf | sort -nr -k 4'
-alias psmem10='ps auxf | sort -nr -k 4 | head -10'
-
-## get top process eating cpu ##
-alias pscpu='ps auxf | sort -nr -k 3'
-alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
-
-## Get server cpu info ##
-alias cpuinfo='lscpu'
-
-## older system use /proc/cpuinfo ##
-##alias cpuinfo='less /proc/cpuinfo' ##
-
-## get GPU ram on desktop / laptop##
-alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
-
-####################################################3
-# IpTables
-####################################################
-
-## shortcut  for iptables and pass it via sudo#
-alias ipt='sudo /sbin/iptables'
-
-# display all rules #
-alias iptlist='sudo /sbin/iptables -L -n -v --line-numbers'
-alias iptlistin='sudo /sbin/iptables -L INPUT -n -v --line-numbers'
-alias iptlistout='sudo /sbin/iptables -L OUTPUT -n -v --line-numbers'
-alias iptlistfw='sudo /sbin/iptables -L FORWARD -n -v --line-numbers'
-alias firewall=iptlist
-
-####################################################3
-# Curl
-####################################################
-
-# get web server headers #
-alias header='curl -I'
-
-# find out if remote server supports gzip / mod_deflate or not #
-alias headerc='curl -I --compress'
-
-# Resume downloads by default
-alias wget='wget -c'
-
-####################################################3
-# Safety Nets
-####################################################
-
-# do not delete / or prompt if deleting more than 3 files at a time #
-alias rm='rm -I --preserve-root'
-
-# confirmation #
-alias mv='mv -i'
-alias cp='cp -i'
-alias ln='ln -i'
-
-# Parenting changing perms on / #
-alias chown='chown --preserve-root'
-alias chmod='chmod --preserve-root'
-alias chgrp='chgrp --preserve-root'
-
-
-####################################################3
-# For Debain
-####################################################
-
-# # distro specific  - Debian / Ubuntu and friends #
-# # install with apt-get
-# alias apt-get="sudo apt-get"
-# alias updatey="sudo apt-get --yes"
-
-# # update on one command
-# alias update='sudo apt-get update && sudo apt-get upgrade'
-
-## Fedora/RHEL/CentOS ##
-alias update='yum update'
-alias updatey='yum -y update'
-
 ####################################################3
 # Source
 ####################################################
 
-source ~/.devrc
+export DOTFILES_ROOT=~/src/dotfiles
+
+source $DOTFILES_ROOT/shell/index

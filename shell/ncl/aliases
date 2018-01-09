@@ -1,82 +1,8 @@
-# https://www.alfredapp.com/
-# https://github.com/sdegutis/hydra
+#!/usr/bin/env sh
 
-# Gitkraken ssap
-# hqfaf@slipry.net11
-
-
-# sudo dmidecode --type chassis
-
-# TODO Install/Check useful Gnome Shell Extensions
-# - Desktop Scroller
-# - Docker Integration
-# - Jump List, but requires install of zeitgeist
-# pip install howdoi
-
-# Upgrades node+npm. Works great!
-# npx dist-upgrade
-
-# https://github.com/js-n/awesome-npx
-# npx npm-check
-
-
-# Check all configs with:  git config --list
-git config --global user.name "Bryan A. Rivera"
-git config --global user.email "brivera@ncl.com" # TODO Should be label='work_ncl' specific.
-git config --global color.ui "auto"
-git config --global core.editor "subl -n -w"
-
-#------------------------------------
-# Setup diff-so-fancy
-#------------------------------------
-if commandExists diff-so-fancy; then
-  git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
-else
-  warnProgramNotInstalled 'diff-so-fancy'
-fi
-
-
-############################################################################
-# .devrc
-############################################################################
-
-alias reload='source ~/.zshenv && source ~/.zshrc && source ~/.devrc'
-alias reloadPath='source ~/.zpath'
-alias reloadTmux='tmux source-file ~/.tmux.conf'
-
-alias devrc='$EDITOR ~/.devrc'
-
-alias zshrc='$EDITOR ~/.zshrc'
-alias zshenv='$EDITOR ~/.zshenv'
-alias zprofile='$EDITOR ~/.zprofile'
-alias zpath='$EDITOR ~/.zpath'
-alias ohmyzsh='$EDITOR ~/.oh-my-zsh/oh-my-zsh.sh'
-
-alias terminatorconf='$EDITOR ~/.config/terminator/config'
-alias tmuxconf='$EDITOR ~/.tmux.conf'
-alias mux="rvm use ruby-2.4 && tmuxinator"
-
-alias idea='runSilent ~/bin/idea-IU-173.4301.1/bin/idea.sh'
-alias gitkraken='runSilent /usr/local/src/gitkraken/gitkraken'
-
-
-alias yi='sudo yum install'
-# alias torrent='transmission-cli -w ~/Downloads '
-# lsblk - Tree like view of block devices.
-
-# TODO Put this on cronjob.
-# TODO Add to git repo.  Using whitelist: https://stackoverflow.com/questions/9162919/whitelisting-and-subdirectories-in-git
-alias runBackup='/home/bryan/Desktop/runBackup'
-alias editBackup='$EDITOR ~/Desktop/runBackup'
-
-# TODO Backup IntelliJ Settings
-# Linux: .IntelliJIdea2017.2
-# Use regex on first part.
-# https://intellij-support.jetbrains.com/hc/en-us/community/posts/206381509-Export-settings-via-command-line-OS-X-
-
-###########################################################3
-# NCL DEV
-###########################################################3
+###########################################################
+# NCL Dev
+###########################################################
 
 alias runCharlie='~/bin/charlieLoop'
 
@@ -94,9 +20,9 @@ export NCL_SEARCH_PATH=$NCL_SRC/nclh-search-service
 export NCL_STATIC_PATH=$NCL_SRC/static
 
 
-#
+###########################################################
 # NCL Common
-#
+###########################################################
 
 function nclCom() {
    cd $NCL_COM_PATH
@@ -118,27 +44,27 @@ function nclComComplete() {
 #    sbt "run -Dconfig.file=conf/local.conf -Dlogger.file=$HOME/src/ncl-com/conf/logger-qa.xml"
 # }
 
-#
+###########################################################
 # NCL Shorex
-#
+###########################################################
 
 function nclShorex() {
    cd $NCL_SHOREX_PATH
    sbt -jvm-debug 9899  "run 9001 -Dconfig.file=conf/local.conf -Dscala.color=true"
 }
 
-#
+###########################################################
 # NCL Search
-#
+###########################################################
 
 function nclSearch() {
    cd $NCL_SEARCH_PATH
    sbt -jvm-debug 9799  "~run 9003"
 }
 
-#
-# CBE - Customer Booking Engine
-#
+###########################################################
+# NCL CBE - Customer Booking Engine
+###########################################################
 
 export CBE_LOG_DIR="/home/bryan/.cbe"
 
@@ -178,6 +104,9 @@ function nclCbeDebug() {
     cd $NCL_CBE_PATH
     setCbeLogDirectory
 
+#  export MAVEN_OPTS=''
+# export JAVA_OPTS='-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8070,server=y,suspend=n'
+
     cd cbe-war
     mvnDebug jetty:run \
       -s $NCL_CBE_PATH/settings.xml \
@@ -203,9 +132,9 @@ function nclCbeClear() {
    curl -X POST localhost:8080/cache
 }
 
-#
-# Drupal
-#
+###########################################################
+# NCL Drupal
+###########################################################
 
 # Check that a running container with given name does not exist.
 dockerRunningContainerExists() {
@@ -265,18 +194,18 @@ alias unPatchDrupal='cd ~/src/drupal && scripts/patch-drupal -r'
 
 
 # from Matti
-#alias runDrupal='docker run -d -t -p 8888:80 -i --name drupal -v $HOME/scripts:/tmp  -v $HOME/src/static:/var/www/static  -v $HOME/src/drupal:/var/www/html/ -v $HOME/src/NCL-Dashboard:/var/www/dashboard/ ncl/php53 /bin/bash'
+# alias runDrupal='docker run -d -t -p 8888:80 -i --name drupal -v $HOME/scripts:/tmp  -v $HOME/src/static:/var/www/static  -v $HOME/src/drupal:/var/www/html/ -v $HOME/src/NCL-Dashboard:/var/www/dashboard/ ncl/php53 /bin/bash'
 
 
-function sync-web-files() {
-   echo “Starting Syncing drupal_files”;
-   sleep 5;
-   rsync -az --progress --delete apache@192.168.200.86:/share/dr/files/ /home/bryan/src/drupal/files;
-   echo “Finished Syncing drupal_files”sleep 5;
+# function sync-web-files() {
+#    echo “Starting Syncing drupal_files”;
+#    sleep 5;
+#    rsync -az --progress --delete apache@192.168.200.86:/share/dr/files/ /home/bryan/src/drupal/files;
+#    echo “Finished Syncing drupal_files”sleep 5;
 
-   echo “rsyncing the drupal_files/sites/default/”
-   sleep 5;
-   rsync -az --progress --delete apache@192.168.200.86:/share/dr/sites/default/files/ /home/bryan/src/drupal/sites/default/files;
-   echo “finished rsyncing the drupal_files/sites/default/”
-}
+#    echo “rsyncing the drupal_files/sites/default/”
+#    sleep 5;
+#    rsync -az --progress --delete apache@192.168.200.86:/share/dr/sites/default/files/ /home/bryan/src/drupal/sites/default/files;
+#    echo “finished rsyncing the drupal_files/sites/default/”
+# }
 

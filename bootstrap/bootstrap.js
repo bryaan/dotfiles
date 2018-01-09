@@ -5,6 +5,14 @@
 // npx babel-node bootstrap.js --presets env
 
 
+// Upgrading git on RHEL 7
+// Add EPEL and IUS repos.
+// Can use script here: https://github.com/iuscommunity/automation-examples/blob/bash/enable-ius.sh
+// sudo yum install yum-plugin-replace
+// sudo yum replace git --replace-with git2u
+
+
+
 
 var fs = require('fs');
 var path = require('path');
@@ -61,6 +69,12 @@ const template = new Template('link_file #{src} #{dst}');
 
 // shell.exec(`link_file ${src} ${dst}`)
 
+
+// Add Nunjucks templating.  Mainly so we can do osx/linux matching.
+// Would need to edit scripts from dotfiles repo now.
+// When updated run a command to recompile templates.
+
+// https://mozilla.github.io/nunjucks/templating.html#if
 
 
 

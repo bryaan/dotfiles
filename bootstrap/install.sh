@@ -1,19 +1,17 @@
 #!/bin/bash
-
-# This file is from https://github.com/holman/dotfiles
+#
+# [Inspired from](https://github.com/holman/dotfiles)
 # https://github.com/holman/dotfiles/blob/master/script/bootstrap
+#
 
-# TODO Can make this, or at least a subscipt a js shell script, maybe even using koda.
-# This script should then check/install node and any other deps.
-
-
-# Sets DOTFILES_ROOT to the root of dotfiles project on machine.
-# Must be full path, no rel.
-cd "$(dirname "$0")/.." # TODO if this moves into scripts, then this becomes cd "$(dirname "$0")/.."
-DOTFILES_ROOT=$(pwd -P)
-
-# I beleive this exits if above fails.
 set -e
+
+# Note This doesn't seem to set it globally.
+# So we need to set manually somehwere.
+# Sets DOTFILES_ROOT to where the dotfiles project was cloned on machine.
+# Must expand to full path.
+cd "$(dirname "$0")/.."
+DOTFILES_ROOT=$(pwd -P)
 
 echo ''
 
@@ -124,3 +122,8 @@ install_dotfiles () {
 }
 
 install_dotfiles
+
+
+
+
+# cp $DOTFILES_ROOT/zsh/zshrc.d $HOME/.zsh/zshrc.d
