@@ -81,15 +81,17 @@ runSilent() {
 # Utility
 ####################################################
 
-## set some other defaults ##
-alias df='df -H'
-alias du='du -ch'
-
-## Colorize the ls output ##
+## Colored highlighting is awesome
 alias ls='ls --color=auto'
+#alias dir='ls --color=auto --format=vertical'
+#alias vdir='ls --color=auto --format=long'
+
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 
 ## Use a long listing format ##
-alias ll='ls -la'
+alias ll='ls -la --color=auto'
 
 ## Show hidden files ##
 alias l.='ls -d .* --color=auto'
@@ -97,11 +99,9 @@ alias l.='ls -d .* --color=auto'
 # Create parent directories if not exist.
 alias mkdir='mkdir -pv'
 
-
-## Colorize the grep command output for ease of use (good for log files)##
-alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
+## set some other defaults ##
+alias df='df -H'
+alias du='du -ch'
 
 # Open calc in math mode...?
 alias bc='bc -l'

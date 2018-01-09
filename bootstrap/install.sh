@@ -123,7 +123,6 @@ install_dotfiles () {
 
 install_dotfiles
 
-
-
-
-# cp $DOTFILES_ROOT/zsh/zshrc.d $HOME/.zsh/zshrc.d
+# Copy fish shell configs over to its expected dir.
+# TODO Only do this when FISH shell setup configured? Or when fish shell detected?
+ln -s $DOTFILES_ROOT/fish $HOME/.config/omf

@@ -4,6 +4,7 @@
 #
 
 local shellfilesdir=$DOTFILES_ROOT/shell
+# set shellfilesdir $DOTFILES_ROOT/shell
 
 source $shellfilesdir/base/aliases
 # source $shellfilesdir/base/functions
@@ -15,18 +16,11 @@ source $shellfilesdir/ncl/aliases
 # source $shellfilesdir/ncl/functions
 
 ## Setup dir_colors
-# colored highlighting is awesome
+# TODO May need different files for Mac.
 local dir_colors_path=$DOTFILES_ROOT/shell/base/dir_colors
 
-if [ "$TERM" != "dumb" ] && [ -x $dir_colors_path ]; then
+if [ "$TERM" != "dumb" ] && [ -f $dir_colors_path ]; then
   eval "$(dircolors $dir_colors_path)"
+  # Might need this on Mac:
   # eval "$(dircolors -b $dir_colors_path)"
-  echo "HERE"
-  alias ls='ls --color=auto'
-  #alias dir='ls --color=auto --format=vertical'
-  #alias vdir='ls --color=auto --format=long'
-
-  alias grep='grep --color=auto'
-  alias fgrep='fgrep --color=auto'
-  alias egrep='egrep --color=auto'
 fi
