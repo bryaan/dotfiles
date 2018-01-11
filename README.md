@@ -3,6 +3,47 @@
 Anything with an extension of .symlink will get symlinked (without .symlink extension) into $HOME when you run ./install.sh.
 
 
+# Setup
+
+
+# TODO Just clean any file in  shell/ matching *fish or *.zsh
+# fish.aliases
+# fish.functions
+# zsh.aliases
+rm $DOTFILES_ROOT/shell/index.fish
+rm $DOTFILES_ROOT/shell/index.zsh
+rm $DOTFILES_ROOT/shell/base/aliases.fish
+rm $DOTFILES_ROOT/shell/base/aliases.zsh
+rm $DOTFILES_ROOT/shell/dev/aliases.fish
+rm $DOTFILES_ROOT/shell/dev/aliases.zsh
+rm $DOTFILES_ROOT/shell/ncl/aliases.fish
+rm $DOTFILES_ROOT/shell/ncl/aliases.zsh
+
+
+```
+go get github.com/subfuzion/envtpl
+
+```
+TODO i really want my git aliases from zsh to work.
+1. Build my own customized repo by copying from there, prob a good idea.
+2. fish `bass` might work with aliases and functions.
+3. pull anything with alias out to new file, but since they can use functions this likely requires lots of work.
+
+# TODO Use that go watcher to create a dev service that runs:
+
+$DOTFILES_ROOT/bootstrap/install.sh
+reloadAllTerminals
+
+
+# TODO Make sure reload terminal script works with fish.
+
+
+# TODO Cron to periodically ask about updating, that is if fish doesnt ask
+# automatically like zsh. Ideally it should trigger a flag, and next time an interactive prompt is opned the user should be asked (try to make sure the shell isnt execing a command, but that the proc is /usr/bin/zsh or similar)
+
+omf self-update
+omf update
+
 =========================================================
 
 ## Cloning To Setup Machine

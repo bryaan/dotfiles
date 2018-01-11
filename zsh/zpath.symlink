@@ -35,6 +35,22 @@ export NVM_DIR="$HOME/.nvm"
 # # GOPATH="/home/peter/gopath:/home/peter/public/gopath"
 # export GOPATH=GOPATH_PUBLIC
 
+# TODO Check this is the correct setting.
+export ASDF_INSTALL_PATH=~/.asdf/installs
+
+# TODO
+# Best thing would be to ask asdf
+# $(asdf which golang)
+# problem is 1. for some reason it has an erronous /golang appended to it.
+# 2. not sure if a reload is done in an asdf go project dir if it will use global one or local one.
+
+# Where go binary is at.
+export GOROOT=$ASDF_INSTALL_PATH/golang/1.9.2/go
+# The GOPATH environment variable lists places to look for Go code. On Unix, the value is a colon-separated string.
+export GOPATH=$ASDF_INSTALL_PATH/golang/1.9.2/packages
+
+
+
 
 # TODO Only if GOPATH and GOROOT are defined.
 # Alert if they arent?

@@ -69,4 +69,4 @@ reloadTerminals() {
 
 export DOTFILES_ROOT=~/src/dotfiles
 
-source $DOTFILES_ROOT/shell/index
+source $DOTFILES_ROOT/shell/index.zsh
