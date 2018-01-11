@@ -1,16 +1,12 @@
 # dotfiles
 
+**Makes me feel at $HOME**
+
 Anything with an extension of .symlink will get symlinked (without .symlink extension) into $HOME when you run ./install.sh.
-
-# Cleanup
-
-```
-rm -y shell/**/*.fish shell/**/*.zsh
-```
 
 # Setup
 
-```
+```bash
 go get github.com/subfuzion/envtpl
 
 chmod +x ./bootstrap/bootstrap.sh
@@ -18,18 +14,47 @@ chmod +x ./bootstrap/bootstrap.sh
 
 # Run
 
-```
-
+```bash
 $DOTFILES_ROOT/bootstrap/bootstrap.sh
 
 from fish> omf install
 
 ```
+# Cleanup
+
+```bash
+rm -y shell/**/*.fish shell/**/*.zsh
+```
 
 
-# Keeps crashing becuase of font iterm2
+## Sublime Packages To Install Auto:
 
-# TODO Gather subl packages used at ncl
+### PackageDev
+https://github.com/SublimeText/PackageDev
+To make tools avialble under Tools → Packages → Package Development,
+
+### HighlightWords
+
+
+
+
+TODO Save Sublime Setting Files
+
+# One time save
+cp -R ~/.config/sublime-text-3/Packages/User/* $DOTFILES_ROOT/sublime/
+
+# Linking
+<!-- This is screwed bc if a new folder is added it will not be added to dotfiles. -->
+# Must first be removed so child folders will link properly.
+rm -rf $HOME/.config/sublime-text-3/Packages/User; ln -sfn $DOTFILES_ROOT/sublime/ $HOME/.config/sublime-text-3/Packages/User
+
+
+Mac
+ln -s ~/.dotfiles/sublime/User/ ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User
+
+TODO create a sublime commands file for easy goto readme and stuff
+
+
 
 # Things to add to Install Script
 
@@ -99,50 +124,6 @@ cd ~/src/dotfiles
 git pull
 ./install.sh
 
-=========================================================
-
-# TODO Common Software Install/Update Script
-- pip install howdoi
-- sublime settings.
-
-
-# Discussion / TODO
-
-bc we may need something other than direct extraction of all files, this git approach isnt going to work out best.
-
-- still want .git repo in folder other than $HOME
-
-- Project root:  src/dotfiles
-/home/bryan/.yadm/repo.git/
-
-
-- better to use YADM's approach for multiple machines of labeling filename instead of using git branches becasue:
-  - if we update a shared zshenv used on both machines, then we would have to update both git repos.
-    instead we use yadm and update a single file in single repo.  or if its machine cpecific it goes in a properly labeled file.
-
-
-- Fractal folders.  So in zsh/ git/ etc we have an aliases file and other commons and specifics.
-- All files ending in *.symlink, no matter where they are, are to be symlinked into home.
-  - Directories should also work.  For example the dir /atom.symlink will be symlinked into $HOME/.atom
-
-
-#!/usr/bin/env node console.log('hello world')
-
-
-
-
-# TODO
-
-https://github.com/so-fancy/diff-so-fancy
-- install and git config update (one liner to activate diff-so-fancy, or just add it in the general .gitconfig)
-
-- Might be better to use a visual tool.
-https://www.slant.co/topics/1324/~diff-tools-for-git
-
-
-
-in ./install.sh  in link function, add option to stash changes in git, instead of backup with orig.backup
-Also, would be nice to just let them be merged
 
 
 To merge changes:
@@ -150,8 +131,13 @@ To merge changes:
 - then run install if neccesaary to resymlink.
 
 
-Specific Env Configs:
-Detect appened env options similar to yadm
+=========================================================
+
+
+- Fractal folders.  So in zsh/ git/ etc we have an aliases file and other commons and specifics.
+- All files ending in *.symlink, no matter where they are, are to be symlinked into home.
+  - Directories should also work.  For example the dir /atom.symlink will be symlinked into $HOME/.atom
+
 
 
 
@@ -240,7 +226,7 @@ prepopulated with a bunch of stuff.  Better to leave that alone and install all 
 
 
 
-# Record a shell session 
+# Record a shell session
 
 ```
 script screen.log
@@ -248,3 +234,74 @@ script screen.log
 exit
 ```
 
+
+
+
+
+
+  Simplified usage instructions
+  =============================
+  
+  In file view:
+  
+      [ctrl]+[alt]+[d]                      - display Quick Panel with commands available for current view
+  
+  
+  In diff view:
+  
+      Windows/Linux:
+  
+      [ctrl]+[down]                         - select next change
+      [ctrl]+[up]                           - select previous change
+    * [ctrl]+[left]                         - copy selected change (or active line) to left from right
+    * [ctrl]+[right]                        - copy selected change (or active line) to right from left
+      [ctrl]+[shift]+[left]                 - copy all changes to left from right
+      [ctrl]+[shift]+[right]                - copy all changes to right from left
+  
+      OSX:
+  
+      [alt]+[down]                          - select next change
+      [alt]+[up]                            - select previous change
+    * [alt]+[left]                          - copy selected change (or active line) to left from right
+    * [alt]+[right]                         - copy selected change (or active line) to right from left
+      [alt]+[shift]+[left]                  - copy all changes to left from right
+      [alt]+[shift]+[right]                 - copy all changes to right from left
+  
+      Common:
+  
+      [f3]                                  - swap panels
+      [f4]                                  - show changes navigator
+      [f5]                                  - recompare buffers
+  
+    * - if change is selected the command will copy its whole contents, otherwise will copy only the focused line
+  
+  
+  In directories diff view:
+  
+      [down]                              - select next file/directory
+      [up]                                - select previous file/directory
+      [left]                              - copy file/directory from right to left
+      [right]                             - copy file/directory from left to right
+      [enter]                             - enter sub directory / compare text files
+      [backspace]                         - enter parent directory
+  
+  
+      Windows/Linux:
+  
+      [ctrl]+[down]                       - select next different file/directory
+      [ctrl]+[up]                         - select previous different file/directory
+  
+  
+      OS X:
+  
+      [alt]+[down]                        - select next different file/directory
+      [alt]+[up]                          - select previous different file/directory
+  
+  
+      For convenience Sublimerge also supports standard OS X keyboard shortcuts for directories navigation:
+  
+      [cmd]+[down]                        - enter sub directory / compare text files
+      [cmd]+[up]                          - enter parent directory
+  
+  
+  

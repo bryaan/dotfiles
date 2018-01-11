@@ -12,6 +12,11 @@ set -x DOTFILES_ROOT ~/src/dotfiles
 # Import shell index file that imports everything else.
 source $DOTFILES_ROOT/shell/index.fish
 
-
-# asdf
-source /usr/local/opt/asdf/asdf.fish
+### asdf
+if test -d $HOME/.asdf
+	# On linux.
+    source $HOME/.asdf/asdf.fish
+else
+	# On Mac, asdf installed by brew.
+	source /usr/local/opt/asdf/asdf.fish
+end

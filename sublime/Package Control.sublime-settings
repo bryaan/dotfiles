@@ -1,0 +1,29 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"A File Icon",
+		"Asciidoctor",
+		"FileBrowser",
+		"fish",
+		"Git Conflict Resolver",
+		"GitGutter",
+		"HighlightWords",
+		"JDebug",
+		"LineJumper",
+		"MarkdownHighlighting",
+		"Package Control",
+		"PackageDev",
+		"Sublimerge 3",
+		"Test",
+		"Theme - Afterglow",
+		"Theme - Brogrammer",
+		"Theme - Spacegray",
+		"TodoReview",
+		"TrailingSpaces",
+		"Vue Syntax Highlight"
+	]
+}

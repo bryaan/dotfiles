@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
-# TODO all compiled and otherwise, should be sent to their own
-# directory.  So that a clean command simply removes that directory.
-# TODO add that dir to .gitignore
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    CYGWIN*)    machine=Cygwin;;
+    MINGW*)     machine=MinGw;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
 
-# Note This doesn't seem to set it globally.
-# So we need to set manually somehwere.
 # Sets DOTFILES_ROOT to where the dotfiles project was cloned on machine.
 # Must expand to full path.
 cd "$(dirname "$0")/.."
@@ -15,6 +18,9 @@ export DOTFILES_ROOT=$(pwd -P)
 compile_templates () {
 
   # TODO DRY Helper function.
+
+  # TODO all compiled and otherwise, should be sent to their own directory.
+  # add that dir to .gitignore
 
   Shell="FISH" envtpl $DOTFILES_ROOT/shell/index.tpl -o $DOTFILES_ROOT/shell/index.fish
   Shell="ZSH" envtpl $DOTFILES_ROOT/shell/index.tpl -o $DOTFILES_ROOT/shell/index.zsh
@@ -30,21 +36,40 @@ compile_templates () {
 
 }
 
+# Copy fish shell configs over to its expected dir.
+# Works on mac and linux.
+link_fish_files () {
+  if [[ "$machine" == 'Linux' ]]; then
+
+    # Remove first so a recursive link doesn't get setup.
+    rm -rf $HOME/.config/omf
+    ln -sfn $DOTFILES_ROOT/fish $HOME/.config/omf
+
+  elif [[ "$machine" == 'Mac' ]]; then
+    for file in $(ls ./fish)
+    do
+      ln -sfn $DOTFILES_ROOT/fish/$file $HOME/.config/omf/$file
+    done
+  fi
+}
+
 ####################################################
 # Bootstrap
 ####################################################
 
 compile_templates
 
+echo '  [ ✔ ] templates compiled!'
+
 sh ./bootstrap/install_dotfiles.sh
 
+echo '  [ ✔ ] dotfiles linked!'
+
 # Copy fish shell configs over to its expected dir.
-# Works on mac and linux.
 if [ -d "$HOME/.config/omf" ]; then
-  for file in $(ls ./fish)
-  do
-    ln -sfn $DOTFILES_ROOT/fish/$file $HOME/.config/omf/$file
-  done
+  link_fish_files
 fi
 
-echo Bootstrap Complete!
+echo '  [ ✔ ] fish files linked!'
+
+echo '  [ ✔ ] bootstrap complete!'

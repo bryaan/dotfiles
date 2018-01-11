@@ -1,0 +1,5 @@
+{
+	"workingdir": "/home/bryan/src/cbe-java/cbe",
+	"commandline": "jdb -connect com.sun.jdi.SocketAttach:hostname=localhost,port=8000",
+
+}

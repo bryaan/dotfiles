@@ -1,0 +1,13 @@
+// These settings override both User and Default settings for the Plain text syntax
+{
+	"linters": {
+		"annotations": {
+			"errors":
+			[
+				"TODO",
+				"OMG!"
+			],
+			"warnings": "[FOO], BAR"
+		}
+	},
+}
