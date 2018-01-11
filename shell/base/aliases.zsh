@@ -12,32 +12,7 @@ alias sudo='sudo '
 # Local Utility Commands
 ####################################################
 
-{{if eq .Shell "FISH"}}
 
-# or begin
-#     set -q XTERM_VERSION
-#     and test (string replace -r "XTerm\((\d+)\)" '$1' -- $XTERM_VERSION) -ge 280
-# end
-
-# Current User ID
-set -l UID (id -u (whoami))
-
-# Commands to proxy thru sudo when not su.
-if [ UID != 0 ]
-    alias reboot='sudo reboot'
-    # TODO Only on when yum command present && linux
-    alias update='sudo yum upgrade'
-end
-
-function warn
-  echo [Warning] $1
-end
-
-function warnProgramNotInstalled
-  warn "Package '$1' Not Installed!\nAlternatively, check that it is available on your PATH.\n"
-end
-
-{{else}}
 
 # Commands to proxy thru sudo when not su.
 if [ $UID -ne 0 ]; then
@@ -71,7 +46,9 @@ alias yum='yum --color=always'
 # ccze is much slower than colorize and hasnt been updated.
 # tail -f /var/my/log | color
 alias color='colorize'
-{{end}}
+
+
+
 
 
 ####################################################
@@ -96,12 +73,9 @@ alias bi="brew install"
 alias bs="brew search"
 
 
-{{if eq .Shell "ZSH"}}
 
-{{else if eq .Shell "FISH"}}
-	alias reload="source ~/.config/omf/init.fish"
-	# alias reload="exec $DOTFILESROOT/bootstrap/install.sh"
-{{end}}
+
+
 
 # TODO Copy prev commands.
 # This copies the *args* from the previously run command.
@@ -139,7 +113,7 @@ alias diff='colordiff'
 # Cryptographic Hashes
 alias sha1='openssl sha1'
 
-{{if eq .Shell "ZSH"}}
+
 
 commandExists() {
   command -v $1 >/dev/null
@@ -149,17 +123,7 @@ runSilent() {
   nohup "$@" &>/dev/null 2>&1 &
 }
 
-{{else if eq .Shell "FISH"}}
 
-function commandExists
-  command -v $1 >/dev/null
-end
-
-function runSilent
-  sh -c 'nohup "$@" &>/dev/null 2>&1 &'
-end
-
-{{end}}
 
 alias ls="ls --group-directories-first --dereference-command-line-symlink-to-dir --color=auto"
 alias ll="ls --dereference-command-line-symlink-to-dir -lh"
@@ -256,15 +220,7 @@ alias mv='mv -i'
 alias cp='cp -i'
 alias ln='ln -i'
 
-{{if .IsLinux}}
-# do not delete / or prompt if deleting more than 3 files at a time #
-alias rm='rm -I --preserve-root'
 
-# Parenting changing perms on / #
-alias chown='chown --preserve-root'
-alias chmod='chmod --preserve-root'
-alias chgrp='chgrp --preserve-root'
-{{end}}
 
 ####################################################
 # For Debain

@@ -1,17 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # [Inspired from](https://github.com/holman/dotfiles)
 # https://github.com/holman/dotfiles/blob/master/script/bootstrap
 #
 
 set -e
-
-# Note This doesn't seem to set it globally.
-# So we need to set manually somehwere.
-# Sets DOTFILES_ROOT to where the dotfiles project was cloned on machine.
-# Must expand to full path.
-cd "$(dirname "$0")/.."
-DOTFILES_ROOT=$(pwd -P)
 
 echo ''
 
@@ -121,43 +114,4 @@ install_dotfiles () {
   done
 }
 
-
-# TODO all compiled and otherwise, should be sent to their own
-# directory.  So that a clean command simply removes that directory.
-# TODO add that dir to .gitignore
-
-# Want to use both zsh and fish, or at minimum have setup ready.
-compile_templates () {
-
-  # TODO DRY Helper function.
-
-  Shell="FISH" envtpl $DOTFILES_ROOT/shell/index.tpl -o $DOTFILES_ROOT/shell/index.fish
-  Shell="ZSH" envtpl $DOTFILES_ROOT/shell/index.tpl -o $DOTFILES_ROOT/shell/index.zsh
-
-  Shell="FISH" envtpl $DOTFILES_ROOT/shell/base/aliases.tpl -o $DOTFILES_ROOT/shell/base/aliases.fish
-  Shell="ZSH" envtpl $DOTFILES_ROOT/shell/base/aliases.tpl -o $DOTFILES_ROOT/shell/base/aliases.zsh
-
-  Shell="FISH" envtpl $DOTFILES_ROOT/shell/dev/aliases.tpl -o $DOTFILES_ROOT/shell/dev/aliases.fish
-  Shell="ZSH" envtpl $DOTFILES_ROOT/shell/dev/aliases.tpl -o $DOTFILES_ROOT/shell/dev/aliases.zsh
-
-  Shell="FISH" envtpl $DOTFILES_ROOT/shell/ncl/aliases.tpl -o $DOTFILES_ROOT/shell/ncl/aliases.fish
-  Shell="ZSH" envtpl $DOTFILES_ROOT/shell/ncl/aliases.tpl -o $DOTFILES_ROOT/shell/ncl/aliases.zsh
-
-}
-
-####################################################
-# Utility Commands
-####################################################
-
-compile_templates
-
 install_dotfiles
-
-# Copy fish shell configs over to its expected dir.
-# TODO Only do this when FISH shell setup configured? Or when fish shell detected?
-ln -sfn $DOTFILES_ROOT/fish $HOME/.config/omf
-
-
-# # ### Wrapup ###
-source ~/.zshenv
-# reload &

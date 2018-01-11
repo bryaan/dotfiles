@@ -1,4 +1,14 @@
 
+
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    CYGWIN*)    machine=Cygwin;;
+    MINGW*)     machine=MinGw;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
+
 # TODO Clear the PATH - PROBLEM When a program is installed and adds itself, we wont know until we get errors and debug.
 # So we should have something monitoring the PATH var for changes, then add those changes to some tmp file.  Maybe trigger an inotify message...
 # PATH=""
@@ -121,3 +131,36 @@ export PATH=$PATH:/sbin
 
 # # Qt
 # export PATH=$PATH:/usr/lib64/qt-3.3/bin
+
+################################################
+# Mac
+################################################
+
+if [[ "$machine" == 'Mac' ]]; then
+
+export PATH=''
+
+export PATH=$PATH:/Users/bryan/bin
+export PATH=$PATH:/usr/local/bin
+export PATH=$PATH:/usr/bin:/bin
+export PATH=$PATH:/usr/sbin:/sbin
+export PATH=$PATH:/Users/bryan/.cargo/bin
+export PATH=$PATH:/Users/bryan/golang
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
+export PATH=$PATH:/Users/bryan/golang/bin
+export PATH=$PATH:/usr/local/opt/fzf/bin
+
+# Golang installed with homebrew required env vars.
+# brew install go --cross-compile-common
+#
+# Set following env variables in ~/.bashrc or ~/.zshrc
+export GOPATH=$HOME/golang
+export GOROOT=/usr/local/opt/go/libexec
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOPATH
+export PATH=$PATH:$GOROOT/bin
+export PATH=$PATH:$GOBIN # So that 'gin' can run.
+
+fi
+
+

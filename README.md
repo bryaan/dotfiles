@@ -2,28 +2,71 @@
 
 Anything with an extension of .symlink will get symlinked (without .symlink extension) into $HOME when you run ./install.sh.
 
+# Cleanup
+
+```
+rm -y shell/**/*.fish shell/**/*.zsh
+```
 
 # Setup
-
-
-# TODO Just clean any file in  shell/ matching *fish or *.zsh
-# fish.aliases
-# fish.functions
-# zsh.aliases
-rm $DOTFILES_ROOT/shell/index.fish
-rm $DOTFILES_ROOT/shell/index.zsh
-rm $DOTFILES_ROOT/shell/base/aliases.fish
-rm $DOTFILES_ROOT/shell/base/aliases.zsh
-rm $DOTFILES_ROOT/shell/dev/aliases.fish
-rm $DOTFILES_ROOT/shell/dev/aliases.zsh
-rm $DOTFILES_ROOT/shell/ncl/aliases.fish
-rm $DOTFILES_ROOT/shell/ncl/aliases.zsh
-
 
 ```
 go get github.com/subfuzion/envtpl
 
+chmod +x ./bootstrap/bootstrap.sh
 ```
+
+# Run
+
+```
+
+$DOTFILES_ROOT/bootstrap/bootstrap.sh
+
+from fish> omf install
+
+```
+
+
+# Keeps crashing becuase of font iterm2
+
+# TODO Gather subl packages used at ncl
+
+# Things to add to Install Script
+
+Both:
+fish zsh
+asdf
+- Recommnded Pkgs: 
+  brew install coreutils automake autoconf openssl libyaml readline libxslt libtool unixodbc
+  brew install asdf
+
+diff-so-fancy
+- brew install diff-so-fancy
+
+nerdline fonts (for fish)
+[Avaiable Fonts & Glyphs](https://nerdfonts.com/) (Scroll to bottom)
+- brew tap caskroom/fonts
+  brew cask install font-hack-nerd-font 
+  # Doesnt work: font-hasklig-nerd-font
+
+Mac:
+iterm2
+
+
+Linux:
+
+
+
+For Krypton: 
+
+https://caskroom.github.io/search
+brew cask install virtualbox google-chrome firefox puppet-agent
+> Figure out what each one of these does
+> I think we just need teamviewer-host
+teamviewer teamviewer-host teamviewer-quickjoin quicksupport supportcollector
+
+
+
 TODO i really want my git aliases from zsh to work.
 1. Build my own customized repo by copying from there, prob a good idea.
 2. fish `bass` might work with aliases and functions.
@@ -31,12 +74,10 @@ TODO i really want my git aliases from zsh to work.
 
 # TODO Use that go watcher to create a dev service that runs:
 
-$DOTFILES_ROOT/bootstrap/install.sh
+$DOTFILES_ROOT/bootstrap/bootstrap.sh
 reloadAllTerminals
 
-
 # TODO Make sure reload terminal script works with fish.
-
 
 # TODO Cron to periodically ask about updating, that is if fish doesnt ask
 # automatically like zsh. Ideally it should trigger a flag, and next time an interactive prompt is opned the user should be asked (try to make sure the shell isnt execing a command, but that the proc is /usr/bin/zsh or similar)
@@ -192,3 +233,18 @@ prepopulated with a bunch of stuff.  Better to leave that alone and install all 
 /usr/src/
 
 - Never use.  This is for kernel stuff.
+
+
+
+
+
+
+
+# Record a shell session 
+
+```
+script screen.log
+...
+exit
+```
+
