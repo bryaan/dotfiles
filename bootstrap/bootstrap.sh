@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     machine=Linux;;
@@ -22,12 +24,28 @@ compile_templates () {
   # TODO all compiled and otherwise, should be sent to their own directory.
   # add that dir to .gitignore
 
-  if [[ $(hostname) == *".nclmiami.ncl.com"* ]]; then
-      IsWork=true
+  local IsMac=false
+  local IsLinux=false
+  local IsWork=false
+
+  if [[ $(hostname) == *"nclmiami.ncl.com"* ]]; then
+    IsWork=true
   fi
 
-  Shell="FISH" envtpl $DOTFILES_ROOT/shell/index.tpl -o $DOTFILES_ROOT/shell/index.fish
-  Shell="ZSH" envtpl $DOTFILES_ROOT/shell/index.tpl -o $DOTFILES_ROOT/shell/index.zsh
+  if [[ "$machine" == 'Linux' ]]; then
+    IsLinux=true
+  elif [[ "$machine" == 'Mac' ]]; then
+    IsMac=true
+  fi
+
+  envvars="IsWork=\"$IsWork\" IsLinux=\"$IsLinux\" IsMac=\"$IsMac\""
+
+  echo "  Template Vars:"
+  echo "  $envvars"
+  echo ""
+
+  IsWork=$IsWork IsLinux=$IsLinux IsMac=$IsMac Shell="FISH" envtpl $DOTFILES_ROOT/shell/index.tpl -o $DOTFILES_ROOT/shell/index.fish
+  IsWork=$IsWork IsLinux=$IsLinux IsMac=$IsMac Shell="ZSH" envtpl $DOTFILES_ROOT/shell/index.tpl -o $DOTFILES_ROOT/shell/index.zsh
 
   Shell="FISH" envtpl $DOTFILES_ROOT/shell/base/aliases.tpl -o $DOTFILES_ROOT/shell/base/aliases.fish
   Shell="ZSH" envtpl $DOTFILES_ROOT/shell/base/aliases.tpl -o $DOTFILES_ROOT/shell/base/aliases.zsh

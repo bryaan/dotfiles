@@ -15,11 +15,12 @@
 # Also need to combine with .zpath file.
 
 
-{{if eq .Shell "FISH"}}
 
 ####################################################
 # FISH
 ####################################################
+
+{{if eq .Shell "FISH"}}
 
 # Dunno why it wasnt set on my mac, same path on linux.
 # Actually that was checked under zsh, maybe thats why.
@@ -64,11 +65,13 @@ set -g theme_title_display_process no
 set -g theme_newline_cursor no
 
 
-{{else}}
+{{end}}
 
 ####################################################
 # ZSH
 ####################################################
+
+{{if eq .Shell "ZSH"}}
 
 # Works on Mac and Linux
 function command_exists {

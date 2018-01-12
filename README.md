@@ -39,11 +39,8 @@ gulp
 ```bash
 rm -y shell/**/*.fish shell/**/*.zsh
 ```
-TODO Stop templates from triggering by compiling to build/ dir.
-npx nodemon --exec "bootstrap/bootstrap.sh"
 
-# TODO APFS new filesys
-
+-----------------------------------
 
 TODO Save Sublime Setting Files
 
@@ -51,13 +48,40 @@ TODO Save Sublime Setting Files
 cp -R ~/.config/sublime-text-3/Packages/User/* $DOTFILES_ROOT/sublime/
 
 # Linking
-<!-- This is screwed bc if a new folder is added it will not be added to dotfiles. -->
-# Must first be removed so child folders will link properly.
+
+> Must first be removed so child folders will link properly.
+
+```bash
+
 rm -rf $HOME/.config/sublime-text-3/Packages/User; ln -sfn $DOTFILES_ROOT/sublime/ $HOME/.config/sublime-text-3/Packages/User
 
 
-Mac
-ln -s ~/.dotfiles/sublime/User/ ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User
+
+set DOTFILES_ROOT $HOME/src/dotfiles
+set -l subldirbase /Users/bryan/Library/Application\ Support/Sublime\ Text\ 3/Packages/
+
+rm -rf $subldirbase; mkdir $subldirbase; ln -s $DOTFILES_ROOT/sublime $subldirbase; mv $subldirbase/sublime $subldirbase/User
+
+May need to run:
+Package Control: Upgrade/Overide All Packages
+to reinstall packages.
+
+```
+
+
+TODO That doc book generator for dotfiles and mac setup.  gitbook.
+http://sourabhbajaj.com/mac-setup/iTerm/zsh.html
+also krypton support ref?
+
+TODO Stop templates from triggering by compiling to build/ dir.
+npx nodemon --exec "bootstrap/bootstrap.sh"
+
+TODO APFS new filesys
+
+
+TODO Sublime PAckages
+"Rainglow"
+
 
 
 # TODO Vinyl
@@ -68,8 +92,12 @@ then project is copied somewhere, then when at location, it downloads what is re
 
 also research this vs git-lfs, pretty sure this is way more flexible, indeed
 we should be able to write a git-lfs backend for vinyl.
+                                        
 
+brew cask install virtualbox
+brew cask install virtualbox-extension-pack
 
+brew install nvim ag
 
 ## Sublime Packages To Install Auto:
 
@@ -251,73 +279,48 @@ exit
 ```
 
 
+----------------------------------
 
 
+Quick Look plugins
+These plugins adds support for the corresponding file type to Mac Quick Look (In Finder, mark a file and press Space to start Quick Look). The plugins includes features like syntax highlighting, markdown rendering, preview of JSON, patch files, csv, zip files and more.
 
+$ brew cask install \
+    qlcolorcode \
+    qlstephen \
+    qlmarkdown \
+    quicklook-json \
+    qlprettypatch \
+    quicklook-csv \
+    betterzipql \
+    webpquicklook \
+    suspicious-package
+App Suggestions
+Here are some useful apps that are available on Cask.
 
-  Simplified usage instructions
-  =============================
-  
-  In file view:
-  
-      [ctrl]+[alt]+[d]                      - display Quick Panel with commands available for current view
-  
-  
-  In diff view:
-  
-      Windows/Linux:
-  
-      [ctrl]+[down]                         - select next change
-      [ctrl]+[up]                           - select previous change
-    * [ctrl]+[left]                         - copy selected change (or active line) to left from right
-    * [ctrl]+[right]                        - copy selected change (or active line) to right from left
-      [ctrl]+[shift]+[left]                 - copy all changes to left from right
-      [ctrl]+[shift]+[right]                - copy all changes to right from left
-  
-      OSX:
-  
-      [alt]+[down]                          - select next change
-      [alt]+[up]                            - select previous change
-    * [alt]+[left]                          - copy selected change (or active line) to left from right
-    * [alt]+[right]                         - copy selected change (or active line) to right from left
-      [alt]+[shift]+[left]                  - copy all changes to left from right
-      [alt]+[shift]+[right]                 - copy all changes to right from left
-  
-      Common:
-  
-      [f3]                                  - swap panels
-      [f4]                                  - show changes navigator
-      [f5]                                  - recompare buffers
-  
-    * - if change is selected the command will copy its whole contents, otherwise will copy only the focused line
-  
-  
-  In directories diff view:
-  
-      [down]                              - select next file/directory
-      [up]                                - select previous file/directory
-      [left]                              - copy file/directory from right to left
-      [right]                             - copy file/directory from left to right
-      [enter]                             - enter sub directory / compare text files
-      [backspace]                         - enter parent directory
-  
-  
-      Windows/Linux:
-  
-      [ctrl]+[down]                       - select next different file/directory
-      [ctrl]+[up]                         - select previous different file/directory
-  
-  
-      OS X:
-  
-      [alt]+[down]                        - select next different file/directory
-      [alt]+[up]                          - select previous different file/directory
-  
-  
-      For convenience Sublimerge also supports standard OS X keyboard shortcuts for directories navigation:
-  
-      [cmd]+[down]                        - enter sub directory / compare text files
-      [cmd]+[up]                          - enter parent directory
-  
+$ brew cask install \
+    alfred \
+    android-file-transfer \
+    asepsis \
+    appcleaner \
+    caffeine \
+    cheatsheet \
+    docker \
+    doubletwist \
+    dropbox \
+    google-chrome \
+    google-drive \
+    google-hangouts \
+    flux \
+    latexian \
+    1password \
+    pdftk \
+    spectacle \
+    sublime-text \
+    superduper \
+    totalfinder \
+    transmission \
+    valentina-studio \
+    vlc
   
   
