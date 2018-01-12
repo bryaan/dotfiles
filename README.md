@@ -33,40 +33,83 @@ $DOTFILES_ROOT/bootstrap/bootstrap.sh
 gulp
 ```
 
-
 # Cleanup
 
 ```bash
 rm -y shell/**/*.fish shell/**/*.zsh
 ```
 
------------------------------------
+# Linking Sublime Settings
+TODO Move this section to bootstrap script.
 
-TODO Save Sublime Setting Files
-
-# One time save
-cp -R ~/.config/sublime-text-3/Packages/User/* $DOTFILES_ROOT/sublime/
-
-# Linking
+May need to run" Package Control: Upgrade/Overide All Packages"
+to install packages when complete.
 
 > Must first be removed so child folders will link properly.
 
+Must be setup in such a way that when sublime adds/removes packages or settings, those changes will appear in our dotifles repo. This can only work when the parent directory is symlinked, do not symlink all files in folder as that would not satisfy the latter.
+
+## For Linux
 ```bash
-
 rm -rf $HOME/.config/sublime-text-3/Packages/User; ln -sfn $DOTFILES_ROOT/sublime/ $HOME/.config/sublime-text-3/Packages/User
+```
 
-
-
+## For Mac
+```bash
 set DOTFILES_ROOT $HOME/src/dotfiles
 set -l subldirbase /Users/bryan/Library/Application\ Support/Sublime\ Text\ 3/Packages/
 
 rm -rf $subldirbase; mkdir $subldirbase; ln -s $DOTFILES_ROOT/sublime $subldirbase; mv $subldirbase/sublime $subldirbase/User
-
-May need to run:
-Package Control: Upgrade/Overide All Packages
-to reinstall packages.
-
 ```
+
+------------------------------------------------
+
+nix-env -i gcc-wrapper-7.2.0
+
+
+
+No longer needed with nix pkgman.
+<!-- On Linux
+- install linuxbrew
+  - from git bc i had problems with installer.
+  ```
+git clone https://github.com/Linuxbrew/brew.git ~/.linuxbrew
+
+PATH="$HOME/.linuxbrew/bin:$PATH"
+export MANPATH="$(brew --prefix)/share/man:$MANPATH"
+export INFOPATH="$(brew --prefix)/share/info:$INFOPATH"
+  ```
+- brew install gcc@6
+
+
+## Install mpfr manually as linuxbrew fails
+curl https://ftp.gnu.org/gnu/mpfr/mpfr-4.0.0.tar.gz -o /tmp/mpfr
+./configure --prefix=/tmp/mpfr
+make
+sudo make install
+
+brew_mpfr_dir=$(brew --cellar)/mpfr/4.0.0/
+mkdir -p "$brew_mpfr_dir"
+cp -rf /tmp/mpfr/* "$brew_mpfr_dir"
+brew unlink mpfr; brew link mpfr
+
+## Install gcc
+brew install gcc@5
+ -->
+
+
+
+# TODO ON MAC
+brew install
+kak (kakoune)
+
+
+
+
+
+
+TODO pip install watchdog
+Should switch task runner from gulp to python to reduce need for setup. And node_modules dir.
 
 
 TODO That doc book generator for dotfiles and mac setup.  gitbook.
@@ -79,8 +122,12 @@ npx nodemon --exec "bootstrap/bootstrap.sh"
 TODO APFS new filesys
 
 
+TODO pip install glances
+
 TODO Sublime PAckages
 "Rainglow"
+
+https://github.com/aio-libs/aiomonitor
 
 
 
@@ -138,13 +185,19 @@ Linux:
 
 
 
-For Krypton: 
+For Krypton:
 
 https://caskroom.github.io/search
-brew cask install virtualbox google-chrome firefox puppet-agent
+brew cask install \
+	virtualbox \
+	google-chrome \
+	firefox \
+	puppet-agent \ # Actually this should be regualr brew since no gui.
 > Figure out what each one of these does
 > I think we just need teamviewer-host
 teamviewer teamviewer-host teamviewer-quickjoin quicksupport supportcollector
+
+
 
 
 
@@ -279,6 +332,23 @@ exit
 ```
 
 
+
+
+what if public nodes search for DAG patterns in brain?
+should be a way to obfuscate, especially since we can replace all words with hashes
+they dont know the meaning of.  (is there a possibility to setup an obfuscation chain, where one node creates its own hash function pplies then passes result to next node who does same, then it gets untangled on way back.)
+
+
+http://www.cs.ox.ac.uk/jeremy.gibbons/publications/embedding.pdf
+
+
+There are two major degrees of embedding:
+
+Shallow embedding: All Haskell operations immediately translate to the target language. E.g. the Haskell expression a+b is translated to a String like "a + b" containing that target language expression.
+Deep embedding: Haskell operations only build an interim Haskell data structure that reflects the expression tree. E.g. the Haskell expression a+b is translated to the Haskell data structure Add (Var "a") (Var "b"). This structure allows transformations like optimizations before translating to the target language.
+
+
+
 ----------------------------------
 
 
@@ -324,3 +394,10 @@ $ brew cask install \
     vlc
   
   
+
+https://console.bluemix.net/docs/services/alchemy-language/customizing.html#overview
+
+https://console.bluemix.net/docs/services/alchemy-language/migration.html#index
+
+https://console.bluemix.net/docs/services/alchemy-language/visual-constraints.html#visualConstraints
+

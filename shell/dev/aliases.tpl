@@ -60,6 +60,9 @@ git config --global merge.tool 'sublimerge'
 git config --global difftool.sublimerge.cmd 'subl -n --wait "$REMOTE" "$LOCAL" --command "sublimerge_diff_views {\"left_read_only\": true, \"right_read_only\": true}'
 git config --global mergetool.sublimerge.cmd 'subl -n --wait "$REMOTE" "$BASE" "$LOCAL" "$MERGED" --command "sublimerge_diff_views"'
 
+# Use 3 way merge
+git config --global merge.conflictstyle diff3
+
 
 # TODO Move to git.fish 
 # Deletes local snapshot copies of remote branches. refs/remotes/...

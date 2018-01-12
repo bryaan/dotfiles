@@ -63,7 +63,8 @@ alias nowdate='date +"%d-%m-%Y"'
 alias bi="brew install"
 alias bs="brew search"
 
-# the zsh seems to be neccessary on mac.
+# the zsh seems to be neccessary on mac, so it works in fish shell.
+# TODO oh this is bc i havent set up my fish PATH yet.
 alias reload_dotfiles="zsh -e $DOTFILES_ROOT/bootstrap/bootstrap.sh; reload"
 
 
