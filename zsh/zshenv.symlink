@@ -16,6 +16,11 @@ if [[ $SHLVL == 1 && ! -o LOGIN ]]; then
     [[ -f ~/.zpath ]] && echo "Sourced ~/.zpath..."
 fi
 
+# Above isnt working, bc terminator + start as login shell.
+# [[ -o LOGIN ]] && echo 'WOW'
+[[ -f ~/.zpath ]] && source ~/.zpath
+
+
 
 export EDITOR='subl'
 export VISUAL=subl

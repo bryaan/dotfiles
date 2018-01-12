@@ -48,7 +48,8 @@ export NVM_DIR="$HOME/.nvm"
 # TODO Check this is the correct setting.
 export ASDF_INSTALL_PATH=~/.asdf/installs
 
-# TODO
+# TODO Really important we ask asdf, bc version is changed thru asdf.
+# Would be a pain to also change here.
 # Best thing would be to ask asdf
 # $(asdf which golang)
 # problem is 1. for some reason it has an erronous /golang appended to it.

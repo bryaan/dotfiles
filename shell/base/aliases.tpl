@@ -96,11 +96,13 @@ alias bi="brew install"
 alias bs="brew search"
 
 
-{{if eq .Shell "ZSH"}}
+alias reload_dotfiles="zsh -e $DOTFILES_ROOT/bootstrap/bootstrap.sh; reload"
 
+{{if eq .Shell "ZSH"}}
+  alias reload='source ~/.zshenv && source ~/.zshrc'
+  alias reloadPath='source ~/.zpath'
 {{else if eq .Shell "FISH"}}
-	alias reload="source ~/.config/omf/init.fish"
-	# alias reload="exec $DOTFILESROOT/bootstrap/install.sh"
+  alias reload="source ~/.config/omf/init.fish"
 {{end}}
 
 # TODO Copy prev commands.

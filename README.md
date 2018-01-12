@@ -4,38 +4,45 @@
 
 Anything with an extension of .symlink will get symlinked (without .symlink extension) into $HOME when you run ./install.sh.
 
+
 # Setup
 
 ```bash
 go get github.com/subfuzion/envtpl
 
+npm install --global gulp
+cd $DOTFILES; npm link gulp
+
 chmod +x ./bootstrap/bootstrap.sh
+
+npm install
 ```
+
+## Cloning To Setup Machine
+todo
+
+## Updating Machines
+todo
+
 
 # Run
 
 ```bash
 $DOTFILES_ROOT/bootstrap/bootstrap.sh
 
-from fish> omf install
-
+gulp
 ```
+
+
 # Cleanup
 
 ```bash
 rm -y shell/**/*.fish shell/**/*.zsh
 ```
+TODO Stop templates from triggering by compiling to build/ dir.
+npx nodemon --exec "bootstrap/bootstrap.sh"
 
-
-## Sublime Packages To Install Auto:
-
-### PackageDev
-https://github.com/SublimeText/PackageDev
-To make tools avialble under Tools → Packages → Package Development,
-
-### HighlightWords
-
-
+# TODO APFS new filesys
 
 
 TODO Save Sublime Setting Files
@@ -52,7 +59,28 @@ rm -rf $HOME/.config/sublime-text-3/Packages/User; ln -sfn $DOTFILES_ROOT/sublim
 Mac
 ln -s ~/.dotfiles/sublime/User/ ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User
 
-TODO create a sublime commands file for easy goto readme and stuff
+
+# TODO Vinyl
+https://github.com/gulpjs/vinyl-fs
+can use this with tibra data. so large data files can reside off git
+then project is copied somewhere, then when at location, it downloads what is required.
+- added benifit we keep skelaton files in repo so we know.
+
+also research this vs git-lfs, pretty sure this is way more flexible, indeed
+we should be able to write a git-lfs backend for vinyl.
+
+
+
+## Sublime Packages To Install Auto:
+
+### PackageDev
+https://github.com/SublimeText/PackageDev
+To make tools avialble under Tools → Packages → Package Development,
+
+### HighlightWords
+
+### sublimerge
+- and also the binary download
 
 
 
@@ -92,6 +120,7 @@ teamviewer teamviewer-host teamviewer-quickjoin quicksupport supportcollector
 
 
 
+
 TODO i really want my git aliases from zsh to work.
 1. Build my own customized repo by copying from there, prob a good idea.
 2. fish `bass` might work with aliases and functions.
@@ -102,6 +131,8 @@ TODO i really want my git aliases from zsh to work.
 $DOTFILES_ROOT/bootstrap/bootstrap.sh
 reloadAllTerminals
 
+TODO create a sublime commands file for easy goto readme and stuff
+
 # TODO Make sure reload terminal script works with fish.
 
 # TODO Cron to periodically ask about updating, that is if fish doesnt ask
@@ -110,25 +141,10 @@ reloadAllTerminals
 omf self-update
 omf update
 
+# TODO also add this to initial pc setup bootstrap. Or better, detect if should run install bc there were no files in there to begin with, or if they changed.
+
 =========================================================
 
-## Cloning To Setup Machine
-
-cd ~/src
-git clone https://github.com/bryaan/dotfiles.git
-./install.sh
-
-## Updating Machine
-
-cd ~/src/dotfiles
-git pull
-./install.sh
-
-
-
-To merge changes:
-- first pull from remote, if breaking changes now will have to merge
-- then run install if neccesaary to resymlink.
 
 
 =========================================================

@@ -22,6 +22,10 @@ compile_templates () {
   # TODO all compiled and otherwise, should be sent to their own directory.
   # add that dir to .gitignore
 
+  if [[ $(hostname) == *".nclmiami.ncl.com"* ]]; then
+      IsWork=true
+  fi
+
   Shell="FISH" envtpl $DOTFILES_ROOT/shell/index.tpl -o $DOTFILES_ROOT/shell/index.fish
   Shell="ZSH" envtpl $DOTFILES_ROOT/shell/index.tpl -o $DOTFILES_ROOT/shell/index.zsh
 
@@ -61,15 +65,15 @@ compile_templates
 
 echo '  [ ✔ ] templates compiled!'
 
-sh ./bootstrap/install_dotfiles.sh
+sh bootstrap/install_dotfiles.sh
 
-echo '  [ ✔ ] dotfiles linked!'
+echo '  [ ✔ ] dotfiles installed!'
 
 # Copy fish shell configs over to its expected dir.
 if [ -d "$HOME/.config/omf" ]; then
   link_fish_files
 fi
 
-echo '  [ ✔ ] fish files linked!'
+echo '  [ ✔ ] fish files installed!'
 
 echo '  [ ✔ ] bootstrap complete!'
