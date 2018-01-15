@@ -144,7 +144,11 @@ if [[ "$machine" == 'Mac' ]]; then
 
 export PATH=''
 
-append_path $HOME/bin
+# User's private paths
+append_path "$HOME/bin" # TODO Remove, transfer to .local/bin
+# Remove bc .local is supposed to be a directory copy of /usr/local
+# so we can put tings liek etc and logs and not need to modify programs to use dots, just change root path.
+append_path "$HOME/.local/bin"
 
 # Rust's cargo installed binaries.
 append_path $HOME/.cargo/bin
