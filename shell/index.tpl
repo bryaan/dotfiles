@@ -26,17 +26,43 @@
 # Actually that was checked under zsh, maybe thats why.
 set -x OMF_PATH $HOME/.local/share/omf
 
-set -l shellfilesdir $DOTFILES_ROOT/shell
-# set -l _SHELLFILESDIR $DOTFILES_ROOT/shell
 
-source $shellfilesdir/base/aliases.fish
-# source $shellfilesdir/base/functions.fish
+# Load PATH
+# TODO Rename to more generic file. 
+# Possibly move into ./shell
+# single files named by program and combined with their env vars and functions.
+# > Using bash -c *does not* bring over aliases. (dont use them in zpath)
+bash -c "source $HOME/.zpath"
+# [[ -f ~/.zpath ]] && source ~/.zpath
 
-# source $shellfilesdir/dev/aliases.fish
-# source $shellfilesdir/dev/functions.fish
 
-# source $shellfilesdir/ncl/aliases.fish
-# source $shellfilesdir/ncl/functions.fish
+set -l shellfilesdir $DOTFILES_ROOT/build/shell
+
+# TODO Work on and uncomment files below
+source $shellfilesdir/base.fish
+source $shellfilesdir/git.fish
+# source $shellfilesdir/dev.fish
+# source $shellfilesdir/ncl.fish
+
+# Using bash -c *does not* bring over aliases.
+# TODO does `bass` ?
+# bash -c "source $shellfilesdir/git.fish"
+
+
+### asdf
+if test -d $HOME/.asdf
+	# On linux.
+    source $HOME/.asdf/asdf.fish
+    if not test -d ~/.config/fish/completions
+    	mkdir -p ~/.config/fish/completions
+    	# TODO should check if file exists first.
+    	cp ~/.asdf/completions/asdf.fish ~/.config/fish/completions
+    end
+else
+	# On Mac, asdf installed by brew.
+	source /usr/local/opt/asdf/asdf.fish
+end
+
 
 
 ####################################################
@@ -80,34 +106,19 @@ function command_exists {
   type "$1" &> /dev/null
 }
 
+
+# Load PATH
+[[ -f ~/.zpath ]] && source ~/.zpath
+
 # Purpose of wrapping it is so the local vars stay local.
 namespaced_load() {
 
-	local shellfilesdir=$DOTFILES_ROOT/shell
+	local shellfilesdir=$DOTFILES_ROOT/build/shell
 
-	source $shellfilesdir/base/aliases.zsh
-	# source $shellfilesdir/base/functions.zsh
-
-	source $shellfilesdir/dev/aliases.zsh
-	# source $shellfilesdir/dev/functions.zsh
-
-	source $shellfilesdir/ncl/aliases.zsh
-	# source $shellfilesdir/ncl/functions.zsh
-
-
-	## Setup dir_colors
-	# TODO May need different files for Mac.
-	local dir_colors_path=$DOTFILES_ROOT/shell/base/dir_colors
-
-	# if [ command_exists dircolors ] && [ "$TERM" != "dumb" ] && [ -f $dir_colors_path ]; then
-	#   eval "$(dircolors $dir_colors_path)"
-	#   # Might need this on Mac:
-	#   # eval "$(dircolors -b $dir_colors_path)"
-	# fi
-
-	# if [ command_exists gdircolors ]; then
-	#   eval $(gdircolors ~/.dircolors/dircolors.256dark)
-	# fi
+	source $shellfilesdir/base.zsh
+	source $shellfilesdir/git.fish
+	source $shellfilesdir/dev.zsh
+	source $shellfilesdir/ncl.zsh
 }
 
 namespaced_load

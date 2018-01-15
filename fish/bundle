@@ -1,6 +1,7 @@
 package balias
 package brew
 package gityaw
+package pbcopy
 package pisces
 theme bobthefish
 theme default

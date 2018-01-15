@@ -44,17 +44,25 @@ compile_templates () {
   echo "  $envvars"
   echo ""
 
-  IsWork=$IsWork IsLinux=$IsLinux IsMac=$IsMac Shell="FISH" envtpl $DOTFILES_ROOT/shell/index.tpl -o $DOTFILES_ROOT/shell/index.fish
-  IsWork=$IsWork IsLinux=$IsLinux IsMac=$IsMac Shell="ZSH" envtpl $DOTFILES_ROOT/shell/index.tpl -o $DOTFILES_ROOT/shell/index.zsh
+  local buildroot="$DOTFILES_ROOT/build/shell"
+  local shellfileroot="$DOTFILES_ROOT/shell"
 
-  Shell="FISH" envtpl $DOTFILES_ROOT/shell/base/aliases.tpl -o $DOTFILES_ROOT/shell/base/aliases.fish
-  Shell="ZSH" envtpl $DOTFILES_ROOT/shell/base/aliases.tpl -o $DOTFILES_ROOT/shell/base/aliases.zsh
+  rm -rf $buildroot; mkdir -p $buildroot
 
-  Shell="FISH" envtpl $DOTFILES_ROOT/shell/dev/aliases.tpl -o $DOTFILES_ROOT/shell/dev/aliases.fish
-  Shell="ZSH" envtpl $DOTFILES_ROOT/shell/dev/aliases.tpl -o $DOTFILES_ROOT/shell/dev/aliases.zsh
+  IsWork=$IsWork IsLinux=$IsLinux IsMac=$IsMac Shell="FISH" envtpl $shellfileroot/index.tpl -o $buildroot/index.fish
+  IsWork=$IsWork IsLinux=$IsLinux IsMac=$IsMac Shell="ZSH" envtpl $shellfileroot/index.tpl -o $buildroot/index.zsh
 
-  Shell="FISH" envtpl $DOTFILES_ROOT/shell/ncl/aliases.tpl -o $DOTFILES_ROOT/shell/ncl/aliases.fish
-  Shell="ZSH" envtpl $DOTFILES_ROOT/shell/ncl/aliases.tpl -o $DOTFILES_ROOT/shell/ncl/aliases.zsh
+  Shell="FISH" envtpl $shellfileroot/base.tpl -o $buildroot/base.fish
+  Shell="ZSH" envtpl $shellfileroot/base.tpl -o $buildroot/base.zsh
+
+  Shell="FISH" envtpl $shellfileroot/dev.tpl -o $buildroot/dev.fish
+  Shell="ZSH" envtpl $shellfileroot/dev.tpl -o $buildroot/dev.zsh
+
+  IsFishShell=true envtpl $shellfileroot/git.tpl -o $buildroot/git.fish
+  IsZshShell=true envtpl $shellfileroot/git.tpl -o $buildroot/git.zsh
+
+  Shell="FISH" envtpl $shellfileroot/ncl.tpl -o $buildroot/ncl.fish
+  Shell="ZSH" envtpl $shellfileroot/ncl.tpl -o $buildroot/ncl.zsh
 
 }
 
@@ -95,3 +103,4 @@ fi
 echo '  [ ✔ ] fish files installed!'
 
 echo '  [ ✔ ] bootstrap complete!'
+

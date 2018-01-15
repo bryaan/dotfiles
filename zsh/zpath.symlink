@@ -9,35 +9,31 @@ case "${unameOut}" in
     *)          machine="UNKNOWN:${unameOut}"
 esac
 
-# TODO Clear the PATH - PROBLEM When a program is installed and adds itself, we wont know until we get errors and debug.
-# So we should have something monitoring the PATH var for changes, then add those changes to some tmp file.  Maybe trigger an inotify message...
-# PATH=""
+
+# Checks that the path exists before adding it.
+append_path() {
+  [ -d $1  ] && PATH=$PATH:$1
+}
+
+# Clear current PATH
+# [solved] PROBLEM When a program is installed and adds itself, we wont know until we get errors and debug.
+# But really not a big deal since docs should say what to add to path.
+# And also homebrew at the end.
 # unset PATH
-
-# TODO Might want to move some of these to /etc/environment so they are available system wide.
-# * Dosent mean user will have permission to run it.
-
-# TODO
-# Create an add_to_path command that checks if path exists
-# so we dont have a leading `:`.
-# Or do python:  path_append(path), path_prepend(path)
-
 export PATH=''
 
 # Git v2
-export PATH=$PATH:/usr/local/src/git-2.15.1/bin
+append_path /usr/local/src/git-2.15.1/bin
 
 # Java and SBT
 export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
-export PATH=$PATH:$JAVA_HOME/bin
-export PATH=$PATH:/home/bryan/bin/sbt
-
-# nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+append_path $JAVA_HOME/bin
+append_path /home/bryan/bin/sbt
 
 
+############################################################################
+# Golang
+############################################################################
 
 # # Location where go is installed.
 # export GOROOT=/opt/go-1.9.2
@@ -46,8 +42,12 @@ export NVM_DIR="$HOME/.nvm"
 # # GOPATH="/home/peter/gopath:/home/peter/public/gopath"
 # export GOPATH=GOPATH_PUBLIC
 
-# TODO Check this is the correct setting.
-export ASDF_INSTALL_PATH=~/.asdf/installs
+# TODO Check this is the correct original setting.
+export ASDF_INSTALL_PATH=$HOME/.asdf/installs
+
+# TODO doesnt seem right that GOPATH path has a go version number in it.
+# Especially since newer version are backwards compat.
+# So use a versionless GOPATH.  Check idea on net.
 
 # TODO Really important we ask asdf, bc version is changed thru asdf.
 # Would be a pain to also change here.
@@ -58,38 +58,59 @@ export ASDF_INSTALL_PATH=~/.asdf/installs
 
 # Where go binary is at.
 export GOROOT=$ASDF_INSTALL_PATH/golang/1.9.2/go
-# The GOPATH environment variable lists places to look for Go code. On Unix, the value is a colon-separated string.
-export GOPATH=$ASDF_INSTALL_PATH/golang/1.9.2/packages
+
+# This is for my packages.
+# export GOPATH_LOCAL=$ASDF_INSTALL_PATH/golang/packages
+
+# This is for 3rd party packages.
+export GOPATH_EXT=$ASDF_INSTALL_PATH/golang/1.9.2/packages
+
+# The GOPATH environment variable lists places to look for Go code.
+# On Unix, the value is a colon-separated string.
+export GOPATH=$GOPATH_EXT
+
+# Add golang to PATH.
+append_path $GOPATH/bin
+append_path $GOROOT/bin
 
 
+############################################################################
+# Rust
+############################################################################
 
+append_path "$HOME/.cargo/bin"
 
-# TODO Only if GOPATH and GOROOT are defined.
-# Alert if they arent?
-export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
-# asdf plugin-add golang
-# asdf install golang 1.9.2
-# asdf global golang 1.9.2
+############################################################################
+# Qt
+############################################################################
 
-# This should be auto done by asdf-golang plugin.
-# But just in case here they are.
-# export GOROOT=/home/bryan/.asdf/installs/golang/1.9.2/go
-# export GOPATH=/home/bryan/.asdf/installs/golang/1.9.2/packages
-
-
-
-# # Ruby and RVM
-# export PATH=$PATH:/home/bryan/.rvm/gems/ruby-2.4.1/bin
-# export PATH=$PATH:/home/bryan/.rvm/gems/ruby-2.4.1@global/bin
-# export PATH=$PATH:/home/bryan/.rvm/rubies/ruby-2.4.1/bin
-# export PATH=$PATH:/home/bryan/.rvm/bin
 # export PATH=$PATH:/usr/lib64/qt-3.3/bin
 
+############################################################################
+# FZF - Fuzzy Search for ZSH
+############################################################################
 
-# FZF - Fuzzy Search
-export PATH=$PATH:/home/bryan/.fzf/bin
+append_path /home/bryan/.fzf/bin
 
-# Commons
+
+############################################################################
+#  Linux Brew
+############################################################################
+
+# export PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH"
+# PATH="$HOME/.linuxbrew/bin:$PATH"
+
+############################################################################
+# User
+############################################################################
+
+# User's private paths
+append_path "$HOME/bin"
+append_path "$HOME/.local/bin"
+
+############################################################################
+# System
+############################################################################
 
 # /opt  For non-system software.
 # /opt/local For un-vc'd, pre-compiled software.
@@ -97,45 +118,23 @@ export PATH=$PATH:/home/bryan/.fzf/bin
 # /opt/local/sbin For administrative binaries.
 
 # For non-system bundled software binaries.
-export PATH=$PATH:/opt/local/bin
+append_path /opt/local/bin
 # For administrative non-system bundled software binaries.
-export PATH=$PATH:/opt/local/sbin
+append_path /opt/local/sbin
 
 # There should be no /opt/bin.  The local route is for stuff we don't
 # want to pull in via git.  If we do, then it goes in /opt/foo-project.
 # Config goes in /etc/opt/foo-project/xx.conf
 # Logs go in /var/opt/foo-project/xx.log
 
-# Linux Brew
-# export PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH"
-PATH="$HOME/.linuxbrew/bin:$PATH"
 
+append_path /usr/local/bin
+append_path /usr/local/sbin
+append_path /usr/bin
+append_path /usr/sbin
+append_path /bin
+append_path /sbin
 
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$PATH:$HOME/bin"
-fi
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$PATH:$HOME/.local/bin"
-fi
-export PATH=$PATH:/usr/local/bin
-export PATH=$PATH:/usr/local/sbin
-export PATH=$PATH:/usr/bin
-export PATH=$PATH:/usr/sbin
-export PATH=$PATH:/bin
-export PATH=$PATH:/sbin
-
-
-# # RVM - Ruby Version Manager
-# # Comes after path declarations.
-# source ~/.rvm/scripts/rvm
-# export GEM_HOME=$HOME/.gem
-# export GEM_PATH=$HOME/.gem
-
-
-
-# # Qt
-# export PATH=$PATH:/usr/lib64/qt-3.3/bin
 
 ################################################
 # Mac
@@ -145,27 +144,27 @@ if [[ "$machine" == 'Mac' ]]; then
 
 export PATH=''
 
-export PATH=$PATH:/Users/bryan/bin
-export PATH=$PATH:/usr/local/bin
-export PATH=$PATH:/usr/bin:/bin
-export PATH=$PATH:/usr/sbin:/sbin
-export PATH=$PATH:/Users/bryan/.cargo/bin
-export PATH=$PATH:/Users/bryan/golang
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
-export PATH=$PATH:/Users/bryan/golang/bin
-export PATH=$PATH:/usr/local/opt/fzf/bin
+append_path $HOME/bin
+
+# Rust's cargo installed binaries.
+append_path $HOME/.cargo/bin
 
 # Golang installed with homebrew required env vars.
 # brew install go --cross-compile-common
-#
-# Set following env variables in ~/.bashrc or ~/.zshrc
 export GOPATH=$HOME/golang
 export GOROOT=/usr/local/opt/go/libexec
-export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOPATH
-export PATH=$PATH:$GOROOT/bin
-export PATH=$PATH:$GOBIN # So that 'gin' can run.
+append_path $GOPATH/bin
+append_path $GOROOT/bin
+
+# TODO Homebrew installed, so it should be available in /usr/local/bin, no?
+# So shouldnt need this.
+append_path /usr/local/opt/fzf/bin
+
+append_path /usr/local/bin
+append_path /usr/bin:/bin
+append_path /usr/sbin:/sbin
 
 fi
 
-
+# Final explicit export
+export PATH=$PATH

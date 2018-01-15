@@ -300,7 +300,7 @@ elif [[ "$machine" == 'Mac' ]]; then
   # asdf
   source /usr/local/opt/asdf/asdf.sh
   # Completions are installed automatically by brew.
-  
+
   # iTerm2 Shell Integration
   source ~/.iterm2_shell_integration.zsh
 
@@ -310,7 +310,4 @@ elif [[ "$machine" == 'Mac' ]]; then
   # singleton tmuxCopyPasteFix &
   nohup singleton tmuxCopyPasteFix 2>&1 >/dev/null
 
-
-
-# elif [[ "$unamestr" == 'FreeBSD' ]]; then
 fi

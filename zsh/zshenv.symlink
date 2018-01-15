@@ -11,28 +11,13 @@
 # put your path-setting code into a file named .zpath, and source it from
 # both here (if we're not a login shell) and from the .zprofile file (which
 # is only sourced if we are a login shell).
-if [[ $SHLVL == 1 && ! -o LOGIN ]]; then
-    [[ -f ~/.zpath ]] && source ~/.zpath
-    [[ -f ~/.zpath ]] && echo "Sourced ~/.zpath..."
-fi
-
+# if [[ $SHLVL == 1 && ! -o LOGIN ]]; then
+#     [[ -f ~/.zpath ]] && source ~/.zpath
+#     [[ -f ~/.zpath ]] && echo "Sourced ~/.zpath..."
+# fi
 # Above isnt working, bc terminator + start as login shell.
-# [[ -o LOGIN ]] && echo 'WOW'
-[[ -f ~/.zpath ]] && source ~/.zpath
-
-
-
-export EDITOR='subl'
-export VISUAL=subl
-export SUDO_EDITOR=subl
-export PAGER=less
-
-export BROWSER=/usr/bin/google-chrome
-# BROWSER=/usr/bin/firefox
-# BROWSER=/usr/bin/chrome-gnome-shell  # Try this, not sure if this is chrome in the shell or what?
-
-# ssh
-export SSH_KEY_PATH="~/.ssh/rsa_id"
+# [[ -f ~/.zpath ]] && source ~/.zpath
+# Importing it in index.tpl now anyway.
 
 
 # If $ZDOTDIR is defined, we keep the definition, otherwise we define $ZDOTDIR
@@ -72,6 +57,6 @@ reloadTerminals() {
 # Source
 ####################################################
 
-export DOTFILES_ROOT=~/src/dotfiles
+export DOTFILES_ROOT=$HOME/src/dotfiles
 
-source $DOTFILES_ROOT/shell/index.zsh
+source $DOTFILES_ROOT/build/shell/index.zsh

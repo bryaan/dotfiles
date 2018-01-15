@@ -8,11 +8,50 @@
 alias sudo='sudo '
 
 
+export EDITOR='subl'
+export VISUAL=subl
+export SUDO_EDITOR=subl
+export PAGER=less
+
+export BROWSER=/usr/bin/google-chrome
+# BROWSER=/usr/bin/firefox
+# BROWSER=/usr/bin/chrome-gnome-shell  # Try this, not sure if this is chrome in the shell or what?
+
+# ssh
+export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+
+
 ####################################################
 # Local Utility Commands
 ####################################################
 
+{{if eq .Shell "FISH"}}
 
+  # or begin
+  #     set -q XTERM_VERSION
+  #     and test (string replace -r "XTerm\((\d+)\)" '$1' -- $XTERM_VERSION) -ge 280
+  # end
+
+  # Current User ID
+  set -l UID (id -u (whoami))
+
+  # Commands to proxy thru sudo when not su.
+  if [ UID != 0 ]
+      alias reboot='sudo reboot'
+      # TODO Only on when yum command present && linux
+      alias update='sudo yum upgrade'
+  end
+
+  function warn
+    echo [Warning] $1
+  end
+
+  function warnProgramNotInstalled
+    warn "Package '$1' Not Installed!\nAlternatively, check that it is available on your PATH.\n"
+  end
+
+{{else}}
 
   # Commands to proxy thru sudo when not su.
   if [ $UID -ne 0 ]; then
@@ -33,13 +72,22 @@ alias sudo='sudo '
   # Colorize
   ####################################################
 
-  
+  {{if .IsLinux}}
+    # alias ls='ls --color=auto'
+    #alias dir='ls --color=auto --format=vertical'
+    #alias vdir='ls --color=auto --format=long'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+    alias yum='yum --color=always'
+  {{end}}
 
   # TODO Must Install colorize.
   # ccze is much slower than colorize and hasnt been updated.
   # tail -f /var/my/log | color
   alias color='colorize'
-
+{{end}}
 
 
 ####################################################
@@ -67,10 +115,17 @@ alias bs="brew search"
 # TODO oh this is bc i havent set up my fish PATH yet.
 alias reload_dotfiles="zsh -e $DOTFILES_ROOT/bootstrap/bootstrap.sh; reload"
 
+{{if eq .Shell "ZSH"}}
 
   alias reload='source ~/.zshenv && source ~/.zshrc'
   alias reloadPath='source ~/.zpath'
 
+{{else if eq .Shell "FISH"}}
+
+  alias reload="source ~/.config/omf/init.fish"
+  alias reloadPath='bash -c "source $HOME/.zpath"'
+
+{{end}}
 
 # TODO Copy prev commands.
 # This copies the *args* from the previously run command.
@@ -108,7 +163,7 @@ alias diff='colordiff'
 # Cryptographic Hashes
 alias sha1='openssl sha1'
 
-
+{{if eq .Shell "ZSH"}}
   commandExists() {
     command -v $1 >/dev/null
   }
@@ -116,14 +171,67 @@ alias sha1='openssl sha1'
   runSilent() {
     nohup "$@" &>/dev/null 2>&1 &
   }
+{{else if eq .Shell "FISH"}}
+  function commandExists
+    command -v $1 >/dev/null
+  end
 
+  function runSilent
+    sh -c 'nohup "$@" &>/dev/null 2>&1 &'
+  end
+{{end}}
 
+####################################################
+# Built-in Commands
+####################################################
+
+# Don't need these since using `exa`
 # `--` on these doesnt work on macos.
+# {{if .IsLinux}}
+#   alias ls="ls --group-directories-first --dereference-command-line-symlink-to-dir"
+#   alias ll="ls --dereference-command-line-symlink-to-dir"
+#   alias l="ls --dereference-command-line-symlink-to-dir"
+# {{end}}
+# alias ll="ls -lh"
+# alias l="ls -la"
+# alias l.="ls -d .*"  # Show hidden files
 
 
-alias ll="ls -lh"
-alias l="ls -la"
-alias l.="ls -d .*"  # Show hidden files
+
+# For some reason these need to be function to work on linux.
+# Actually that only worked for ls.
+# Both aliases work in fish shell so its a case of overwrite.
+# Ohhh but zshenv is called before zshrc(plugins)! The plugin removel test was inconclusive.
+
+# ## After removing zshrc plugins
+# ➜  dotfiles git:(master) ✗ alias ll
+# ll='ls -lh'
+# ➜  dotfiles git:(master) ✗ type ll
+# ll is an alias for ls -lh
+# ➜  dotfiles git:(master) ✗
+
+# ## Before removing zshrc plugins
+# ➜  dotfiles git:(master) ✗ type ll
+# ll is an alias for ls -l
+# ➜  dotfiles git:(master) ✗ alias ll
+# ll='ls -l'
+
+# ## So the plugins are changing it, but still we should be able to change it.
+
+
+# function ls() {
+#   exa
+# }
+# function ll() {
+#   exa --long --git --header
+# }
+alias ll="exa --long --git --header"
+alias l.="exa --all --long --git --header"
+alias tree="exa --tree --level=2"
+
+# Replace htop with glances for now. (learning cmd name)
+alias htop='glances'
+
 
 # Create parent directories if not exist.
 alias mkdir='mkdir -pv'
@@ -214,7 +322,15 @@ alias mv='mv -i'
 alias cp='cp -i'
 alias ln='ln -i'
 
+{{if .IsLinux}}
+  # do not delete / or prompt if deleting more than 3 files at a time #
+  alias rm='rm -I --preserve-root'
 
+  # Parenting changing perms on / #
+  alias chown='chown --preserve-root'
+  alias chmod='chmod --preserve-root'
+  alias chgrp='chgrp --preserve-root'
+{{end}}
 
 ####################################################
 # For Debain
