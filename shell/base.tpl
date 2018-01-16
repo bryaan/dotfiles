@@ -26,7 +26,7 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # Local Utility Commands
 ####################################################
 
-{{if eq .Shell "FISH"}}
+{% if shell.fish %}
 
   # or begin
   #     set -q XTERM_VERSION
@@ -51,7 +51,7 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
     warn "Package '$1' Not Installed!\nAlternatively, check that it is available on your PATH.\n"
   end
 
-{{else}}
+{% else %}
 
   # Commands to proxy thru sudo when not su.
   if [ $UID -ne 0 ]; then
@@ -72,7 +72,7 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
   # Colorize
   ####################################################
 
-  {{if .IsLinux}}
+  {% if os.linux %}
     # alias ls='ls --color=auto'
     #alias dir='ls --color=auto --format=vertical'
     #alias vdir='ls --color=auto --format=long'
@@ -81,14 +81,31 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
     alias yum='yum --color=always'
-  {{end}}
+
+    # TODO Check colordiff command exists.
+    alias diff='colordiff'
+
+  {% endif %}
 
   # TODO Must Install colorize.
   # ccze is much slower than colorize and hasnt been updated.
   # tail -f /var/my/log | color
   alias color='colorize'
-{{end}}
+{% endif %}
 
+
+####################################################
+# Install/Update Commands
+####################################################
+
+
+alias bi="brew install"
+alias bs="brew search"
+
+{% if os.linux %}
+  alias yi="sudo yum install"
+  alias ys="yum search"
+{% endif %}
 
 ####################################################
 # Utility Commands
@@ -101,31 +118,85 @@ alias browser='$BROWSER'
 alias hibernate='systemctl --no-wall hybrid-sleep'
 alias h='history'
 alias j='jobs -l'
-# alias path='echo -e ${PATH//:/\\n}' # TODO make work with fish.
-# TODO can do a simple fish for loop.
+# alias path='echo -e ${PATH//:/\\n}'
+# TODO make work with fish. - fish had its own way of showing path.
 alias now='date +"%T"'
 alias nowtime=now
 alias nowdate='date +"%d-%m-%Y"'
 # alias su='sudo -i'
 
-alias bi="brew install"
-alias bs="brew search"
-
 # the zsh seems to be neccessary on mac, so it works in fish shell.
 # TODO oh this is bc i havent set up my fish PATH yet.
 alias reload_dotfiles="zsh -e $DOTFILES_ROOT/bootstrap/bootstrap.sh; reload"
 
-{{if eq .Shell "ZSH"}}
+
+
+{% if shell.zsh %}
 
   alias reload='source ~/.zshenv && source ~/.zshrc'
   alias reloadPath='source ~/.zpath'
 
-{{else if eq .Shell "FISH"}}
+{% elif shell.fish %}
 
-  alias reload="source ~/.config/omf/init.fish"
+  # This calls omf/init.fish and more. it works best.
+  alias reload="omf reload"
+  # alias reload="source ~/.config/omf/init.fish"
   alias reloadPath='bash -c "source $HOME/.zpath"'
 
-{{end}}
+
+  # Typing `!!<SPC>` will get it replaced with the previous cmd.
+  function bind_bang
+    switch (commandline -t)
+    case "!"
+      commandline -t $history[1]; commandline -f repaint
+    case "*"
+      commandline -i !
+    end
+  end
+
+  # Typing `!$<SPC>` will get it replaced with the previous cmd's final arg.
+  function bind_dollar
+    switch (commandline -t)
+    case "!"
+      commandline -t ""
+      commandline -f history-token-search-backward
+    case "*"
+      commandline -i '$'
+    end
+  end
+
+ # If the command line has content, it prepends sudo.
+ # If there is no content, it prepends sudo to the last item in the history.
+  function prepend_command
+    set -l prepend $argv[1]
+    if test -z "$prepend"
+      echo "prepend_command needs one argument."
+      return 1
+    end
+
+    set -l cmd (commandline)
+    if test -z "$cmd"
+      commandline -r $history[1]
+    end
+
+    set -l old_cursor (commandline -C)
+    commandline -C 0
+    commandline -i "$prepend "
+    commandline -C (math $old_cursor + (echo $prepend | wc -c))
+  end
+
+  function fish_user_key_bindings
+    bind \cs 'prepend_command sudo'
+    bind ! bind_bang
+    bind '$' bind_dollar
+
+    # If using vi or hybrid mode must specift insert mode.
+    # fish_hybrid_key_bindings
+    # bind -M insert ! bind_bang
+    # bind -M insert '$' bind_dollar
+  end
+
+{% endif %}
 
 # TODO Copy prev commands.
 # This copies the *args* from the previously run command.
@@ -157,13 +228,12 @@ alias rebootlinksys="curl -u 'admin:my-super-password' 'http://192.168.1.2/setup
 ## replace mac with your actual server mac address #
 # alias wakeupnas01='/usr/bin/wakeonlan 00:11:32:11:15:FC'
 
-# TODO Check colordiff command exists.
-alias diff='colordiff'
 
 # Cryptographic Hashes
 alias sha1='openssl sha1'
 
-{{if eq .Shell "ZSH"}}
+{% if shell.zsh %}
+
   commandExists() {
     command -v $1 >/dev/null
   }
@@ -171,7 +241,9 @@ alias sha1='openssl sha1'
   runSilent() {
     nohup "$@" &>/dev/null 2>&1 &
   }
-{{else if eq .Shell "FISH"}}
+
+{% elif shell.fish %}
+
   function commandExists
     command -v $1 >/dev/null
   end
@@ -179,7 +251,8 @@ alias sha1='openssl sha1'
   function runSilent
     sh -c 'nohup "$@" &>/dev/null 2>&1 &'
   end
-{{end}}
+
+{% endif %}
 
 ####################################################
 # Built-in Commands
@@ -187,11 +260,11 @@ alias sha1='openssl sha1'
 
 # Don't need these since using `exa`
 # `--` on these doesnt work on macos.
-# {{if .IsLinux}}
+# //if .IsLinux//
 #   alias ls="ls --group-directories-first --dereference-command-line-symlink-to-dir"
 #   alias ll="ls --dereference-command-line-symlink-to-dir"
 #   alias l="ls --dereference-command-line-symlink-to-dir"
-# {{end}}
+# //end//
 # alias ll="ls -lh"
 # alias l="ls -la"
 # alias l.="ls -d .*"  # Show hidden files
@@ -322,7 +395,8 @@ alias mv='mv -i'
 alias cp='cp -i'
 alias ln='ln -i'
 
-{{if .IsLinux}}
+
+{% if os.linux %}
   # do not delete / or prompt if deleting more than 3 files at a time #
   alias rm='rm -I --preserve-root'
 
@@ -330,7 +404,8 @@ alias ln='ln -i'
   alias chown='chown --preserve-root'
   alias chmod='chmod --preserve-root'
   alias chgrp='chgrp --preserve-root'
-{{end}}
+
+{% endif %}
 
 ####################################################
 # For Debain

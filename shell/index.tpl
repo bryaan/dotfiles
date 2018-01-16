@@ -20,7 +20,7 @@
 # FISH
 ####################################################
 
-{{if eq .Shell "FISH"}}
+{% if shell.fish %}
 
 # Dunno why it wasnt set on my mac, same path on linux.
 # Actually that was checked under zsh, maybe thats why.
@@ -91,13 +91,11 @@ set -g theme_title_display_process no
 set -g theme_newline_cursor no
 
 
-{{end}}
-
 ####################################################
 # ZSH
 ####################################################
 
-{{if eq .Shell "ZSH"}}
+{% elif shell.zsh %}
 
 # Works on Mac and Linux
 function command_exists {
@@ -116,13 +114,13 @@ namespaced_load() {
 	local shellfilesdir=$DOTFILES_ROOT/build/shell
 
 	source $shellfilesdir/base.zsh
-	source $shellfilesdir/git.fish
+	source $shellfilesdir/git.zsh
 	source $shellfilesdir/dev.zsh
 	source $shellfilesdir/ncl.zsh
 }
 
 namespaced_load
 
-{{end}}
+{% endif %}
 
 

@@ -9,11 +9,9 @@ git config --global user.email "mail@bryaan.com"
 git config --global color.ui "auto"
 git config --global core.editor "subl -n --wait"
 
-{{if .IsWork}}
-
+{% if geo.work %}
 git config --global user.email "brivera@ncl.com"
-
-{{end}}
+{% endif %}
 
 #------------------------------------
 # Setup diff-so-fancy
@@ -27,7 +25,7 @@ git config --global user.email "brivera@ncl.com"
 # {end}}
 
 # TODO Use generic interface like above, or call this file with bash-c or bass
-{{if .IsZshShell}}
+{% if shell.zsh %}
 	if commandExists diff-so-fancy; then
 	  git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
 
@@ -37,8 +35,7 @@ git config --global user.email "brivera@ncl.com"
 	else
 	  warnProgramNotInstalled 'diff-so-fancy'
 	fi
-{{end}}
-
+{% endif %}
 
 # The Textual diff tool to use.
 # Can use diff-so-fancy
@@ -63,12 +60,26 @@ git config --global merge.conflictstyle diff3
 # functions
 ####################################################
 
+{% if shell.fish %}
+  abbr -a gst git status
+  abbr -a gco git checkout
+  abbr -a gci git commit
+  abbr -a gbr git branch
+
+  function acp --description 'Add, commit and push'
+    git add . # Git 2.x Stage All (new, modified, deleted) files
+    # git add --all
+    git commit -m $argv
+    git push
+  end
+{% endif %}
+
+{% if shell.zsh %}
+
 alias gst="git status"
 alias gco="git checkout"
 alias gci="git commit"
 alias gbr="git branch"
-
-{{if .IsZshShell}}
 
 # Deletes local snapshot copies of remote branches. refs/remotes/...
 function clean_deleted_branches {
@@ -104,4 +115,4 @@ function clean_deleted_branches {
 	# pbpaste | xargs git branch -d
 }
 
-{{end}}
+{% endif %}

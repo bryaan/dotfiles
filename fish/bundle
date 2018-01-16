@@ -1,5 +1,6 @@
 package balias
 package brew
+package fzf
 package gityaw
 package pbcopy
 package pisces

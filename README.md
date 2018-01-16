@@ -18,12 +18,13 @@ https://github.com/atelic/dotfiles
 # Setup
 
 ```bash
-go get github.com/subfuzion/envtpl
+pip3 install jinja2
 
 npm install --global gulp
 cd $DOTFILES; npm link gulp
 
 chmod +x ./bootstrap/bootstrap.sh
+chmod +x ./bootstrap/jinja_script.py
 
 npm install
 ```
@@ -90,6 +91,34 @@ asdf update
 
 
 
+Fish:
+Ctrl+S => sudo insert
+
+Ctrl-A => Home button
+Ctrl-E => End Button
+
+RightArrow or Tab: To autcomplete cmd.
+Ctrl+RightArrow: To autocomplete word by word.
+
+Note that erasing from history doesn't require bash shenanigans:
+
+history --delete --prefix some_command
+fish_config history also lets you do it by point-n-click.
+
+
+------------------------------------------------------------------------------
+
+TODO Merge jinja_script and bootstrap.sh
+
+
+TODO occasionaly run `fish_update_completions`
+to parse man pages and gernate new completions.
+They go in ~/.config/fish/completions
+
+
+TODO Enable `fzf` so Ctrl+R history search wrks...
+then again we have great history search with up key anyway right? just not full display at once. so yea lets add.
+
 ------------------------------------------------
 ------------------------------------------------
 
@@ -149,6 +178,14 @@ we should be able to write a git-lfs backend for vinyl.
 
 nix-env -i gcc-wrapper-7.2.0
 
+
+TODO Fish Only save successful commands in history.
+- but still allow pressing up to modify typo in last command
+- delete only after a certain # lines, or cronjob.
+- errord cmd history line numbers must be saved to another file so we know which lines to delete later on cleanup.
+
+https://unix.stackexchange.com/questions/41739/keep-only-successful-commands-in-bash-history
+- some other approach
 
 ------------------------------------------------
 ------------------------------------------------
