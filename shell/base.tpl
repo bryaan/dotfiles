@@ -9,7 +9,7 @@ alias sudo='sudo '
 
 
 export EDITOR='subl'
-export VISUAL=subl
+export VISUAL='subl --wait'
 export SUDO_EDITOR=subl
 export PAGER=less
 
@@ -72,6 +72,9 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
   # Colorize
   ####################################################
 
+# Make rg'scolors look like ag's
+alias rg='rg --colors line:fg:yellow --colors line:style:bold --colors path:fg:green --colors path:style:bold --colors match:fg:black --colors match:bg:yellow --colors match:style:nobold'
+
   {% if os.linux %}
     # alias ls='ls --color=auto'
     #alias dir='ls --color=auto --format=vertical'
@@ -98,13 +101,22 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # Install/Update Commands
 ####################################################
 
+{% if os.mac %}
 
-alias bi="brew install"
-alias bs="brew search"
+  alias bi="brew install"
+  alias bs="brew search"
+
+{% endif %}
 
 {% if os.linux %}
   alias yi="sudo yum install"
   alias ys="yum search"
+
+  {% if shell.fish %}
+    abbr -a yi sudo yum install
+    abbr -a ys yum search
+  {% endif %}
+
 {% endif %}
 
 ####################################################
@@ -139,10 +151,11 @@ alias reload_dotfiles="zsh -e $DOTFILES_ROOT/bootstrap/bootstrap.sh; reload"
 {% elif shell.fish %}
 
   # This calls omf/init.fish and more. it works best.
-  alias reload="omf reload"
-  # alias reload="source ~/.config/omf/init.fish"
+  # alias reload="omf reload"
+  alias reload="clear; commandline -f repaint; reloadNoClear"
+  alias reloadNoClear="source ~/.config/fish/config.fish"
+  # TODO try prefixing with `bass` rtfm
   alias reloadPath='bash -c "source $HOME/.zpath"'
-
 
   # Typing `!!<SPC>` will get it replaced with the previous cmd.
   function bind_bang
@@ -185,16 +198,91 @@ alias reload_dotfiles="zsh -e $DOTFILES_ROOT/bootstrap/bootstrap.sh; reload"
     commandline -C (math $old_cursor + (echo $prepend | wc -c))
   end
 
-  function fish_user_key_bindings
-    bind \cs 'prepend_command sudo'
-    bind ! bind_bang
-    bind '$' bind_dollar
+# set -l __fzfcmd fzf
 
-    # If using vi or hybrid mode must specift insert mode.
-    # fish_hybrid_key_bindings
-    # bind -M insert ! bind_bang
-    # bind -M insert '$' bind_dollar
+# This cmd is included with the fisherman plugin, but not the omf one.
+# Determines if we are in a tmux session and should use its modified fzf.
+function __fzfcmd
+  set -q FZF_TMUX; or set -l FZF_TMUX 0
+  if test "$FZF_TMUX" -eq 1
+    set -q FZF_TMUX_HEIGHT; or set -l FZF_TMUX_HEIGHT 40%
+    fzf-tmux -d$FZF_TMUX_HEIGHT $argv
+  else
+    fzf $argv
   end
+end
+
+function fzf-bcd-widget -d 'cd backwards'
+  pwd | awk -v RS=/ '/\n/ {exit} {p=p $0 "/"; print p}' | tac | eval (__fzfcmd) +m --select-1 --exit-0 $FZF_BCD_OPTS | read -l result
+  [ "$result" ]; and cd $result
+  commandline -f repaint
+end
+
+function fzf-cdhist-widget -d 'cd to one of the previously visited locations'
+  # Clear non-existent folders from cdhist.
+  set -l buf
+  for i in (seq 1 (count $dirprev))
+    set -l dir $dirprev[$i]
+    if test -d $dir
+      set buf $buf $dir
+    end
+  end
+  set dirprev $buf
+  string join \n $dirprev | tac | sed 1d | eval (__fzfcmd) +m --tiebreak=index --toggle-sort=ctrl-r $FZF_CDHIST_OPTS | read -l result
+  [ "$result" ]; and cd $result
+  commandline -f repaint
+end
+
+function fco -d "Fuzzy-find and checkout a branch"
+  git branch --all | grep -v HEAD | string trim | fzf | xargs git checkout
+end
+
+function fcoc -d "Fuzzy-find and checkout a commit"
+  git log --pretty=oneline --abbrev-commit --reverse | fzf --tac +s -e | awk '{print $1;}' | xargs git checkout
+end
+
+function fssh -d "Fuzzy-find ssh host and ssh into it"
+  ag '^host [^*]' ~/.ssh/config | cut -d ' ' -f 2 | fzf | xargs -o ssh
+end
+
+function fs -d "Switch tmux session"
+  tmux list-sessions -F "#{session_name}" | fzf | xargs tmux switch-client -t
+end
+
+function fpass -d "Fuzzy-find a Lastpass entry and copy the password"
+  if not lpass status -q
+    lpass login $EMAIL
+  end
+
+  if not lpass status -q
+    exit
+  end
+
+  lpass ls | fzf | string replace -r -a '.+\[id: (\d+)\]' '$1' | xargs lpass show -c --password
+end
+
+# Dont really know how this helps.
+# fzf-select over pacman -Qlq fzf
+function fzf-select -d 'fzf commandline job and print unescaped selection back to commandline'
+  set -l cmd (commandline -j)
+  [ "$cmd" ]; or return
+  eval $cmd | eval (__fzfcmd) -m --tiebreak=index --select-1 --exit-0 | string join ' ' | read -l result
+  [ "$result" ]; and commandline -j -- $result
+  commandline -f repaint
+end
+
+  # function fish_user_key_bindings
+  #   bind \cs 'prepend_command sudo'
+  #   bind ! bind_bang
+  #   bind '$' bind_dollar
+
+  #   bind \cb fzf-bcd-widget
+
+  #   # If using vi or hybrid mode must specift insert mode.
+  #   # fish_hybrid_key_bindings
+  #   # bind -M insert ! bind_bang
+  #   # bind -M insert '$' bind_dollar
+  # end
 
 {% endif %}
 

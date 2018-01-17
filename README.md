@@ -108,6 +108,17 @@ fish_config history also lets you do it by point-n-click.
 
 ------------------------------------------------------------------------------
 
+
+
+TODO https://github.com/junegunn/fzf
+search for `fzf --preview` at bottom, add that to the fzf env var for file searchng.  and install highliht
+
+
+Check out whether to use z or fzf-autojump
+https://github.com/wting/autojump
+https://github.com/rominf/omf-plugin-fzf-autojump
+
+
 TODO Merge jinja_script and bootstrap.sh
 
 
@@ -191,11 +202,25 @@ https://unix.stackexchange.com/questions/41739/keep-only-successful-commands-in-
 ------------------------------------------------
 
 
+# Linux install list
+
+## fish
+nix-env -i fish
+then symlink fish into /usr/bin:
+ln -sf $HOME/.nix-profile/bin/fish /usr/bin
+
+## oneliners
+pip install ripgrep
+
+
+# Mac install list
+
 # TODO Add to install list on both systems
 brew install
-kak (kakoune)
-glances
-ag
+brew install glances kak
+brew install ag ripgrep fzf
+
+highlight check works with fzf preview
 
 cargo install exa
 pip install glances

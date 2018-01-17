@@ -14,7 +14,11 @@
 
 # Also need to combine with .zpath file.
 
-
+# Bring nix-env and its packages into env.
+# TODO causing a warning on fish start
+bass source $HOME/.nix-profile/etc/profile.d/nix.sh
+# We may only need to add a few things to our path:
+# $HOME/.nix-profile/bin  $HOME/.nix-profile/sbin
 
 ####################################################
 # FISH
@@ -64,6 +68,34 @@ else
 end
 
 
+
+# Set default FZF input to ripgrep.  Can also do ag.
+# Default is `find`.
+# The git ls-tree is to improve lookup speed in large repos.
+# --files: List files that would be searched but do not search
+# --no-ignore: Do not respect .gitignore, etc...
+# --hidden: Search hidden files and folders
+# --follow: Follow symlinks
+# --smartcase: Makes ripgrep search case-insensitively if the pattern is all lowercase, however if there is a capital the search becomes case-sensitive.
+# --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+# TODO add --smartcase but it doesnt work in ~ folder for some reason.
+set -x FZF_DEFAULT_COMMAND '(git ls-tree -r --name-only HEAD || rg --files --hidden --follow --glob "!.git/*" )'
+
+# Add a file preview, with syntax highlighting.
+# consider adding --reverse
+# set -x FZF_DEFAULT_OPTS "--preview '[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (highlight -O ansi -l {} || coderay {} || rougify {} || cat {})  2> /dev/null | head -500'"
+
+
+# Apply to Ctrl-T command as well
+set -x FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
+
+set -x FZF_CTRL_R_COMMAND 'rg --files'
+
+# rg can't search directories so use ag or bfs
+# set -x  FZF_ALT_C_COMMAND "cd ~/; bfs -type d -nohidden | sed s/^\./~/"
+set -x FZF_ALT_C_COMMAND "ag --ignore '.git' --ignore 'node_modules/' -g ."
+
+# set -x FZF_ALT_C_OPTS "--preview 'tree -C {} | head -200'"
 
 ####################################################
 # `bobthefish` Theme Specific Settings
