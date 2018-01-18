@@ -1,6 +1,7 @@
 var gulp  = require('gulp')
 var gutil = require('gulp-util')
 var exec = require('child_process').exec;
+var clear = require('clear');
 
 // Compile Our Dotfiles
 gulp.task('bootstrap', function(cb) {
@@ -14,6 +15,8 @@ gulp.task('bootstrap', function(cb) {
   	stderr: true, // default = true, false means don't write stderr
   	stdout: true // default = true, false means don't write stdout
   }
+
+  clear()
 
   exec('sh bootstrap/bootstrap.sh', function (err, stdout, stderr) {
     console.log(stdout)

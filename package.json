@@ -4,6 +4,7 @@
   "description": "Makes me feel at $HOME",
   "main": "gulpfile.js",
   "dependencies": {
+    "clear": "^0.0.1",
     "gulp": "^3.9.1",
     "gulp-util": "^3.0.8"
   },
