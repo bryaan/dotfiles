@@ -3,28 +3,25 @@
 # Here we source all files in the /shell directory.
 #
 
-# TODO !!!!!!!!!!!!!!
 
-# only if FISH, or rather move to a paths file, or even
-# use custom fun whose def changes dep on shell
-# Take each arg and prepend to path, also impl a setpathap command that appends.
 # setpath /usr/local/bin /usr/sbin
-#
 # set PATH /usr/local/bin /usr/sbin $PATH
 
-# Also need to combine with .zpath file.
-
-# Bring nix-env and its packages into env.
-# TODO causing a warning on fish start
-bass source $HOME/.nix-profile/etc/profile.d/nix.sh
-# We may only need to add a few things to our path:
-# $HOME/.nix-profile/bin  $HOME/.nix-profile/sbin
 
 ####################################################
 # FISH
 ####################################################
 
 {% if shell.fish %}
+
+# Bring nix-env and its packages into env.
+# TODO causing a warning on fish start
+# We may only need to add a few things to our path:
+# $HOME/.nix-profile/bin  $HOME/.nix-profile/sbin
+if test -e $HOME/.nix-profile/etc/profile.d/nix.sh
+	bass source $HOME/.nix-profile/etc/profile.d/nix.sh
+end
+
 
 # Dunno why it wasnt set on my mac, same path on linux.
 # Actually that was checked under zsh, maybe thats why.
@@ -36,7 +33,7 @@ set -x OMF_PATH $HOME/.local/share/omf
 # Possibly move into ./shell
 # single files named by program and combined with their env vars and functions.
 # > Using bash -c *does not* bring over aliases. (dont use them in zpath)
-bash -c "source $HOME/.zpath"
+bass source $DOTFILES_ROOT/shell/pathfile
 # [[ -f ~/.zpath ]] && source ~/.zpath
 
 

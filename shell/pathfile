@@ -1,0 +1,238 @@
+############################################################################
+# pathfile - Set your $PATH here and never be left wondering again.
+############################################################################
+
+[ "Linux" = "$(uname)" ] && platform="linux" || platform="macos"
+[ "x86_64" = "$(uname -m)" ] && arch="amd64" || arch="386"
+
+
+# FIXME For some very strange reason on macos + bash the directory test
+# will not work for any of these paths:
+# /usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
+function checkIfDirectory() {
+    if [ -d "$1" ]; then
+        return 1
+    else
+        return 0
+    fi
+}
+
+# Checks that the path exists before adding it.
+function append_path() {
+  local dir="$1"
+
+  # FIXME see `checkIfDirectory`
+  # checkIfDirectory $dir && PATH=$PATH:$dir
+  TMPPATH="$TMPPATH:$dir"
+}
+
+# Clear current TMPPATH
+TMPPATH=''
+
+############################################################################
+# Linux
+############################################################################
+
+if [[ "$platform" == 'linux' ]]; then
+
+# Git v2
+append_path /usr/local/src/git-2.15.1/bin
+
+# Java and SBT
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+append_path $JAVA_HOME/bin
+append_path /home/bryan/bin/sbt
+
+###################################
+# asdf
+###################################
+
+export ASDF_DIR=$HOME/.asdf
+export ASDF_INSTALL_DIR=$ASDF_DIR/installs
+
+###################################
+# golang
+###################################
+
+# TODO Really important we ask asdf, bc version is changed thru asdf.
+# $(asdf which golang)
+# problem is
+# 1. for some reason it has an erronous /golang appended to it.
+# 2. not sure if a reload is done in an asdf go project dir if it will use global one or local one.
+# i guess we ask does asdf reset the path properly.  i beleive it does thru asdf.sh. just test it.
+# Where go binary is at.
+export GOROOT=$ASDF_INSTALL_DIR/golang/1.9.2/go
+
+# Location of my private go packages.
+# export GOPATH_LOCAL=$ASDF_INSTALL_DIR/golang/packages
+
+# Location for any 3rd party forked go repos.
+export GOPATH_PUBLIC=$ASDF_INSTALL_DIR/golang/1.9.2/packages
+
+# The GOPATH environment variable lists places to look for Go code.
+# export GOPATH=$GOPATH_LOCAL:$GOPATH_PUBLIC
+export GOPATH=$GOPATH_PUBLIC
+
+# Where to look for packages.
+# > Do not simply add GOPATH here bc that can be multiple paths.
+append_path $GOPATH_PUBLIC/bin
+# append_path $GOPATH_LOCAL/bin
+
+# Where go binary is at.
+append_path $GOROOT/bin
+
+###################################
+# Rust / Cargo
+###################################
+
+append_path "$HOME/.cargo/bin"
+
+###################################
+# Misc
+###################################
+
+# export PATH=$PATH:/usr/lib64/qt-3.3/bin
+
+###################################
+# FZF - Fuzzy Search
+###################################
+
+append_path /home/bryan/.fzf/bin
+
+###################################
+# User
+###################################
+
+# User's private paths
+append_path "$HOME/bin"
+append_path "$HOME/.local/bin"
+
+###################################
+# System
+###################################
+
+# /opt  For non-system software.
+# /opt/local For un-vc'd, pre-compiled software.
+# /opt/local/bin For the binaries.
+# /opt/local/sbin For administrative binaries.
+
+# For non-system bundled software binaries.
+append_path /opt/local/bin
+# For administrative non-system bundled software binaries.
+append_path /opt/local/sbin
+
+# There should be no /opt/bin.  The local route is for stuff we don't
+# want to pull in via git.  If we do, then it goes in /opt/foo-project.
+# Config goes in /etc/opt/foo-project/xx.conf
+# Logs go in /var/opt/foo-project/xx.log
+
+
+append_path /usr/local/bin
+append_path /usr/local/sbin
+append_path /usr/bin
+append_path /usr/sbin
+append_path /bin
+append_path /sbin
+
+fi
+
+############################################################################
+# Mac
+############################################################################
+
+if [[ "$platform" == 'macos' ]]; then
+
+# Default Mac Path
+# Temporarily set to run basic shell utilities below.
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+# User's private paths
+append_path $HOME/bin
+# TODO Remove, transfer to .local/bin
+# Remove bc .local is supposed to be a directory copy of /usr/local
+# so we can put tings liek etc and logs and not need to modify programs to use dots, just change root path.
+append_path $HOME/.local/bin
+
+# Rust's cargo installed binaries.
+append_path $HOME/.cargo/bin
+
+###################################
+# asdf
+###################################
+
+export ASDF_DIR=/usr/local/opt/asdf
+export ASDF_BIN_DIR=$ASDF_DIR/bin/asdf
+export ASDF_INSTALL_DIR=$ASDF_DIR/installs
+
+###################################
+# golang
+###################################
+
+# TODO copy this on linux
+
+# Can't use the shims' path bc it tricks the go tools and causes errors.
+# If this were a simple symlink that would be great, but its a file.
+# helpfully, the file tells us the current global go version.
+get_asdf_global_golang_path() {
+
+	local file=$ASDF_DIR/shims/go
+
+	# sed '3q;d' file - select line 3 of file
+	# perl exp - select #.# or #.#.#
+	local go_version=$(sed '3q;d' $file | perl -pe '($_)=/([0-9]+([.][0-9]+)+)/')
+
+	echo $ASDF_INSTALL_DIR/golang/$go_version
+}
+
+
+export GOROOT=$(get_asdf_global_golang_path)/go
+
+# Location of my private go packages.
+# Make it a colon seperated list of local project paths.
+# Most of the time we will be using a local version anyway.
+# This is more for when you want to use the binary system wide.
+# export GOPATH_LOCAL=
+
+# Location for any 3rd party forked go repos.
+# This does not need to be associated with golang version.
+# I guess its compiled on `go get` with whatever version is on path.
+export GOPATH_PUBLIC=$HOME/go
+
+# The GOPATH environment variable lists places to look for Go code.
+# First path is where files are installed on `go get`.
+# export GOPATH=$GOPATH_LOCAL:$GOPATH_PUBLIC
+export GOPATH=$GOPATH_PUBLIC
+
+# # Use golang installed with brew.
+# # brew install go --cross-compile-common
+# GOPATH_PUBLIC=$HOME/golang
+# export GOROOT=/usr/local/opt/go/libexec
+
+# Where to look for packages.
+# > Do not simply add GOPATH here bc that can be multiple paths.
+append_path $GOPATH_PUBLIC/bin
+# append_path $GOPATH_LOCAL/bin
+
+# Where go binary is at.
+# Usually is $GOROOT/bin
+append_path $GOROOT/bin
+
+
+# go, godoc, gofmt are all located here.
+# they are linked to the current active version.
+append_path /usr/local/opt/asdf/shims/
+
+# Default Mac Path
+append_path /usr/local/bin
+append_path /usr/bin
+append_path /bin
+append_path /usr/sbin
+append_path /sbin
+
+fi
+
+# Remove first `:` from PATH
+PATH=${TMPPATH#?}
+
+# Final explicit export
+export PATH="$PATH"

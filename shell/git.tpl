@@ -65,6 +65,9 @@ git config --global merge.conflictstyle diff3
   abbr -a gco git checkout
   abbr -a gci git commit
   abbr -a gbr git branch
+  abbr -a ga 'git add .'
+  abbr -a gp git push
+  abbr -a gpl git pull
 
   function acp --description 'Add, commit and push'
     git add . # Git 2.x Stage All (new, modified, deleted) files

@@ -10,8 +10,9 @@ alias sudo='sudo '
 
 export EDITOR='subl'
 export VISUAL='subl --wait'
-export SUDO_EDITOR=subl
-export PAGER=less
+export GIT_EDITOR='kak'
+export SUDO_EDITOR='subl'
+export PAGER='less'
 
 export BROWSER=/usr/bin/google-chrome
 # BROWSER=/usr/bin/firefox
@@ -102,21 +103,25 @@ alias rg='rg --colors line:fg:yellow --colors line:style:bold --colors path:fg:g
 ####################################################
 
 {% if os.mac %}
-
-  alias bi="brew install"
-  alias bs="brew search"
-
+  {% if shell.zsh %}
+    alias bi="brew install"
+    alias bs="brew search"
+  {% endif %}
+  {% if shell.fish %}
+    abbr -a bi brew install
+    abbr -a bs brew search
+  {% endif %}
 {% endif %}
 
 {% if os.linux %}
-  alias yi="sudo yum install"
-  alias ys="yum search"
-
+  {% if shell.zsh %}
+    alias yi="sudo yum install"
+    alias ys="yum search"
+  {% endif %}
   {% if shell.fish %}
     abbr -a yi sudo yum install
     abbr -a ys yum search
   {% endif %}
-
 {% endif %}
 
 ####################################################
@@ -137,11 +142,8 @@ alias nowtime=now
 alias nowdate='date +"%d-%m-%Y"'
 # alias su='sudo -i'
 
-# the zsh seems to be neccessary on mac, so it works in fish shell.
-# TODO oh this is bc i havent set up my fish PATH yet.
-alias reload_dotfiles="zsh -e $DOTFILES_ROOT/bootstrap/bootstrap.sh; reload"
-
-
+alias reload_dotfiles="$DOTFILES_ROOT/bootstrap/bootstrap.sh; reload"
+alias dotfiles_dev="cd $DOTFILES_ROOT; gulp"
 
 {% if shell.zsh %}
 
@@ -156,6 +158,10 @@ alias reload_dotfiles="zsh -e $DOTFILES_ROOT/bootstrap/bootstrap.sh; reload"
   alias reloadNoClear="source ~/.config/fish/config.fish"
   # TODO try prefixing with `bass` rtfm
   alias reloadPath='bash -c "source $HOME/.zpath"'
+
+  if type --quiet colordiff
+    alias diff='colordiff'
+  end
 
   # Typing `!!<SPC>` will get it replaced with the previous cmd.
   function bind_bang
@@ -295,6 +301,7 @@ end
 # Instead, do something like sudo where pressing a key twice will copy those args.
 # And paste them at cursor.
 
+alias ls="exa"
 alias vim="nvim"
 alias vi="nvim"
 alias gpg-decrypt-clipboard='xclip -o | gpg --decrypt | xclip'
@@ -302,6 +309,9 @@ alias reboot="sudo reboot"
 alias poweroff="sudo poweroff"
 alias halt="sudo halt"
 alias tv="tvremote"
+
+
+alias fishhistory="$EDITOR ~/.local/share/fish/fish_history"
 
 # TODO So dont put password here, pull password from system keyring.
 # Linux

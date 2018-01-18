@@ -22,11 +22,15 @@ pip3 install jinja2
 
 npm install --global gulp
 cd $DOTFILES; npm link gulp
+npm install
+
+yarn global add gulp
+yarn link
+yarn
 
 chmod +x ./bootstrap/bootstrap.sh
 chmod +x ./bootstrap/jinja_script.py
 
-npm install
 ```
 
 ## Cloning To Setup Machine
@@ -79,6 +83,14 @@ rm -rf $subldirbase; mkdir $subldirbase; ln -s $DOTFILES_ROOT/sublime $subldirba
 asdf plugin-add golang
 asdf install golang 1.9.2
 asdf global golang 1.9.2
+
+==================================================================================
+
+For network:
+Since guest netwrok seemed to (or it was really the protal) slow speed, it should only be enabled when guests are over.  There is ssh admin possible, so write a script that can enable on demand from phone, also set pw at that time.
+
+==================================================================================
+
 
 
 TODO add to update script
@@ -187,7 +199,6 @@ also research this vs git-lfs, pretty sure this is way more flexible, indeed
 we should be able to write a git-lfs backend for vinyl.
 
 
-nix-env -i gcc-wrapper-7.2.0
 
 
 TODO Fish Only save successful commands in history.
@@ -197,6 +208,10 @@ TODO Fish Only save successful commands in history.
 
 https://unix.stackexchange.com/questions/41739/keep-only-successful-commands-in-bash-history
 - some other approach
+
+
+TODO All the commands that we check before using, we should generate a message on shell start?  Or just add them all to the install list instead?
+
 
 ------------------------------------------------
 ------------------------------------------------
@@ -211,25 +226,30 @@ ln -sf $HOME/.nix-profile/bin/fish /usr/bin
 
 ## oneliners
 pip install ripgrep
-
+pip install glances
+nvim?
 
 # Mac install list
 
 # TODO Add to install list on both systems
-brew install
+brew install nvim
 brew install glances kak
 brew install ag ripgrep fzf
 
 highlight check works with fzf preview
 
-cargo install exa
-pip install glances
-
 brew cask install virtualbox
 brew cask install virtualbox-extension-pack
 
-brew install nvim ag
 
+# Same on all linux and mac
+> If can do with brew on mac and pip on linux dont add to this list.
+yarn global add gulp
+cargo install exa
+
+
+# RHEL 7
+nix-env -i gcc-wrapper-7.2.0
 
 
 ## Sublime Packages To Install Auto:

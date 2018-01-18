@@ -29,6 +29,10 @@ gulp.task('bootstrap', function(cb) {
 
 // Watch Files For Changes
 gulp.task('watch', function() {
+
+  // Run once at start.
+  gulp.start('bootstrap')
+
 	gulp.watch([
 		'**/*',
 		'!shell/**/*.fish',

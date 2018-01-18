@@ -79,6 +79,8 @@ def get_env_vars():
 	if 'nclmiami.ncl.com' in socket.gethostname():
 	  # IsWork='true'
 	  env_dict.update({ 'geo': {'work': 'true'} })
+	else:
+	  env_dict.update({ 'geo': {} })
 
 	# Operating System
 	if platform == "linux" or platform == "linux2":
@@ -95,8 +97,8 @@ def get_env_vars():
 
 env_dict = get_env_vars()
 
-print('Template Variables:')
-print(env_dict)
+print('  [ ℹ ] Template Variables:')
+print('  [ ℹ ] ', env_dict)
 
 # Clean target
 clean_target()
