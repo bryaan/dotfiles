@@ -87,16 +87,18 @@ setup_sublime() {
 ####################################################
 
 info 'compiling templates'
+info 'installing dotfiles'
 compile_templates
 success 'templates compiled!'
-
-# TODO When there is a dotfile to make an overwrite choice on 
-# the python script fails with no error output.
-# We should quit with an informative error message to run the bootstrap/bootstrap.sh
-# directly and then resume.
-info 'installing dotfiles'
-sh bootstrap/install_dotfiles.sh
 success 'dotfiles installed!'
+
+# # TODO When there is a dotfile to make an overwrite choice on 
+# # the python script fails with no error output.
+# # We should quit with an informative error message to run the bootstrap/bootstrap.sh
+# # directly and then resume.
+# info 'installing dotfiles'
+# # sh bootstrap/install_dotfiles.sh
+# success 'dotfiles installed!'
 
 info 'installing fish files'
 setup_fish

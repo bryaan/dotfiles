@@ -11,28 +11,84 @@ alias sudo='sudo '
 export EDITOR='subl'
 export VISUAL='subl --wait'
 export GIT_EDITOR='kak'
-export SUDO_EDITOR='subl'
-export PAGER='less'
+export SUDO_EDITOR='kak'
+export PAGER='vimpager'
 
 export BROWSER=/usr/bin/google-chrome
 # BROWSER=/usr/bin/firefox
 # BROWSER=/usr/bin/chrome-gnome-shell  # Try this, not sure if this is chrome in the shell or what?
 
-# ssh
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
 
+####################################################
+# osx only  TODO move to osx.tpl
+####################################################
+
+{% if os.mac %}
+{% if shell.fish %}
+
+  # TODO iTerm2 Shell Integration for fish on mac
+
+{% else %}
+  # iTerm2 Shell Integration
+  test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+{% endif %}
+{% endif %}
+
+####################################################
+# asdf  TODO move to asdf.tpl
+####################################################
+
+# TODO Move golang from pathfile to here.
+
+
+# TODO ~/.tool-versions move to version control.
+
+
+{% if shell.fish %}
+  if test -d $ASDF_HOME
+    source $ASDF_HOME/asdf.fish
+    # Completions are installed automatically by brew.
+    # If this conflicts add a linux only branch.
+    source $ASDF_HOME/completions/asdf.fish
+
+    ###################################
+    # golang
+    ###################################
+
+    # When asdf is managing golang a GOROOT is not neccessary!
+    # set -x GOROOT
+
+    # Where public go packages go.
+    set -x GOPATH "$HOME/go"
+
+    # # Add each one's bin directory to PATH.
+    set -x PATH "$GOPATH/bin" $PATH
+    # set -x PATH "$GOROOT/bin" $PATH
+
+  end
+{% else %}
+  source $ASDF_HOME/asdf.sh
+  source $ASDF_HOME/completions/asdf.bash
+{% endif %}
+
+{% if os.mac %}
+
+{% endif %}
+
+{% if os.linux %}
+
+{% endif %}
 
 ####################################################
 # Local Utility Commands
 ####################################################
 
 {% if shell.fish %}
-
-  # or begin
-  #     set -q XTERM_VERSION
-  #     and test (string replace -r "XTerm\((\d+)\)" '$1' -- $XTERM_VERSION) -ge 280
-  # end
 
   # Current User ID
   set -l UID (id -u (whoami))
@@ -52,6 +108,9 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
     warn "Package '$1' Not Installed!\nAlternatively, check that it is available on your PATH.\n"
   end
 
+  function rimraf
+      rm -rf $argv
+  end
 {% else %}
 
   # Commands to proxy thru sudo when not su.
@@ -69,9 +128,9 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
     warn "Package '$1' Not Installed!\nAlternatively, check that it is available on your PATH.\n"
   }
 
-  ####################################################
-  # Colorize
-  ####################################################
+####################################################
+# Colorize
+####################################################
 
 # Make rg'scolors look like ag's
 alias rg='rg --colors line:fg:yellow --colors line:style:bold --colors path:fg:green --colors path:style:bold --colors match:fg:black --colors match:bg:yellow --colors match:style:nobold'
@@ -142,22 +201,34 @@ alias nowtime=now
 alias nowdate='date +"%d-%m-%Y"'
 # alias su='sudo -i'
 
-alias reload_dotfiles="$DOTFILES_ROOT/bootstrap/bootstrap.sh; reload"
-alias dotfiles_dev="cd $DOTFILES_ROOT; gulp"
+alias dots.reload="$DOTFILES_ROOT/bootstrap/bootstrap.sh; reload"
+alias dots="cd $DOTFILES_ROOT; gulp"
 
 {% if shell.zsh %}
 
-  alias reload='source ~/.zshenv && source ~/.zshrc'
+  alias reload='source ~/.zshenv && source ~/.zshrc && reloadPath'
   alias reloadPath='source ~/.zpath'
 
 {% elif shell.fish %}
 
-  # This calls omf/init.fish and more. it works best.
-  # alias reload="omf reload"
-  alias reload="clear; commandline -f repaint; reloadNoClear"
-  alias reloadNoClear="source ~/.config/fish/config.fish"
-  # TODO try prefixing with `bass` rtfm
-  alias reloadPath='bash -c "source $HOME/.zpath"'
+  alias reload="clear; fish.reload"
+  # alias reload="clear; spin reloadNoClear"
+  # alias reloadNoClear="source ~/.config/fish/config.fish"
+
+  function fish.reload -d "Reload fish process via exec, keeping some context"
+    set -q CI; and return 0
+
+    # This came from omf, see if those vars apply.
+    # And i thinks history is getting saved already.
+    # history --save
+    # set -gx dirprev $dirprev
+    # set -gx dirnext $dirnext
+    # set -gx dirstack $dirstack
+    # set -gx fish_greeting ''
+
+    exec fish
+  end
+
 
   if type --quiet colordiff
     alias diff='colordiff'
@@ -332,17 +403,24 @@ alias sha1='openssl sha1'
 
 {% if shell.zsh %}
 
-  commandExists() {
+  function commandExists() {
     command -v $1 >/dev/null
   }
 
-  runSilent() {
+  # Works on Mac and Linux
+  function command_exists {
+    # this should be a very portable way of checking if something is on the path
+    # usage: "if command_exists foo; then echo it exists; fi"
+    type "$1" &> /dev/null
+  }
+
+  function runSilent() {
     nohup "$@" &>/dev/null 2>&1 &
   }
 
 {% elif shell.fish %}
 
-  function commandExists
+  function command_exists
     command -v $1 >/dev/null
   end
 

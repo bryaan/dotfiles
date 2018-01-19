@@ -11,5 +11,12 @@
 	],
 	"line_padding_bottom": 1,
 	"line_padding_top": 1,
-	"theme": "Adaptive.sublime-theme"
+	"theme": "Adaptive.sublime-theme",
+
+  "tab_size": 2,
+  "translate_tabs_to_spaces": true,
+  // If translate_tabs_to_spaces is true, use_tab_stops will make tab and
+  // backspace insert/delete up to the next tabstop
+  // ie. backspace once not Tab_Size times.
+  "use_tab_stops": true,
 }

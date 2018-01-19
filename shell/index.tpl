@@ -14,27 +14,19 @@
 
 {% if shell.fish %}
 
-# Bring nix-env and its packages into env.
-# TODO causing a warning on fish start
-# We may only need to add a few things to our path:
-# $HOME/.nix-profile/bin  $HOME/.nix-profile/sbin
-if test -e $HOME/.nix-profile/etc/profile.d/nix.sh
-	bass source $HOME/.nix-profile/etc/profile.d/nix.sh
-end
-
-
-# Dunno why it wasnt set on my mac, same path on linux.
-# Actually that was checked under zsh, maybe thats why.
-set -x OMF_PATH $HOME/.local/share/omf
-
-
 # Load PATH
 # TODO Rename to more generic file. 
 # Possibly move into ./shell
 # single files named by program and combined with their env vars and functions.
 # > Using bash -c *does not* bring over aliases. (dont use them in zpath)
 bass source $DOTFILES_ROOT/shell/pathfile
-# [[ -f ~/.zpath ]] && source ~/.zpath
+
+# Bring nix-env and its packages into env.
+if test -e $HOME/.nix-profile/etc/profile.d/nix.sh
+	# If ~.nix-profile/sbin doesn't exist this will echo a warning.
+	# To avoid seeing that we pipe its output to null.
+	bass source $HOME/.nix-profile/etc/profile.d/nix.sh ^/dev/null
+end
 
 
 set -l shellfilesdir $DOTFILES_ROOT/build/shell
@@ -43,26 +35,10 @@ set -l shellfilesdir $DOTFILES_ROOT/build/shell
 source $shellfilesdir/base.fish
 source $shellfilesdir/git.fish
 # source $shellfilesdir/dev.fish
-# source $shellfilesdir/ncl.fish
+source $shellfilesdir/ncl.fish
 
 # Using bash -c *does not* bring over aliases.
-# TODO does `bass` ?
-# bash -c "source $shellfilesdir/git.fish"
-
-
-### asdf
-if test -d $HOME/.asdf
-	# On linux.
-    source $HOME/.asdf/asdf.fish
-    if not test -d ~/.config/fish/completions
-    	mkdir -p ~/.config/fish/completions
-    	# TODO should check if file exists first.
-    	cp ~/.asdf/completions/asdf.fish ~/.config/fish/completions
-    end
-else
-	# On Mac, asdf installed by brew.
-	source /usr/local/opt/asdf/asdf.fish
-end
+# bash -c "source $shellfilesdir/ncl.zsh"
 
 
 
@@ -88,10 +64,10 @@ set -x FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 
 set -x FZF_CTRL_R_COMMAND 'rg --files'
 
+# TODO not working: https://github.com/junegunn/fzf/issues/1202
 # rg can't search directories so use ag or bfs
 # set -x  FZF_ALT_C_COMMAND "cd ~/; bfs -type d -nohidden | sed s/^\./~/"
 set -x FZF_ALT_C_COMMAND "ag --ignore '.git' --ignore 'node_modules/' -g ."
-
 # set -x FZF_ALT_C_OPTS "--preview 'tree -C {} | head -200'"
 
 ####################################################
@@ -126,29 +102,21 @@ set -g theme_newline_cursor no
 
 {% elif shell.zsh %}
 
-# Works on Mac and Linux
-function command_exists {
-  # this should be a very portable way of checking if something is on the path
-  # usage: "if command_exists foo; then echo it exists; fi"
-  type "$1" &> /dev/null
-}
-
-
 # Load PATH
 [[ -f ~/.zpath ]] && source ~/.zpath
 
 # Purpose of wrapping it is so the local vars stay local.
-namespaced_load() {
+function load_shell_files() {
 
 	local shellfilesdir=$DOTFILES_ROOT/build/shell
 
 	source $shellfilesdir/base.zsh
 	source $shellfilesdir/git.zsh
 	source $shellfilesdir/dev.zsh
-	source $shellfilesdir/ncl.zsh
+	# source $shellfilesdir/ncl.zsh
 }
 
-namespaced_load
+load_shell_files
 
 {% endif %}
 

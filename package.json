@@ -4,9 +4,10 @@
   "description": "Makes me feel at $HOME",
   "main": "gulpfile.js",
   "dependencies": {
-    "clear": "^0.0.1",
+    "cli-spinners": "^1.1.0",
     "gulp": "^3.9.1",
-    "gulp-util": "^3.0.8"
+    "gulp-util": "^3.0.8",
+    "ora": "^1.3.0"
   },
   "devDependencies": {},
   "scripts": {

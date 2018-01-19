@@ -84,24 +84,8 @@ asdf plugin-add golang
 asdf install golang 1.9.2
 asdf global golang 1.9.2
 
-==================================================================================
 
-For network:
-Since guest netwrok seemed to (or it was really the protal) slow speed, it should only be enabled when guests are over.  There is ssh admin possible, so write a script that can enable on demand from phone, also set pw at that time.
-
-==================================================================================
-
-
-
-TODO add to update script
-
-Update all plugins
-asdf plugin-update --all
-
-Update asdf itself
-asdf update
-
-
+# Shortcuts
 
 Fish:
 Ctrl+S => sudo insert
@@ -118,8 +102,15 @@ history --delete --prefix some_command
 fish_config history also lets you do it by point-n-click.
 
 
-------------------------------------------------------------------------------
+==================================================================================
 
+For network:
+Since guest netwrok seemed to (or it was really the protal) slow speed, it should only be enabled when guests are over.  There is ssh admin possible, so write a script that can enable on demand from phone, also set pw at that time.
+
+==================================================================================
+
+
+------------------------------------------------------------------------------
 
 
 TODO https://github.com/junegunn/fzf
@@ -130,50 +121,23 @@ Check out whether to use z or fzf-autojump
 https://github.com/wting/autojump
 https://github.com/rominf/omf-plugin-fzf-autojump
 
-
-TODO Merge jinja_script and bootstrap.sh
-
-
-TODO occasionaly run `fish_update_completions`
-to parse man pages and gernate new completions.
-They go in ~/.config/fish/completions
-
-
-TODO Enable `fzf` so Ctrl+R history search wrks...
-then again we have great history search with up key anyway right? just not full display at once. so yea lets add.
-
 ------------------------------------------------
 ------------------------------------------------
 
-TODO i really want my git aliases from zsh to work.
-1. Build my own customized repo by copying from zsh plugins, prob best approach idea, well besides for completions.
-2. fish `bass` might work with aliases and functions.
-3. pull anything with alias out to new file, but since they can use functions this likely requires lots of work.
+TODO Bring zsh aliases (and completions via bass?) over to fish.
+- Make them fish abbreviations.
 
 TODO create a `sublime commands` file for easy goto readme and stuff
 
 TODO Make sure reload terminal script works with fish.
 
-# TODO Cron to periodically ask about updating, that is if fish doesnt ask
-# automatically like zsh. Ideally it should trigger a flag, and next time an interactive prompt is opned the user should be asked (try to make sure the shell isnt execing a command, but that the proc is /usr/bin/zsh or similar)
-
-omf self-update
-omf update
-
-
-
-add an update command in general.
-- ohmyfish: `omf update`
-- sublime: install all packages
-
-Don't run the update command in dev loop.
-
-
 
 TODO switch task runner from gulp to python to reduce need for setup. And node_modules dir.
 pip install watchdog
 
-TODO Stop templates from triggering by compiling to build/ dir.
+https://github.com/aio-libs/aiomonitor
+python event loop manager
+
 
 
 
@@ -185,37 +149,59 @@ also krypton support ref?
 
 
 
-https://github.com/aio-libs/aiomonitor
-python event loop manager
-
-
-# TODO Vinyl
+# TODO Vinyl - cloud file system
 https://github.com/gulpjs/vinyl-fs
-can use this with tibra data. so large data files can reside off git
+can use this with tibra data so large data files can reside off git.
 then project is copied somewhere, then when at location, it downloads what is required.
-- added benifit we keep skelaton files in repo so we know.
+- added benefit we keep skeleton files in repo so we know they exist.
 
-also research this vs git-lfs, pretty sure this is way more flexible, indeed
-we should be able to write a git-lfs backend for vinyl.
-
+also research this vs git-lfs, pretty sure this is way more flexible, indeed we should be able to write a git-lfs backend for vinyl.
 
 
-
-TODO Fish Only save successful commands in history.
-- but still allow pressing up to modify typo in last command
-- delete only after a certain # lines, or cronjob.
-- errord cmd history line numbers must be saved to another file so we know which lines to delete later on cleanup.
+# TODO My history requirements
+- All commands enetered in any terminal should be added, in order of runtime, to a global shared history file.
+- However the current history of any given shell should only be those commands that were run in it. (Up arrow search should pull from local history)
+- However if we search in one shell for a command just run in the other, we should be able to find it. (history search should pull from the global file)
+- TODO Only successful commands should be saved in history. (or reallly i think i mean those commands run without spelling error)
+  - but still allow pressing up to modify typo in last command
+  - delete only after a certain # lines, or cronjob.
+  - errord cmd history line numbers must be saved to another file so we know which lines to delete later on cleanup.
 
 https://unix.stackexchange.com/questions/41739/keep-only-successful-commands-in-bash-history
 - some other approach
 
 
-TODO All the commands that we check before using, we should generate a message on shell start?  Or just add them all to the install list instead?
+------------------------------------------------
+------------------------------------------------
+
+# TODO Auto Software/System Updates
+
+# Cron to periodically ask about updating, that is if fish doesnt ask
+# automatically like zsh. Ideally it should trigger a flag, and next time an interactive prompt is opned the user should be asked (try to make sure the shell isnt execing a command, but that the proc is /usr/bin/zsh or similar)
+
+# update fish/fisherman
+fisher up
+
+# update fish completions  `fish_update_completions`
+to parse man pages and gernate new completions.
+They go in ~/.config/fish/completions
+
+# update sublime and packages
+sublime: install/update all packages
+
+
+TODO add to update script
+
+Update all plugins
+asdf plugin-update --all
+
+Update asdf itself
+asdf update
+
 
 
 ------------------------------------------------
 ------------------------------------------------
-
 
 # Linux install list
 
@@ -228,13 +214,19 @@ ln -sf $HOME/.nix-profile/bin/fish /usr/bin
 pip install ripgrep
 pip install glances
 nvim?
+nix-env -i yarn
+vimpager - from github compile
 
 # Mac install list
 
-# TODO Add to install list on both systems
-brew install nvim
+# TODO alfred
+https://www.alfredapp.com/
+https://github.com/sdegutis/hydra
+
+brew install nvim vimpager
 brew install glances kak
 brew install ag ripgrep fzf
+bi yarn
 
 highlight check works with fzf preview
 
@@ -438,9 +430,6 @@ $ brew cask install \
 
 
 
-https://www.alfredapp.com/
-https://github.com/sdegutis/hydra
-
 Gitkraken ssap
 hqfaf@slipry.net11
 
@@ -470,13 +459,6 @@ https://console.bluemix.net/docs/services/alchemy-language/visual-constraints.ht
 
 
 
-Good keyshorcuts for zsh and autocompletion
-
-https://stackoverflow.com/questions/211378/hidden-features-of-bash/1416125#1416125
-
-Alt - * To show all potential matches to wildcard
-
-
 
 # Android Backup
 
@@ -485,3 +467,10 @@ helium and titanuim backup
 - should be able to do it manually by simply copying everything apparently [check this]
 
 - https://www.techrepublic.com/article/how-to-create-a-full-backup-of-your-android-device-without-root/  Uses `adb` from android studio to connect to phone and download data.
+
+
+
+
+
+
+

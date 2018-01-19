@@ -1,7 +1,17 @@
 var gulp  = require('gulp')
 var gutil = require('gulp-util')
-var exec = require('child_process').exec;
-var clear = require('clear');
+var exec = require('child_process').exec
+
+function clearTerminal() {
+  console.log('\n'.repeat(1000))
+}
+
+// TODO Possibly use spinners from here:
+// https://www.npmjs.com/package/multispinner
+// but that requires integration with the py script.
+// We really need to pick either js or python. (or rust?)
+// Actually rather we need to bring the bootstrap.sh into here.
+// python can stay on its own.
 
 // Compile Our Dotfiles
 gulp.task('bootstrap', function(cb) {
@@ -16,7 +26,7 @@ gulp.task('bootstrap', function(cb) {
   	stdout: true // default = true, false means don't write stdout
   }
 
-  clear()
+  clearTerminal()
 
   exec('sh bootstrap/bootstrap.sh', function (err, stdout, stderr) {
     console.log(stdout)

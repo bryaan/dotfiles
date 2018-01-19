@@ -2,10 +2,13 @@
 #
 ############################################################
 
+# # Source global definitions
+# if [ -f /etc/bashrc ]; then
+# 	source /etc/bashrc
+# fi
+
 # Set only this required var.
 export DOTFILES_ROOT="$HOME/src/dotfiles"
 
 # Import shell index file that imports everything else.
 source $DOTFILES_ROOT/build/shell/index.zsh
-
-

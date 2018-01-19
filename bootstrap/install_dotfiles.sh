@@ -110,4 +110,10 @@ install_dotfiles () {
   done
 }
 
+# Backup all files automatically.
+# If disabled, watch for dev loop to stop without notice.
+# Must run the bootstrap manually then to decide what to do with file.
+backup_all=true
+
+# Does what it says.
 install_dotfiles

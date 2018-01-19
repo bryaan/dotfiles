@@ -280,31 +280,11 @@ if [[ "$machine" == 'Linux' ]]; then
 
 fi
 
-if [[ "$machine" == 'Linux' ]]; then
+if [[ "$machine" == 'Mac' ]]; then
 
-################################################
-# Linux
-################################################
-
-# asdf
-source $HOME/.asdf/asdf.sh
-source $HOME/.asdf/completions/asdf.bash
-
-
-################################################
-# Mac
-################################################
-
-elif [[ "$machine" == 'Mac' ]]; then
-
-  # asdf
-  source /usr/local/opt/asdf/asdf.sh
-  # Completions are installed automatically by brew.
-
-  # iTerm2 Shell Integration
-  source ~/.iterm2_shell_integration.zsh
-
-  test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+  ################################################
+  # Mac
+  ################################################
 
   # Fix so we can copy out of tmux.
   # singleton tmuxCopyPasteFix &

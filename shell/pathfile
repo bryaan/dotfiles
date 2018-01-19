@@ -5,6 +5,7 @@
 [ "Linux" = "$(uname)" ] && platform="linux" || platform="macos"
 [ "x86_64" = "$(uname -m)" ] && arch="amd64" || arch="386"
 
+# set -x
 
 # FIXME For some very strange reason on macos + bash the directory test
 # will not work for any of these paths:
@@ -20,7 +21,6 @@ function checkIfDirectory() {
 # Checks that the path exists before adding it.
 function append_path() {
   local dir="$1"
-
   # FIXME see `checkIfDirectory`
   # checkIfDirectory $dir && PATH=$PATH:$dir
   TMPPATH="$TMPPATH:$dir"
@@ -30,74 +30,60 @@ function append_path() {
 TMPPATH=''
 
 ############################################################################
+# Mac + Linux Common
+############################################################################
+
+
+# TODO this fun does not work. bc asdf adds mutiple golang varsion to this file..
+# Can't use the shims' path bc it tricks the go tools and causes errors.
+# If this were a simple symlink that would be great, but its a file.
+# helpfully, the file tells us the current global go version.
+get_asdf_global_golang_path() {
+
+  # T O D O Check that the ASDF env vars are set.
+  # bc may happen that command gets used before asdf vars are readyy.
+
+  local file=$ASDF_HOME/shims/go
+
+  # sed '3q;d' file - select line 3 of file
+  # perl exp - select #.# or #.#.#
+  local go_version=$(sed '3q;d' $file | perl -pe '($_)=/([0-9]+([.][0-9]+)+)/')
+
+  echo $ASDF_INSTALL_DIR/golang/$go_version
+}
+
+############################################################################
 # Linux
 ############################################################################
 
 if [[ "$platform" == 'linux' ]]; then
 
-# Git v2
-append_path /usr/local/src/git-2.15.1/bin
-
-# Java and SBT
-export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
-append_path $JAVA_HOME/bin
-append_path /home/bryan/bin/sbt
-
 ###################################
 # asdf
 ###################################
 
-export ASDF_DIR=$HOME/.asdf
-export ASDF_INSTALL_DIR=$ASDF_DIR/installs
-
-###################################
-# golang
-###################################
-
-# TODO Really important we ask asdf, bc version is changed thru asdf.
-# $(asdf which golang)
-# problem is
-# 1. for some reason it has an erronous /golang appended to it.
-# 2. not sure if a reload is done in an asdf go project dir if it will use global one or local one.
-# i guess we ask does asdf reset the path properly.  i beleive it does thru asdf.sh. just test it.
-# Where go binary is at.
-export GOROOT=$ASDF_INSTALL_DIR/golang/1.9.2/go
-
-# Location of my private go packages.
-# export GOPATH_LOCAL=$ASDF_INSTALL_DIR/golang/packages
-
-# Location for any 3rd party forked go repos.
-export GOPATH_PUBLIC=$ASDF_INSTALL_DIR/golang/1.9.2/packages
-
-# The GOPATH environment variable lists places to look for Go code.
-# export GOPATH=$GOPATH_LOCAL:$GOPATH_PUBLIC
-export GOPATH=$GOPATH_PUBLIC
-
-# Where to look for packages.
-# > Do not simply add GOPATH here bc that can be multiple paths.
-append_path $GOPATH_PUBLIC/bin
-# append_path $GOPATH_LOCAL/bin
-
-# Where go binary is at.
-append_path $GOROOT/bin
-
-###################################
-# Rust / Cargo
-###################################
-
-append_path "$HOME/.cargo/bin"
+export ASDF_HOME=$HOME/.asdf
+export ASDF_INSTALL_DIR=$ASDF_HOME/installs
 
 ###################################
 # Misc
 ###################################
 
-# export PATH=$PATH:/usr/lib64/qt-3.3/bin
+# Rust / Cargo
+export CARGO_HOME="$HOME/.cargo"
+append_path $CARGO_HOME/bin
 
-###################################
+# Git v2
+export GIT_HOME=/usr/local/src/git-2.15.1
+append_path $GIT_HOME/bin
+
 # FZF - Fuzzy Search
-###################################
+export FZF_HOME="$HOME/.fzf"
+append_path $FZF_HOME/bin
 
-append_path /home/bryan/.fzf/bin
+# Java
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+append_path $JAVA_HOME/bin
 
 ###################################
 # User
@@ -128,10 +114,10 @@ append_path /opt/local/sbin
 
 
 append_path /usr/local/bin
-append_path /usr/local/sbin
-append_path /usr/bin
-append_path /usr/sbin
+append_path /usr/bin/
 append_path /bin
+append_path /usr/local/sbin
+append_path /usr/sbin
 append_path /sbin
 
 fi
@@ -160,31 +146,15 @@ append_path $HOME/.cargo/bin
 # asdf
 ###################################
 
-export ASDF_DIR=/usr/local/opt/asdf
-export ASDF_BIN_DIR=$ASDF_DIR/bin/asdf
-export ASDF_INSTALL_DIR=$ASDF_DIR/installs
+export ASDF_HOME=/usr/local/opt/asdf
+# export ASDF_BIN=$ASDF_HOME/bin/asdf
+export ASDF_INSTALL_DIR=$ASDF_HOME/installs
 
 ###################################
 # golang
 ###################################
 
-# TODO copy this on linux
-
-# Can't use the shims' path bc it tricks the go tools and causes errors.
-# If this were a simple symlink that would be great, but its a file.
-# helpfully, the file tells us the current global go version.
-get_asdf_global_golang_path() {
-
-	local file=$ASDF_DIR/shims/go
-
-	# sed '3q;d' file - select line 3 of file
-	# perl exp - select #.# or #.#.#
-	local go_version=$(sed '3q;d' $file | perl -pe '($_)=/([0-9]+([.][0-9]+)+)/')
-
-	echo $ASDF_INSTALL_DIR/golang/$go_version
-}
-
-
+# Parent dir of where go binaries are at.
 export GOROOT=$(get_asdf_global_golang_path)/go
 
 # Location of my private go packages.
@@ -208,16 +178,13 @@ export GOPATH=$GOPATH_PUBLIC
 # GOPATH_PUBLIC=$HOME/golang
 # export GOROOT=/usr/local/opt/go/libexec
 
-# Where to look for packages.
-# > Do not simply add GOPATH here bc that can be multiple paths.
-append_path $GOPATH_PUBLIC/bin
+# Add each one's bin directory to PATH.
 # append_path $GOPATH_LOCAL/bin
-
-# Where go binary is at.
-# Usually is $GOROOT/bin
+append_path $GOPATH_PUBLIC/bin
 append_path $GOROOT/bin
 
 
+# TODO shouldnt need this with stuff above
 # go, godoc, gofmt are all located here.
 # they are linked to the current active version.
 append_path /usr/local/opt/asdf/shims/
@@ -232,7 +199,7 @@ append_path /sbin
 fi
 
 # Remove first `:` from PATH
-PATH=${TMPPATH#?}
+TMPPATH=${TMPPATH#?}
 
 # Final explicit export
-export PATH="$PATH"
+export PATH="$TMPPATH"

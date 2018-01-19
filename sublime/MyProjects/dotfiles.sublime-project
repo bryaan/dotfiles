@@ -1,0 +1,36 @@
+{
+  "folders": [
+    {
+      "path": "~/src/dotfiles/",
+      // Exclude from showing or indexing.
+      "folder_exclude_patterns": [
+        "build/**",
+        ".git",
+        "node_modules",
+        "Package Control.cache"
+      ],
+      // Exclude from indexing.
+      // binary_file_patterns, index_exclude_patterns, folder_exclude_patterns
+      "index_exclude_patterns": [
+        "build/**"
+      ],
+      "follow_symlinks": true
+    },
+    {
+      "path": "~/src/dotfiles/docs",
+      "name": "Documentation",
+      "file_exclude_patterns": ["*.css"]
+    }
+  ],
+  "settings": {
+    "tab_size": 2,
+    "translate_tabs_to_spaces": true,
+    "use_tab_stops": true,
+  },
+  "build_systems": [
+    {
+      "name": "List",
+      "shell_cmd": "ls -l"
+    }
+  ]
+}
