@@ -1,4 +1,28 @@
 
+function dots
+  cd $DOTFILES_ROOT; gulp
+end
+function dots.bootstrap
+  $DOTFILES_ROOT/bootstrap/bootstrap.sh
+end
+function reload
+  clear; fish.reload
+  # clear; spin fish.reload
+end
+function fish.reload -d "Reload fish process via exec, keeping some context"
+  set -q CI; and return 0
+  # see what those vars do. And i thinks history is getting saved already.
+  # history --save
+  # set -gx dirprev $dirprev
+  # set -gx dirnext $dirnext
+  # set -gx dirstack $dirstack
+  # set -gx fish_greeting ''
+  exec fish
+end
+function fish.reload.soft
+  source ~/.config/fish/config.fish
+end
+
 ############################################################################
 # Program/System Shorcuts
 ############################################################################
@@ -38,7 +62,6 @@ alias ohmyzsh='$EDITOR ~/.oh-my-zsh/oh-my-zsh.sh'
 
 alias terminatorconf='$EDITOR ~/.config/terminator/config'
 alias tmuxconf='$EDITOR ~/.tmux.conf'
-alias mux="rvm use ruby-2.4 && tmuxinator"
 
 
 ############################################################################

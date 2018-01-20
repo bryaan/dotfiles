@@ -12,8 +12,8 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 # Where shell templates are located.
 SHELL_FILES_DIR="shell"
 
-# Where built shell templates go
-BUILD_DIR="build/shell/"
+# Where built templates go
+BUILD_DIR="build/"
 
 ##########################################################################
 
@@ -31,7 +31,7 @@ def fail(msg):
 
 
 ######################################
-# Functions
+# Compiling
 ######################################
 
 # Note: no leading slashes in subsequent args.
@@ -57,30 +57,11 @@ def create_env():
   # Create the jinja2 environment.
   # Notice the use of trim_blocks, which greatly helps control whitespace.
   env = Environment(
-    loader = FileSystemLoader([ SHELL_FILES_DIR ]),
+    loader = FileSystemLoader([ PROJECT_ROOT ]),
     trim_blocks = True
     # autoescape = select_autoescape(['html', 'xml'])
   )
   return env
-
-def compile(filename, env_dict):
-  # > You don't need to addon the other shells and setthem to false, but if you do
-  # > it's not `false` but empty string you need to use ''.
-  shell_fish = {'shell': {'fish': 'true'}}
-  shell_zsh = {'shell': {'zsh': 'true'}}
-
-  # Create merged dict for each shell.
-  fish_env_dict = merge_dicts(env_dict, shell_fish) #{**env_dict, **shell_fish}
-  zsh_env_dict = merge_dicts(env_dict, shell_zsh)
-
-
-  # Compile one for fish and zsh each.
-  env = create_env()
-  tpl = env.get_template(filename)
-  tpl.stream(fish_env_dict).dump(
-    os.path.join(BUILD_DIR, filename.replace('.tpl', '.fish')))
-  tpl.stream(zsh_env_dict).dump(
-    os.path.join(BUILD_DIR, filename.replace('.tpl', '.zsh')))
 
 def clean_target():
   shutil.rmtree(BUILD_DIR, ignore_errors=True)
@@ -107,6 +88,43 @@ def get_env_vars():
 
   return env_dict
 
+# Get the basedirectory of a a path relative to PROJECT_ROOT
+def project_rel_basedir(filepath):
+  basepath = str(filepath).replace(filepath.name, '')
+  return Path(basepath).relative_to(PROJECT_ROOT)
+#
+def compile(filepath, env_dict):
+  # > You don't need to addon the other shells and setthem to false, but if you do
+  # > it's not `false` but empty string you need to use ''.
+  shell_fish = {'shell': {'fish': 'true'}}
+  # shell_zsh = {'shell': {'zsh': 'true'}}
+
+  # Create merged dict for each shell.
+  fish_env_dict = merge_dicts(env_dict, shell_fish)
+  # zsh_env_dict = merge_dicts(env_dict, shell_zsh)
+
+  # Setup template.
+  env = create_env()
+  reltplpath = filepath.relative_to(PROJECT_ROOT)
+  tpl = env.get_template(str(reltplpath))
+
+  # Make parent build directories.
+  build_parent = BUILD_DIR + str(project_rel_basedir(filepath))
+  Path(build_parent).mkdir(parents=True, exist_ok=True)
+
+  # Compile for fish.
+  relfilepath = str(reltplpath).replace('.tpl', '.fish')
+  relfilepath = Path(BUILD_DIR).joinpath(relfilepath)
+  tpl.stream(fish_env_dict).dump(str(relfilepath))
+
+  # Compile for zsh.
+  # relfilepath = str(reltplpath).replace('.tpl', '.zsh')
+  # relfilepath = Path(BUILD_DIR).joinpath(relfilepath)
+  # tpl.stream(zsh_env_dict).dump(filepath)
+
+######################################
+# Installing
+######################################
 
 import os.path
 from os.path import expanduser, basename
@@ -128,9 +146,6 @@ def install_dotfiles():
 
     pretty_dst = str(dst)
     pretty_src = re.sub(PROJECT_ROOT + '/', '', str(src))
-
-    # print('src ' + str(src))
-    # print('dst ' + str(dst))
 
     # Symlink and checks.
     # Is a symlink already present resolving to same src file?
@@ -174,11 +189,9 @@ info(pprint.pformat(env_dict, width=1))
 clean_target()
 
 # Compile Templates
-compile('index.tpl', env_dict)
-compile('base.tpl', env_dict)
-compile('dev.tpl', env_dict)
-compile('git.tpl', env_dict)
-compile('ncl.tpl', env_dict)
+files = Path(PROJECT_ROOT).glob('**/*.tpl')
+for src in files:
+  compile(src, env_dict)
 
 # Install Dotfiles
 install_dotfiles()

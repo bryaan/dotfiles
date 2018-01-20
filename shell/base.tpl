@@ -5,128 +5,75 @@
 #
 
 # Allows aliases to be run under sudo.
+# TODO does fish require this?
 alias sudo='sudo '
 
 
-export EDITOR='subl'
-export VISUAL='subl --wait'
-export GIT_EDITOR='kak'
-export SUDO_EDITOR='kak'
-export PAGER='vimpager'
+set -x EDITOR 'subl'
+set -x VISUAL 'subl --wait'
+set -x GIT_EDITOR 'kak'
+set -x SUDO_EDITOR 'kak'
+set -x PAGER 'vimpager'
 
-export BROWSER=/usr/bin/google-chrome
+set -x BROWSER "/usr/bin/google-chrome"
 # BROWSER=/usr/bin/firefox
 # BROWSER=/usr/bin/chrome-gnome-shell  # Try this, not sure if this is chrome in the shell or what?
 
-export SSH_KEY_PATH="~/.ssh/rsa_id"
+set -x SSH_KEY_PATH "~/.ssh/rsa_id"
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
 ####################################################
-# osx only  TODO move to osx.tpl
+# Dotfile Dev Commands
 ####################################################
 
-{% if os.mac %}
-{% if shell.fish %}
+function dots
+  cd $DOTFILES_ROOT; gulp
+end
+function dots.bootstrap
+  $DOTFILES_ROOT/bootstrap/bootstrap.sh
+end
+function reload
+  clear; fish.reload
+  # clear; spin fish.reload
+end
+function fish.reload -d "Reload fish process via exec, keeping some context"
+  set -q CI; and return 0
+  # see what those vars do. And i thinks history is getting saved already.
+  # history --save
+  # set -gx dirprev $dirprev
+  # set -gx dirnext $dirnext
+  # set -gx dirstack $dirstack
+  # set -gx fish_greeting ''
+  exec fish
+end
+function fish.reload.soft
+  source ~/.config/fish/config.fish
+end
 
-  # TODO iTerm2 Shell Integration for fish on mac
-
-{% else %}
-  # iTerm2 Shell Integration
-  test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-{% endif %}
-{% endif %}
-
-####################################################
-# asdf  TODO move to asdf.tpl
-####################################################
-
-# TODO Move golang from pathfile to here.
-
-
-# TODO ~/.tool-versions move to version control.
-
-
-{% if shell.fish %}
-  if test -d $ASDF_HOME
-    source $ASDF_HOME/asdf.fish
-    # Completions are installed automatically by brew.
-    # If this conflicts add a linux only branch.
-    source $ASDF_HOME/completions/asdf.fish
-
-    ###################################
-    # golang
-    ###################################
-
-    # When asdf is managing golang a GOROOT is not neccessary!
-    # set -x GOROOT
-
-    # Where public go packages go.
-    set -x GOPATH "$HOME/go"
-
-    # # Add each one's bin directory to PATH.
-    set -x PATH "$GOPATH/bin" $PATH
-    # set -x PATH "$GOROOT/bin" $PATH
-
-  end
-{% else %}
-  source $ASDF_HOME/asdf.sh
-  source $ASDF_HOME/completions/asdf.bash
-{% endif %}
-
-{% if os.mac %}
-
-{% endif %}
-
-{% if os.linux %}
-
-{% endif %}
 
 ####################################################
 # Local Utility Commands
 ####################################################
 
-{% if shell.fish %}
+# Current User ID
+set -l UID (id -u (whoami))
 
-  # Current User ID
-  set -l UID (id -u (whoami))
+# Commands to proxy thru sudo when not su.
+if [ UID != 0 ]
+    alias reboot='sudo reboot'
+    # TODO Only on when yum command present && linux
+    alias update='sudo yum upgrade'
+end
 
-  # Commands to proxy thru sudo when not su.
-  if [ UID != 0 ]
-      alias reboot='sudo reboot'
-      # TODO Only on when yum command present && linux
-      alias update='sudo yum upgrade'
-  end
+function warn
+  echo [Warning] $1
+end
 
-  function warn
-    echo [Warning] $1
-  end
-
-  function warnProgramNotInstalled
-    warn "Package '$1' Not Installed!\nAlternatively, check that it is available on your PATH.\n"
-  end
-
-  function rimraf
-      rm -rf $argv
-  end
-{% else %}
-
-  # Commands to proxy thru sudo when not su.
-  if [ $UID -ne 0 ]; then
-      alias reboot='sudo reboot'
-      # TODO Only on when yum command present && linux
-      alias update='sudo yum upgrade'
-  fi
-
-  warn() {
-  	printf "[Warning] $1"
-  }
-
-  warnProgramNotInstalled() {
-    warn "Package '$1' Not Installed!\nAlternatively, check that it is available on your PATH.\n"
-  }
+function warnProgramNotInstalled
+  warn "Package '$1' Not Installed!\nAlternatively, check that it is available on your PATH.\n"
+end
 
 ####################################################
 # Colorize
@@ -135,53 +82,30 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # Make rg'scolors look like ag's
 alias rg='rg --colors line:fg:yellow --colors line:style:bold --colors path:fg:green --colors path:style:bold --colors match:fg:black --colors match:bg:yellow --colors match:style:nobold'
 
-  {% if os.linux %}
-    # alias ls='ls --color=auto'
-    #alias dir='ls --color=auto --format=vertical'
-    #alias vdir='ls --color=auto --format=long'
+# {% if os.linux %}
+#   # alias ls='ls --color=auto'
+#   #alias dir='ls --color=auto --format=vertical'
+#   #alias vdir='ls --color=auto --format=long'
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-    alias yum='yum --color=always'
+#   alias grep='grep --color=auto'
+#   alias fgrep='fgrep --color=auto'
+#   alias egrep='egrep --color=auto'
+#   alias yum='yum --color=always'
 
-    # TODO Check colordiff command exists.
-    alias diff='colordiff'
+#   # TODO Check colordiff command exists.
+#   alias diff='colordiff'
 
-  {% endif %}
+# {% endif %}
 
-  # TODO Must Install colorize.
-  # ccze is much slower than colorize and hasnt been updated.
-  # tail -f /var/my/log | color
-  alias color='colorize'
-{% endif %}
+# # TODO Must Install colorize.
+# # ccze is much slower than colorize and hasnt been updated.
+# # tail -f /var/my/log | color
+# alias color='colorize'
 
+if type --quiet colordiff
+  alias diff='colordiff'
+end
 
-####################################################
-# Install/Update Commands
-####################################################
-
-{% if os.mac %}
-  {% if shell.zsh %}
-    alias bi="brew install"
-    alias bs="brew search"
-  {% endif %}
-  {% if shell.fish %}
-    abbr -a bi brew install
-    abbr -a bs brew search
-  {% endif %}
-{% endif %}
-
-{% if os.linux %}
-  {% if shell.zsh %}
-    alias yi="sudo yum install"
-    alias ys="yum search"
-  {% endif %}
-  {% if shell.fish %}
-    abbr -a yi sudo yum install
-    abbr -a ys yum search
-  {% endif %}
-{% endif %}
 
 ####################################################
 # Utility Commands
@@ -201,122 +125,39 @@ alias nowtime=now
 alias nowdate='date +"%d-%m-%Y"'
 # alias su='sudo -i'
 
-alias dots.reload="$DOTFILES_ROOT/bootstrap/bootstrap.sh; reload"
-alias dots="cd $DOTFILES_ROOT; gulp"
 
-{% if shell.zsh %}
-
-  alias reload='source ~/.zshenv && source ~/.zshrc && reloadPath'
-  alias reloadPath='source ~/.zpath'
-
-{% elif shell.fish %}
-
-  alias reload="clear; fish.reload"
-  # alias reload="clear; spin reloadNoClear"
-  # alias reloadNoClear="source ~/.config/fish/config.fish"
-
-  function fish.reload -d "Reload fish process via exec, keeping some context"
-    set -q CI; and return 0
-
-    # This came from omf, see if those vars apply.
-    # And i thinks history is getting saved already.
-    # history --save
-    # set -gx dirprev $dirprev
-    # set -gx dirnext $dirnext
-    # set -gx dirstack $dirstack
-    # set -gx fish_greeting ''
-
-    exec fish
-  end
+# TODO So dont put password here, pull password from system keyring.
+# Linux
+# secret-tool store --label='Password for mydrive' drive mydrive
+# secret-tool lookup drive mydrive
+# Mac
+# security add-generic-password -a ${USER} -s playground -w `pwgen`
+# security delete-generic-password -a ${USER} -s playground
+# security find-generic-password -a ${USER} -s playground -w
+alias rebootlinksys="curl -u 'admin:my-super-password' 'http://192.168.1.2/setup.cgi?todo=reboot'"
 
 
-  if type --quiet colordiff
-    alias diff='colordiff'
-  end
+# # Works on Mac and Linux
+# function command_exists {
+#   # this should be a very portable way of checking if something is on the path
+#   # usage: "if command_exists foo; then echo it exists; fi"
+#   type "$1" &> /dev/null
+# }
 
-  # Typing `!!<SPC>` will get it replaced with the previous cmd.
-  function bind_bang
-    switch (commandline -t)
-    case "!"
-      commandline -t $history[1]; commandline -f repaint
-    case "*"
-      commandline -i !
-    end
-  end
-
-  # Typing `!$<SPC>` will get it replaced with the previous cmd's final arg.
-  function bind_dollar
-    switch (commandline -t)
-    case "!"
-      commandline -t ""
-      commandline -f history-token-search-backward
-    case "*"
-      commandline -i '$'
-    end
-  end
-
- # If the command line has content, it prepends sudo.
- # If there is no content, it prepends sudo to the last item in the history.
-  function prepend_command
-    set -l prepend $argv[1]
-    if test -z "$prepend"
-      echo "prepend_command needs one argument."
-      return 1
-    end
-
-    set -l cmd (commandline)
-    if test -z "$cmd"
-      commandline -r $history[1]
-    end
-
-    set -l old_cursor (commandline -C)
-    commandline -C 0
-    commandline -i "$prepend "
-    commandline -C (math $old_cursor + (echo $prepend | wc -c))
-  end
-
-# set -l __fzfcmd fzf
-
-# This cmd is included with the fisherman plugin, but not the omf one.
-# Determines if we are in a tmux session and should use its modified fzf.
-function __fzfcmd
-  set -q FZF_TMUX; or set -l FZF_TMUX 0
-  if test "$FZF_TMUX" -eq 1
-    set -q FZF_TMUX_HEIGHT; or set -l FZF_TMUX_HEIGHT 40%
-    fzf-tmux -d$FZF_TMUX_HEIGHT $argv
-  else
-    fzf $argv
-  end
+function command_exists
+  command -v $1 >/dev/null
 end
 
-function fzf-bcd-widget -d 'cd backwards'
-  pwd | awk -v RS=/ '/\n/ {exit} {p=p $0 "/"; print p}' | tac | eval (__fzfcmd) +m --select-1 --exit-0 $FZF_BCD_OPTS | read -l result
-  [ "$result" ]; and cd $result
-  commandline -f repaint
+# TODO find replace -> run_silent or something more witty
+# Note this is using sh, may need to be bash/fish depending on use.
+function runSilent
+  sh -c 'nohup "$@" &>/dev/null 2>&1 &'
 end
 
-function fzf-cdhist-widget -d 'cd to one of the previously visited locations'
-  # Clear non-existent folders from cdhist.
-  set -l buf
-  for i in (seq 1 (count $dirprev))
-    set -l dir $dirprev[$i]
-    if test -d $dir
-      set buf $buf $dir
-    end
-  end
-  set dirprev $buf
-  string join \n $dirprev | tac | sed 1d | eval (__fzfcmd) +m --tiebreak=index --toggle-sort=ctrl-r $FZF_CDHIST_OPTS | read -l result
-  [ "$result" ]; and cd $result
-  commandline -f repaint
+function rimraf
+    rm -rf $argv
 end
 
-function fco -d "Fuzzy-find and checkout a branch"
-  git branch --all | grep -v HEAD | string trim | fzf | xargs git checkout
-end
-
-function fcoc -d "Fuzzy-find and checkout a commit"
-  git log --pretty=oneline --abbrev-commit --reverse | fzf --tac +s -e | awk '{print $1;}' | xargs git checkout
-end
 
 function fssh -d "Fuzzy-find ssh host and ssh into it"
   ag '^host [^*]' ~/.ssh/config | cut -d ' ' -f 2 | fzf | xargs -o ssh
@@ -338,15 +179,7 @@ function fpass -d "Fuzzy-find a Lastpass entry and copy the password"
   lpass ls | fzf | string replace -r -a '.+\[id: (\d+)\]' '$1' | xargs lpass show -c --password
 end
 
-# Dont really know how this helps.
-# fzf-select over pacman -Qlq fzf
-function fzf-select -d 'fzf commandline job and print unescaped selection back to commandline'
-  set -l cmd (commandline -j)
-  [ "$cmd" ]; or return
-  eval $cmd | eval (__fzfcmd) -m --tiebreak=index --select-1 --exit-0 | string join ' ' | read -l result
-  [ "$result" ]; and commandline -j -- $result
-  commandline -f repaint
-end
+
 
   # function fish_user_key_bindings
   #   bind \cs 'prepend_command sudo'
@@ -361,7 +194,6 @@ end
   #   # bind -M insert '$' bind_dollar
   # end
 
-{% endif %}
 
 # TODO Copy prev commands.
 # This copies the *args* from the previously run command.
@@ -372,115 +204,31 @@ end
 # Instead, do something like sudo where pressing a key twice will copy those args.
 # And paste them at cursor.
 
-alias ls="exa"
-alias vim="nvim"
-alias vi="nvim"
-alias gpg-decrypt-clipboard='xclip -o | gpg --decrypt | xclip'
-alias reboot="sudo reboot"
-alias poweroff="sudo poweroff"
-alias halt="sudo halt"
-alias tv="tvremote"
-
-
-alias fishhistory="$EDITOR ~/.local/share/fish/fish_history"
-
-# TODO So dont put password here, pull password from system keyring.
-# Linux
-# secret-tool store --label='Password for mydrive' drive mydrive
-# secret-tool lookup drive mydrive
-# Mac
-# security add-generic-password -a ${USER} -s playground -w `pwgen`
-# security delete-generic-password -a ${USER} -s playground
-# security find-generic-password -a ${USER} -s playground -w
-alias rebootlinksys="curl -u 'admin:my-super-password' 'http://192.168.1.2/setup.cgi?todo=reboot'"
 
 ## replace mac with your actual server mac address #
 # alias wakeupnas01='/usr/bin/wakeonlan 00:11:32:11:15:FC'
 
 
-# Cryptographic Hashes
-alias sha1='openssl sha1'
-
-{% if shell.zsh %}
-
-  function commandExists() {
-    command -v $1 >/dev/null
-  }
-
-  # Works on Mac and Linux
-  function command_exists {
-    # this should be a very portable way of checking if something is on the path
-    # usage: "if command_exists foo; then echo it exists; fi"
-    type "$1" &> /dev/null
-  }
-
-  function runSilent() {
-    nohup "$@" &>/dev/null 2>&1 &
-  }
-
-{% elif shell.fish %}
-
-  function command_exists
-    command -v $1 >/dev/null
-  end
-
-  function runSilent
-    sh -c 'nohup "$@" &>/dev/null 2>&1 &'
-  end
-
-{% endif %}
-
 ####################################################
 # Built-in Commands
 ####################################################
 
+alias ls="exa"
+alias vim="nvim"
+alias vi="nvim"
+alias reboot="sudo reboot"
+alias poweroff="sudo poweroff"
+alias halt="sudo halt"
+alias tv="tvremote"
+
 # Don't need these since using `exa`
-# `--` on these doesnt work on macos.
-# //if .IsLinux//
-#   alias ls="ls --group-directories-first --dereference-command-line-symlink-to-dir"
-#   alias ll="ls --dereference-command-line-symlink-to-dir"
-#   alias l="ls --dereference-command-line-symlink-to-dir"
-# //end//
 # alias ll="ls -lh"
 # alias l="ls -la"
 # alias l.="ls -d .*"  # Show hidden files
 
-
-
-# For some reason these need to be function to work on linux.
-# Actually that only worked for ls.
-# Both aliases work in fish shell so its a case of overwrite.
-# Ohhh but zshenv is called before zshrc(plugins)! The plugin removel test was inconclusive.
-
-# ## After removing zshrc plugins
-# ➜  dotfiles git:(master) ✗ alias ll
-# ll='ls -lh'
-# ➜  dotfiles git:(master) ✗ type ll
-# ll is an alias for ls -lh
-# ➜  dotfiles git:(master) ✗
-
-# ## Before removing zshrc plugins
-# ➜  dotfiles git:(master) ✗ type ll
-# ll is an alias for ls -l
-# ➜  dotfiles git:(master) ✗ alias ll
-# ll='ls -l'
-
-# ## So the plugins are changing it, but still we should be able to change it.
-
-
-# function ls() {
-#   exa
-# }
-# function ll() {
-#   exa --long --git --header
-# }
 alias ll="exa --long --git --header"
 alias l.="exa --all --long --git --header"
 alias tree="exa --tree --level=2"
-
-# Replace htop with glances for now. (learning cmd name)
-alias htop='glances'
-
 
 # Create parent directories if not exist.
 alias mkdir='mkdir -pv'
@@ -495,59 +243,7 @@ alias bc='bc -l'
 # Make mount command output pretty and human readable format
 alias mount='mount | column -t'
 
-####################################################
-# Net Test
-####################################################
 
-# Stop after sending count ECHO_REQUEST packets #
-alias ping='ping -c 5'
-
-# Do not wait interval 1 second, go fast #
-alias fastping='ping -c 100 -s.2'
-
-# Show open ports.
-alias ports='netstat -tulanp'
-
-####################################################
-# System Perf
-####################################################
-
-# top is atop, just like vi is vim
-alias top='atop'
-
-## pass options to free ##
-alias meminfo='free -m -l -t'
-
-## get top process eating memory
-alias psmem='ps auxf | sort -nr -k 4'
-alias psmem10='ps auxf | sort -nr -k 4 | head -10'
-
-## get top process eating cpu ##
-alias pscpu='ps auxf | sort -nr -k 3'
-alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
-
-## Get server cpu info ##
-alias cpuinfo='lscpu'
-
-## older system use /proc/cpuinfo ##
-##alias cpuinfo='less /proc/cpuinfo' ##
-
-## get GPU ram on desktop / laptop##
-alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
-
-####################################################
-# IpTables
-####################################################
-
-## shortcut  for iptables and pass it via sudo#
-alias ipt='sudo /sbin/iptables'
-
-# display all rules #
-alias iptlist='sudo /sbin/iptables -L -n -v --line-numbers'
-alias iptlistin='sudo /sbin/iptables -L INPUT -n -v --line-numbers'
-alias iptlistout='sudo /sbin/iptables -L OUTPUT -n -v --line-numbers'
-alias iptlistfw='sudo /sbin/iptables -L FORWARD -n -v --line-numbers'
-alias firewall=iptlist
 
 ####################################################
 # Curl
@@ -583,18 +279,3 @@ alias ln='ln -i'
 
 {% endif %}
 
-####################################################
-# For Debain
-####################################################
-
-# # distro specific  - Debian / Ubuntu and friends #
-# # install with apt-get
-# alias apt-get="sudo apt-get"
-# alias updatey="sudo apt-get --yes"
-
-# # update on one command
-# alias update='sudo apt-get update && sudo apt-get upgrade'
-
-## Fedora/RHEL/CentOS ##
-alias update='yum update'
-alias updatey='yum -y update'

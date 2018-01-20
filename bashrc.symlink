@@ -11,4 +11,20 @@
 export DOTFILES_ROOT="$HOME/src/dotfiles"
 
 # Import shell index file that imports everything else.
-source $DOTFILES_ROOT/build/shell/index.zsh
+# source $DOTFILES_ROOT/build/shell/index.zsh
+
+
+
+
+# (thinking this will be needed for some
+# programs that call the bash shell, but havent run into anything yet so maybe not)
+
+# TODO Easier: bash starts a fish shell that simply dumps its PATH, *to bash's stdout*.
+
+# TODO Copy fish PATH to bash. 
+
+# Add a source 'file' line in .bashrc.
+# The target file is written to by fish, on demand, with PATH setting code.
+# Impl: Pick a target pattern to delimit code from where path string goes,
+# fish script finds that line number, erases anything below,
+# then appends a colon seperated list of directories.

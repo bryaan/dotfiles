@@ -7,6 +7,10 @@
 
 # set -x
 
+# setpath /usr/local/bin /usr/sbin
+# set PATH /usr/local/bin /usr/sbin $PATH
+
+
 # FIXME For some very strange reason on macos + bash the directory test
 # will not work for any of these paths:
 # /usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
@@ -30,40 +34,11 @@ function append_path() {
 TMPPATH=''
 
 ############################################################################
-# Mac + Linux Common
-############################################################################
-
-
-# TODO this fun does not work. bc asdf adds mutiple golang varsion to this file..
-# Can't use the shims' path bc it tricks the go tools and causes errors.
-# If this were a simple symlink that would be great, but its a file.
-# helpfully, the file tells us the current global go version.
-get_asdf_global_golang_path() {
-
-  # T O D O Check that the ASDF env vars are set.
-  # bc may happen that command gets used before asdf vars are readyy.
-
-  local file=$ASDF_HOME/shims/go
-
-  # sed '3q;d' file - select line 3 of file
-  # perl exp - select #.# or #.#.#
-  local go_version=$(sed '3q;d' $file | perl -pe '($_)=/([0-9]+([.][0-9]+)+)/')
-
-  echo $ASDF_INSTALL_DIR/golang/$go_version
-}
-
-############################################################################
 # Linux
 ############################################################################
 
 if [[ "$platform" == 'linux' ]]; then
 
-###################################
-# asdf
-###################################
-
-export ASDF_HOME=$HOME/.asdf
-export ASDF_INSTALL_DIR=$ASDF_HOME/installs
 
 ###################################
 # Misc
@@ -76,10 +51,6 @@ append_path $CARGO_HOME/bin
 # Git v2
 export GIT_HOME=/usr/local/src/git-2.15.1
 append_path $GIT_HOME/bin
-
-# FZF - Fuzzy Search
-export FZF_HOME="$HOME/.fzf"
-append_path $FZF_HOME/bin
 
 # Java
 export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
@@ -112,7 +83,6 @@ append_path /opt/local/sbin
 # Config goes in /etc/opt/foo-project/xx.conf
 # Logs go in /var/opt/foo-project/xx.log
 
-
 append_path /usr/local/bin
 append_path /usr/bin/
 append_path /bin
@@ -142,52 +112,6 @@ append_path $HOME/.local/bin
 # Rust's cargo installed binaries.
 append_path $HOME/.cargo/bin
 
-###################################
-# asdf
-###################################
-
-export ASDF_HOME=/usr/local/opt/asdf
-# export ASDF_BIN=$ASDF_HOME/bin/asdf
-export ASDF_INSTALL_DIR=$ASDF_HOME/installs
-
-###################################
-# golang
-###################################
-
-# Parent dir of where go binaries are at.
-export GOROOT=$(get_asdf_global_golang_path)/go
-
-# Location of my private go packages.
-# Make it a colon seperated list of local project paths.
-# Most of the time we will be using a local version anyway.
-# This is more for when you want to use the binary system wide.
-# export GOPATH_LOCAL=
-
-# Location for any 3rd party forked go repos.
-# This does not need to be associated with golang version.
-# I guess its compiled on `go get` with whatever version is on path.
-export GOPATH_PUBLIC=$HOME/go
-
-# The GOPATH environment variable lists places to look for Go code.
-# First path is where files are installed on `go get`.
-# export GOPATH=$GOPATH_LOCAL:$GOPATH_PUBLIC
-export GOPATH=$GOPATH_PUBLIC
-
-# # Use golang installed with brew.
-# # brew install go --cross-compile-common
-# GOPATH_PUBLIC=$HOME/golang
-# export GOROOT=/usr/local/opt/go/libexec
-
-# Add each one's bin directory to PATH.
-# append_path $GOPATH_LOCAL/bin
-append_path $GOPATH_PUBLIC/bin
-append_path $GOROOT/bin
-
-
-# TODO shouldnt need this with stuff above
-# go, godoc, gofmt are all located here.
-# they are linked to the current active version.
-append_path /usr/local/opt/asdf/shims/
 
 # Default Mac Path
 append_path /usr/local/bin

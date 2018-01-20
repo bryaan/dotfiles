@@ -124,6 +124,17 @@ https://github.com/rominf/omf-plugin-fzf-autojump
 ------------------------------------------------
 ------------------------------------------------
 
+TODO Easier: bash starts a fish shell that simply dumps its PATH, *to bash's stdout*.
+TODO Copy fish PATH to bash. (thinking this will be needed for some 
+programs that call the bash shell, but havent run into anything yet so maybe not)
+Add a source 'file' line in .bashrc.
+The target file is written to by fish, on demand, with PATH setting code.
+Impl: Pick a target pattern to delimit code from where path string goes,
+fish script finds that line number, erases anything below,
+then appends a colon seperated list of directories.
+
+
+
 TODO Bring zsh aliases (and completions via bass?) over to fish.
 - Make them fish abbreviations.
 
@@ -140,14 +151,10 @@ python event loop manager
 
 
 
-
 TODO That doc book generator for dotfiles and mac setup.  
 `gitbook`.
 http://sourabhbajaj.com/mac-setup/iTerm/zsh.html
 also krypton support ref?
-
-
-
 
 # TODO Vinyl - cloud file system
 https://github.com/gulpjs/vinyl-fs

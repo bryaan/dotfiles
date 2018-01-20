@@ -1,3 +1,4 @@
+**/.DS_Store
 
 # Don't include generated templates.
 build/
