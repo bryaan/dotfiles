@@ -13,6 +13,10 @@ https://github.com/holman/dotfiles
 
 https://github.com/atelic/dotfiles
 
+https://fishshell.com/docs/current/index.html#redirects
+https://github.com/JorgeBucaran/fish-shell-cookbook#how-to-redirect-stdout-or-stderr-to-a-file-in-fish
+
+https://github.com/fisherman/getopts
 
 
 # Setup
@@ -113,13 +117,13 @@ Since guest netwrok seemed to (or it was really the protal) slow speed, it shoul
 ------------------------------------------------------------------------------
 
 
-TODO https://github.com/junegunn/fzf
-search for `fzf --preview` at bottom, add that to the fzf env var for file searchng.  and install highliht
-
-
 Check out whether to use z or fzf-autojump
 https://github.com/wting/autojump
 https://github.com/rominf/omf-plugin-fzf-autojump
+
+# TODO Bring iterm settings into dotfiles.
+# Fix Alt-C on Mac
+53:NOTE: On OS X, Alt-c (Option-c) types ç by default. In iTerm2, you can send the right escape sequence with Esc-c. If you configure the option key to act as +Esc (iTerm2 Preferences > Profiles > Default > Keys > Left option (⌥) acts as: > +Esc), then alt-c will work for fzf as documented.
 
 ------------------------------------------------
 ------------------------------------------------

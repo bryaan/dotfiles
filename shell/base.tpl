@@ -9,8 +9,8 @@
 alias sudo='sudo '
 
 
-set -x EDITOR 'subl'
-set -x VISUAL 'subl --wait'
+set -x EDITOR 'kak'
+set -x VISUAL 'subl'
 set -x GIT_EDITOR 'kak'
 set -x SUDO_EDITOR 'kak'
 set -x PAGER 'vimpager'
@@ -236,6 +236,10 @@ alias mkdir='mkdir -pv'
 # File System Structure & Size
 alias df='df -H'
 alias du='du -ch'
+{% if os.mac %}
+# List all files and folders in current directory with size.
+abbr -a du.all 'du -shc .??* *'
+{% endif %}
 
 # Open calc in math mode...?
 alias bc='bc -l'

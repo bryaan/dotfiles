@@ -125,7 +125,6 @@ source $ZSH/oh-my-zsh.sh
 # source $ZSH/custom/plugins/enhancd/init.sh
 
 # Auto added by `fzf`
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 if [[ "$machine" == 'Linux' ]]; then
 
@@ -291,3 +290,5 @@ if [[ "$machine" == 'Mac' ]]; then
   nohup singleton tmuxCopyPasteFix 2>&1 >/dev/null
 
 fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

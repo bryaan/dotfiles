@@ -28,3 +28,6 @@ export DOTFILES_ROOT="$HOME/src/dotfiles"
 # Impl: Pick a target pattern to delimit code from where path string goes,
 # fish script finds that line number, erases anything below,
 # then appends a colon seperated list of directories.
+
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

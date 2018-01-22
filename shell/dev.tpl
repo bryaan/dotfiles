@@ -27,20 +27,29 @@ end
 # Program/System Shorcuts
 ############################################################################
 
-alias idea='runSilent ~/bin/idea-IU-173.4301.1/bin/idea.sh'
-alias gitkraken='runSilent /usr/local/src/gitkraken/gitkraken'
-# alias torrent='transmission-cli -w ~/Downloads '
-
 # lsblk - Tree like view of block devices.
+function idea
+  run_silent ~/bin/idea-IU-173.4301.1/bin/idea.sh
+end
 
+function gitkraken
+  run_silent /usr/local/src/gitkraken/gitkraken
+end
 
-# TODO Only on systems with yum installed.
-alias yi='sudo yum install'
+function torrent
+  transmission-cli -w ~/Downloads
+end
+
 
 # TODO Put this on cronjob.
 # TODO Add to git repo.  Using whitelist: https://stackoverflow.com/questions/9162919/whitelisting-and-subdirectories-in-git
-alias runBackup='$HOME/Desktop/runBackup'
-alias editBackup='$EDITOR $HOME/Desktop/runBackup'
+function backup.run
+  eval $HOME/Desktop/runBackup
+end
+function backup.edit
+  $VISUAL $HOME/Desktop/runBackup
+end
+
 
 # TODO Backup IntelliJ Settings
 # Linux: .IntelliJIdea2017.2
@@ -48,26 +57,32 @@ alias editBackup='$EDITOR $HOME/Desktop/runBackup'
 # https://intellij-support.jetbrains.com/hc/en-us/community/posts/206381509-Export-settings-via-command-line-OS-X-
 
 ############################################################################
-# File Edit Shorcuts
+# dotfile edits
 ############################################################################
 
-alias devrc='$EDITOR $DOTFILES_ROOT/shell/dev/aliases'
-alias deva='devrc'
+# alias dots.devrc='$EDITOR $DOTFILES_ROOT/shell/dev/aliases'
+# alias deva='devrc'
 
-alias zshrc='$EDITOR ~/.zshrc'
-alias zshenv='$EDITOR ~/.zshenv'
-alias zprofile='$EDITOR ~/.zprofile'
-alias zpath='$EDITOR ~/.zpath'
-alias ohmyzsh='$EDITOR ~/.oh-my-zsh/oh-my-zsh.sh'
-
-alias terminatorconf='$EDITOR ~/.config/terminator/config'
-alias tmuxconf='$EDITOR ~/.tmux.conf'
-
+# alias dots.zshrc='$EDITOR ~/.zshrc'
+# alias dots.zshenv='$EDITOR ~/.zshenv'
 
 ############################################################################
-# Reloads
+# Terminator
 ############################################################################
 
-alias reloadTmux='tmux source-file ~/.tmux.conf'
+function terminator.conf
+  $VISUAL ~/.config/terminator/config
+end
 
+############################################################################
+# Tmux
+############################################################################
+
+function tmux.conf
+  $VISUAL ~/.tmux.conf
+end
+
+function tmux.reload
+  tmux source-file ~/.tmux.conf
+end
 

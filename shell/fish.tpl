@@ -7,6 +7,14 @@
   append_path $FZF_HOME/bin
 {% endif %}
 
+
+# https://github.com/fish-shell/fish-shell/issues/4677
+function func
+  funced --editor nvim $argv
+end
+# abbr -a funced funced --editor $EDITOR
+
+
 function fishhistory
   $EDITOR ~/.local/share/fish/fish_history
 end
@@ -52,9 +60,15 @@ function prepend_command
   commandline -C (math $old_cursor + (echo $prepend | wc -c))
 end
 
+
 ####################################################
 # fzf
 ####################################################
+
+# Check this file for keybindings:
+# nvim /Users/bryan/.config/fish/functions/fish_user_key_bindings.fish
+# TODO Bring them over here so don't need to run:
+# eval (brew --prefix)/opt/fzf/install
 
 # This cmd is included with the fisherman plugin, but not the omf one.
 # Determines if we are in a tmux session and should use its modified fzf.
@@ -109,13 +123,35 @@ end
 # --smartcase: Makes ripgrep search case-insensitively if the pattern is all lowercase, however if there is a capital the search becomes case-sensitive.
 # --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 # TODO add --smartcase but it doesnt work in ~ folder for some reason.
-set -x FZF_DEFAULT_COMMAND '(git ls-tree -r --name-only HEAD || rg --files --hidden --follow --glob "!.git/*" )'
+# TODO --hidden
+# TODO Ctrl-T should show sorted order.
+# function _fzf_rg_lookup
+#   rg --files --follow --glob "!.git/*" --glob "!Library/"
+# end
+# function _fzf_git_lookup
+#   git ls-tree -r --name-only HEAD
+# end
+# set -x FZF_DEFAULT_COMMAND '_fzf_git_lookup or _fzf_rg_lookup'
+function _bar_fzf_default_command
+  # set -l git_res (git ls-tree -r --name-only HEAD ^/dev/null)
+  # set -l rg_res (rg --files --follow --glob "!.git/*" --glob "!Library/" ^/dev/null)
+  # # set IFS "" # https://stackoverflow.com/questions/29512897/how-to-capture-newlines-from-command-substitution-output-in-fish-shell
+  # for var in $rg_res
+  #   echo $var
+  # end
+  # printf $rg_res >&1
+  # Here we pipe both errors streams to null.
+  sh -c 'git ls-tree -r --name-only HEAD 2>/dev/null || \
+    rg --files --follow --glob "!.git/*" --glob "!Library/" 2>/dev/null'
+end
+set -x FZF_DEFAULT_COMMAND '_bar_fzf_default_command'
+
 
 # Add a file preview, with syntax highlighting.
 # consider adding --reverse
 # set -x FZF_DEFAULT_OPTS "--preview '[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (highlight -O ansi -l {} || coderay {} || rougify {} || cat {})  2> /dev/null | head -500'"
 
-
+# TODO It is displaying long paths, show relative path only. Not an rg thing it seems.
 # Apply to Ctrl-T command as well
 set -x FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 
@@ -124,8 +160,8 @@ set -x FZF_CTRL_R_COMMAND 'rg --files'
 # TODO not working: https://github.com/junegunn/fzf/issues/1202
 # rg can't search directories so use ag or bfs
 # set -x  FZF_ALT_C_COMMAND "cd ~/; bfs -type d -nohidden | sed s/^\./~/"
-set -x FZF_ALT_C_COMMAND "ag --ignore '.git' --ignore 'node_modules/' -g ."
-# set -x FZF_ALT_C_OPTS "--preview 'tree -C {} | head -200'"
+set -q FZF_ALT_C_COMMAND "command ag --ignore '.git' --ignore 'node_modules/' -g ."
+# set -gx FZF_ALT_C_OPTS "--preview 'tree -C {} | head -200'"
 
 ####################################################
 # `bobthefish` Theme Specific Settings
