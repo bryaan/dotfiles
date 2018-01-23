@@ -23,54 +23,28 @@ https://github.com/fisherman/getopts
 
 Must have the nix package manager installed.
 
+## Development
 ```bash
 cd $DOTFILES
 nix-shell
-```
-
-## Cloning To Setup Machine
-todo
-
-## Updating Machines
-todo
-
-
-# Run
-
-```bash
-$DOTFILES_ROOT/bootstrap/bootstrap.sh
-
+nix-shell --command 'env HOME=/tmp/foo fish'
+yarn install
 gulp
 ```
 
-# Cleanup
-
+## Cloning To Setup Machine
 ```bash
-rm -y shell/**/*.fish shell/**/*.zsh
+cd $DOTFILES
+git clone ...
+dots.bootstrap; reload
 ```
 
-# Linking Sublime Settings
-TODO Move this section to bootstrap script.
-
-May need to run" Package Control: Upgrade/Overide All Packages"
-to install packages when complete.
-
-> Must first be removed so child folders will link properly.
-
-Must be setup in such a way that when sublime adds/removes packages or settings, those changes will appear in our dotifles repo. This can only work when the parent directory is symlinked, do not symlink all files in folder as that would not satisfy the latter.
-
-## For Linux
+## Updating Machines
 ```bash
-rm -rf $HOME/.config/sublime-text-3/Packages/User; ln -sfn $DOTFILES_ROOT/sublime/ $HOME/.config/sublime-text-3/Packages/User
+cd $DOTFILES
+git pull; dots.bootstrap; reload
 ```
 
-## For Mac
-```fish
-set DOTFILES_ROOT $HOME/src/dotfiles
-set -l subldirbase /Users/bryan/Library/Application\ Support/Sublime\ Text\ 3/Packages/
-
-rm -rf $subldirbase; mkdir $subldirbase; ln -s $DOTFILES_ROOT/sublime $subldirbase; mv $subldirbase/sublime $subldirbase/User
-```
 
 # Misc
 
@@ -96,8 +70,33 @@ Note that erasing from history doesn't require bash shenanigans:
 history --delete --prefix some_command
 fish_config history also lets you do it by point-n-click.
 
+------------------------------------------------------------------------------
 
+# Linking Sublime Settings
+TODO Move this section to bootstrap script.
 
+May need to run" Package Control: Upgrade/Overide All Packages"
+to install packages when complete.
+
+> Must first be removed so child folders will link properly.
+
+Must be setup in such a way that when sublime adds/removes packages or settings, those changes will appear in our dotifles repo. This can only work when the parent directory is symlinked, do not symlink all files in folder as that would not satisfy the latter.
+
+## For Linux
+```bash
+rm -rf $HOME/.config/sublime-text-3/Packages/User; ln -sfn $DOTFILES_ROOT/sublime/ $HOME/.config/sublime-text-3/Packages/User
+```
+
+## For Mac
+```fish
+set DOTFILES_ROOT $HOME/src/dotfiles
+set -l subldirbase /Users/bryan/Library/Application\ Support/Sublime\ Text\ 3/Packages/
+
+rm -rf $subldirbase; mkdir $subldirbase; ln -s $DOTFILES_ROOT/sublime $subldirbase
+
+need this bc folder needs to be named 'User', but want an informative 'sublime' here.
+mv $subldirbase/sublime $subldirbase/User
+```
 
 ------------------------------------------------------------------------------
 
@@ -140,8 +139,17 @@ https://github.com/rominf/omf-plugin-fzf-autojump
 # Fix Alt-C on Mac
 53:NOTE: On OS X, Alt-c (Option-c) types ç by default. In iTerm2, you can send the right escape sequence with Esc-c. If you configure the option key to act as +Esc (iTerm2 Preferences > Profiles > Default > Keys > Left option (⌥) acts as: > +Esc), then alt-c will work for fzf as documented.
 
-------------------------------------------------
-------------------------------------------------
+------------------------------------------------------------------------------
+
+https://github.com/peco/peco
+peco can be a great tool to filter stuff like logs, process stats, find files, because unlike grep, you can type as you think and look through the current result
+
+Searching file contents
+with ag - respects .agignore and .gitignore
+try this with peco
+
+ag --nobreak --nonumbers --noheading . | fzf
+
 
 TODO Copy fish PATH to bash. 
 from fish:
@@ -156,6 +164,11 @@ fish script finds that line number, erases anything below,
 then appends a colon seperated list of directories.
 
 
+TODO create an .agignore file for ag searches
+also check if rg has the same.
+
+TODO add an `opendir` alias that will open current or given dir in system's finder.
+
 TODO Do we need to:
 chmod +x ./bootstrap/bootstrap.sh
 chmod +x ./bootstrap/jinja_script.py
@@ -169,13 +182,13 @@ TODO create a `sublime commands` file for easy goto readme and stuff
 TODO switch task runner from gulp to python?
 pip install watchdog
 
-
+TODO add brew, cask, chrome, etc examples from
+https://github.com/junegunn/fzf/wiki/examples
 
 TODO That doc book generator for dotfiles and mac setup.  
 `gitbook`.
 http://sourabhbajaj.com/mac-setup/iTerm/zsh.html
 also krypton support ref?
-
 
 TODO https://github.com/aio-libs/aiomonitor
 python event loop manager
@@ -460,8 +473,4 @@ helium and titanuim backup
 TODO there is a warn that the underscore var is treied to change.  this is an evn var _=/usr/bin/env  its intermittent
 Probably raised due to bass's code
 
-
-TODO export all? env vars back to bash.
-Actually, only need to set the defualt PATH, and run the nix init script.
-since we moved pathfile to fish, and also ditributed path setting code all around, and bc some programs use bash and expect it to have same env vars, we must export all? env vars back to bash.
 

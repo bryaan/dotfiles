@@ -25,7 +25,4 @@ stdenv.mkDerivation rec {
 # cd $DOTFILES_ROOT
 # nix-shell --command 'env HOME=/tmp/foo fish'
 #
-# To start fish with a new rc file so it doesnt inherit sys path.
-# Or what if we make fish the default shell of this env? is that possible?
-# actually if we install fish, here it might just work.
-# 'env HOME=/tmp/foo fish'
+# To start fish so it doesnt inherit sys path, we clear the env.

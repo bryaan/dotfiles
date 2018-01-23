@@ -9,6 +9,7 @@ setenv VISUAL 'subl'
 setenv GIT_EDITOR 'kak'
 setenv SUDO_EDITOR 'kak'
 setenv PAGER 'vimpager'
+setenv FILTER 'fzf'  # used by `fisher omf/marlin`
 
 setenv BROWSER "/usr/bin/google-chrome"
 # /usr/bin/firefox
