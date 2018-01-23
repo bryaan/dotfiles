@@ -149,7 +149,8 @@ set -x FZF_DEFAULT_COMMAND '_bar_fzf_default_command'
 
 # Add a file preview, with syntax highlighting.
 # consider adding --reverse
-# set -x FZF_DEFAULT_OPTS "--preview '[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (highlight -O ansi -l {} || coderay {} || rougify {} || cat {})  2> /dev/null | head -500'"
+# set -x FZF_DEFAULT_OPTS '--preview "[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (highlight -O ansi -l {} || coderay {} || rougify {} || cat {})  2> /dev/null | head -500"'
+set -x FZF_DEFAULT_OPTS ''
 
 # TODO It is displaying long paths, show relative path only. Not an rg thing it seems.
 # Apply to Ctrl-T command as well
@@ -157,10 +158,13 @@ set -x FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 
 set -x FZF_CTRL_R_COMMAND 'rg --files'
 
-# TODO not working: https://github.com/junegunn/fzf/issues/1202
+function _bar_fzf_alt_c_command
+  command ag --ignore ".git" --ignore "node_modules/" -g .
+end
+
 # rg can't search directories so use ag or bfs
 # set -x  FZF_ALT_C_COMMAND "cd ~/; bfs -type d -nohidden | sed s/^\./~/"
-set -q FZF_ALT_C_COMMAND "command ag --ignore '.git' --ignore 'node_modules/' -g ."
+set -x FZF_ALT_C_COMMAND '_bar_fzf_alt_c_command'
 # set -gx FZF_ALT_C_OPTS "--preview 'tree -C {} | head -200'"
 
 ####################################################

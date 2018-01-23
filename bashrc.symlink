@@ -13,8 +13,14 @@ export DOTFILES_ROOT="$HOME/src/dotfiles"
 # Import shell index file that imports everything else.
 # source $DOTFILES_ROOT/build/shell/index.zsh
 
+# Bring nix-env and its packages into env.
+if test -e $HOME/.nix-profile/etc/profile.d/nix.sh; then
+  # If ~.nix-profile/sbin doesn't exist this will echo a warning.
+  # To avoid seeing that we pipe its output to null.
+  source $HOME/.nix-profile/etc/profile.d/nix.sh 2>/dev/null
+fi
 
-
+source $HOME/.nix-profile/etc/profile.d/nix.sh
 
 # (thinking this will be needed for some
 # programs that call the bash shell, but havent run into anything yet so maybe not)

@@ -2,8 +2,17 @@
 # pathfile - Set your $PATH here and never be left wondering again.
 ############################################################################
 
-[ "Linux" = "$(uname)" ] && platform="linux" || platform="macos"
-[ "x86_64" = "$(uname -m)" ] && arch="amd64" || arch="386"
+# Default Path
+# Temporarily set to run basic shell utilities below.
+set -x PATH /usr/local/bin /usr/bin /bin /usr/sbin /sbin
+
+if [ "Linux" = (uname) ]
+  set platform "linux"
+else
+  set platform "macos"
+end
+
+# [ "x86_64" = "$(uname -m)" ] && arch="amd64" || arch="386"
 
 # set -x
 
@@ -11,49 +20,48 @@
 # set PATH /usr/local/bin /usr/sbin $PATH
 
 
-# FIXME For some very strange reason on macos + bash the directory test
-# will not work for any of these paths:
-# /usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
-function checkIfDirectory() {
-    if [ -d "$1" ]; then
-        return 1
-    else
-        return 0
-    fi
-}
+# # FIXME For some very strange reason on macos + bash the directory test
+# # will not work for any of these paths:
+# # /usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
+# function checkIfDirectory
+#   if test -d $argv
+#       return 1
+#   else
+#       return 0
+#   end
+# end
 
 # Checks that the path exists before adding it.
-function append_path() {
-  local dir="$1"
+function append_path
+  set -l dir $argv
   # FIXME see `checkIfDirectory`
   # checkIfDirectory $dir && PATH=$PATH:$dir
-  TMPPATH="$TMPPATH:$dir"
-}
+  set -x TMPPATH $TMPPATH $dir
+end
 
 # Clear current TMPPATH
-TMPPATH=''
+set -x TMPPATH ''
 
 ############################################################################
 # Linux
 ############################################################################
 
-if [[ "$platform" == 'linux' ]]; then
-
+if [ $platform = "linux" ]
 
 ###################################
 # Misc
 ###################################
 
 # Rust / Cargo
-export CARGO_HOME="$HOME/.cargo"
+set -x CARGO_HOME $HOME/.cargo
 append_path $CARGO_HOME/bin
 
 # Git v2
-export GIT_HOME=/usr/local/src/git-2.15.1
+set -x GIT_HOME /usr/local/src/git-2.15.1
 append_path $GIT_HOME/bin
 
 # Java
-export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+set -x JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk
 append_path $JAVA_HOME/bin
 
 ###################################
@@ -61,8 +69,8 @@ append_path $JAVA_HOME/bin
 ###################################
 
 # User's private paths
-append_path "$HOME/bin"
-append_path "$HOME/.local/bin"
+append_path $HOME/bin
+append_path $HOME/.local/bin
 
 ###################################
 # System
@@ -90,17 +98,12 @@ append_path /usr/local/sbin
 append_path /usr/sbin
 append_path /sbin
 
-fi
 
 ############################################################################
 # Mac
 ############################################################################
 
-if [[ "$platform" == 'macos' ]]; then
-
-# Default Mac Path
-# Temporarily set to run basic shell utilities below.
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+else if [ $platform = 'macos' ]
 
 # User's private paths
 append_path $HOME/bin
@@ -120,10 +123,12 @@ append_path /bin
 append_path /usr/sbin
 append_path /sbin
 
-fi
+end
 
-# Remove first `:` from PATH
-TMPPATH=${TMPPATH#?}
+# Remove first `:` from PATH - not needed with fish.
+# TMPPATH=${TMPPATH#?}
+# TMPPATH 'echo TMPPATH | sed -r 's/^://''
 
 # Final explicit export
-export PATH="$TMPPATH"
+# export PATH="$TMPPATH"
+set -x PATH $TMPPATH

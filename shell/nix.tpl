@@ -5,3 +5,5 @@ if test -e $HOME/.nix-profile/etc/profile.d/nix.sh
   # To avoid seeing that we pipe its output to null.
   bass source $HOME/.nix-profile/etc/profile.d/nix.sh ^/dev/null
 end
+
+abbr -a  ns 'nix-shell --command fish'

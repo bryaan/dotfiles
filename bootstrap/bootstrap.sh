@@ -82,6 +82,11 @@ setup_sublime() {
   fi
 }
 
+setup_nixenv() {
+  mkdir -p $HOME/.nixpkgs/
+  ln -sf $DOTFILES_ROOT/nix/* $HOME/.nixpkgs/
+}
+
 ####################################################
 # Bootstrap
 ####################################################
@@ -107,5 +112,9 @@ success 'fish files installed!'
 info 'setting up sublime'
 setup_sublime
 success 'sublime setup complete!'
+
+info 'setting up misc'
+setup_nixenv
+success 'misc setup complete!'
 
 success 'bootstrap complete!'

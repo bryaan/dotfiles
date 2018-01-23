@@ -92,7 +92,9 @@ def get_env_vars():
 def project_rel_basedir(filepath):
   basepath = str(filepath).replace(filepath.name, '')
   return Path(basepath).relative_to(PROJECT_ROOT)
-#
+
+from subprocess import call
+
 def compile(filepath, env_dict):
   # > You don't need to addon the other shells and setthem to false, but if you do
   # > it's not `false` but empty string you need to use ''.
@@ -110,7 +112,9 @@ def compile(filepath, env_dict):
 
   # Make parent build directories.
   build_parent = BUILD_DIR + str(project_rel_basedir(filepath))
-  Path(build_parent).mkdir(parents=True, exist_ok=True)
+  # TODO RENABLE THIS once python 3.5+ upgrade is solved on linux.
+  # Path(build_parent).mkdir(parents=True, exist_ok=True)
+  call(["mkdir", "-p", str(build_parent)])
 
   # Compile for fish.
   relfilepath = str(reltplpath).replace('.tpl', '.fish')

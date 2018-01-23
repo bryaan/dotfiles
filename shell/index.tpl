@@ -1,18 +1,21 @@
-#!/usr/bin/env sh
-#
+####################################################
 # Here we source all files in the /shell directory.
+####################################################
 
-####################################################
-# FISH
-####################################################
+{% if os.linux %}
+set -x SHELL /usr/bin/fish
+{% endif %}
 
 # Load base PATH
-bass source $DOTFILES_ROOT/shell/pathfile
+source $DOTFILES_ROOT/shell/pathfile
+# bash -c "export PATH='';   echo $PATH"
+# bash -c "export PATH=''; source $DOTFILES_ROOT/shell/pathfile; echo $PATH"
 
 # Checks that the path exists before adding it.
 function append_path
   set -l dir "$argv"
   set -x PATH $PATH "$dir"
+  # TODO as workaround can check if path is already on before appending.
 end
 
 # Directory where shell files are built to.

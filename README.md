@@ -253,7 +253,7 @@ cargo install exa
 
 # RHEL 7
 nix-env -i gcc-wrapper-7.2.0
-
+nix-env -iA nixpkgs.fish
 
 ## Sublime Packages To Install Auto:
 
@@ -484,4 +484,156 @@ helium and titanuim backup
 
 
 
+# TODO
+nix-env -i nox
 
+
+
+
+nix-shell -p pythonPackages.django
+
+
+nox python | rg python3-3.5
+
+
+nix-env -i nixpkgs.python35
+nix-env -i nixpkgs.python35Full
+
+
+ | perl -pe '($_)=/([0-9]+([.][0-9]+)+)/')
+
+
+https://github.com/NixOS/nixpkgs/issues/5623
+
+
+- Since there is no way to change fish's config file pointer, we reset the HOME instead.
+nix-shell --command 'env HOME=/tmp/foo fish'
+
+# TODO The system's current PATH is being copied to the new shell.  But it's at the end so should be fine.
+
+
+# To 'install' or use python pakcages can:
+1. declartively specify which packages to use in a nix config
+with key python.buildEnv google search it.
+2. use nix-env to find and install the python package.
+3. use nix-shell to create a python env with everything required.
+
+
+
+# Search for all versions of python 3
+nix-env -qa | rg 'python3-([0-9]+([.][0-9]+)+)'
+
+Will match
+  python3-3.4.7
+  python3-3.4
+Wont match
+  python3-3
+  python3
+  python3.4-arelle-2017-08-24-2017-08-24
+  python3.6-3to2-1.1.1
+
+TODO Should match
+python3
+python3-3  Maybe?
+
+
+
+
+# Build various environments in ~/.nixpkgs/config.nix
+Install with:
+nix-env -iA nixos.workEnv
+nix-env -f "<nixpkgs>" -iA workEnv
+
+
+Install with:
+nix-env -iA nixos.workEnv
+nix-env -iA nixpkgs.workEnv
+
+You can figure out what the prefix should be by running `nix-env -qaP coreutils` and observing its prefixes.
+worstcase you can add the -f flag:
+nix-env -f "<nixpkgs>" -iA workEnv
+
+To demo the environment:
+nix-shell -p workEnv
+
+To rollback
+nix-env --rollback
+
+Can pass rcfile and history options to the shells to further customize.
+nix-shell '<nixpkgs>' -A hello --command "exec zsh; return"
+nix-shell '<nixpkgs>' -A hello --command "exec fish; return"
+nix-shell -p workEnv --command "exec fish; return"
+nix-shell -p workEnv --command fish
+abbr -??  ns 'nix-shell --command fish'
+
+Track this on supporting fish/zsh
+https://github.com/NixOS/nix/issues/498
+https://github.com/NixOS/nix/pull/545
+
+nix-env -qs
+
+nix-store --verify --check-contents --repair
+
+
+### nix-shell
+-p <package> looks up package in the Nix search path.
+-I nixpkgs=<url> can set lookup path to custom nixpkgs revision.
+
+
+### nix-env
+-q --query
+-i --install
+-P add this to find out package 'attribute path' (normally shows 'symbolic name')
+   --uninstall
+
+Useful:
+List all installed packages: nix-env -q --installed
+
+
+
+TODO Use nix-shell as an interpreter to download script reqs.
+```
+#! /usr/bin/env nix-shell
+#! nix-shell -i <real-interpreter> -p <packages>
+
+#! /usr/bin/env nix-shell
+#! nix-shell -i python3 -p jinja2 setuptools
+```
+
+
+
+
+
+
+OPTIONS:
+1. pathfile bash -> fish, then remove bass from index.tpl
+2. nix-env dev env, this brings in python3 without requiring the system to use it glboally.  it is to setup *dev and build* dependencies for the dotfiles project.
+
+Actually best to do both!
+
+
+
+
+TODO there is a warn that the underscore var is treied to change.  this is an evn var _=/usr/bin/env
+Probably raised due to bass's code
+
+
+
+
+TODO since we moved pathfile to fish, and also ditributed path setting code all around, and bc some programs use bash and expect it to have same env vars, we must export all? env vars back to bash.
+
+
+
+Bring python into virtualenv
+
+
+
+
+!!! README
+Nix guide
+https://ebzzry.io/en/nix/#environments
+
+
+
+TODO check resolution
+https://github.com/NixOS/nixpkgs/issues/34165

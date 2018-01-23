@@ -1,9 +1,14 @@
+fisherman/await
 oh-my-fish/plugin-balias
 edc/bass
 oh-my-fish/theme-bobthefish
+fisherman/fzf
+fisherman/get
+fisherman/getopts
 oh-my-fish/plugin-gityaw
+fisherman/last_job_id
 oh-my-fish/plugin-pbcopy
 laughedelic/pisces
 fisherman/shark
+fisherman/spin
 fisherman/z
-oh-my-fish/plugin-brew

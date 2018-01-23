@@ -34,6 +34,7 @@ gulp.task('watch', function () {
   const watchedDirs = [
     '**/*.tpl',
     'shell/**',
+    '!.git/**',
     '!build/**',
     '!**/*.md',
     '!**/*.txt'
