@@ -2,6 +2,35 @@
 # pathfile - Set your $PATH here and never be left wondering again.
 ############################################################################
 
+# echo AAAAAAAAAAA
+# echo $PATH
+# echo AAAAAAAAAAA
+
+# nix-shell executed
+# nix-shell takes the current PATH of fish shell and appends its stuff to the end.
+# then it runs thru the pathfile which resets everything.
+#
+# Question: why is it different for bash? at least the append to path part at first?
+# ah bc we dont load this path in bashrc.  note if do add this in bashrc we may have the same prob
+# ok solution is to use a blank rcfile or equiv.
+# TODO verify this is the case so we know whether to get used to the long command or can just use nix-shell
+
+# Option 0:
+# Verify this is neccessary.  Explicitly explain use cases.
+# Bc i think we will only be running things like gulp and jupyter-start
+# and npm run dev and gin run and such.  Which means no interaction with the
+# shell beyond that intial command.  So I think
+#
+# Option 1:
+# detect and remove the first part of the path.  Could use
+# /sbin as the end marker and assert the next entry starts with /nix/store/
+# then set this as the foremost path entry and can proceed with rest in this:
+#
+# Option 2:
+# We seperated all the shell scripts into their own modules.
+# We only need certain modules per dev env. For dotfiles we would need:
+# nothing really?
+
 # Default Path
 # Temporarily set to run basic shell utilities below.
 set -x PATH /usr/local/bin /usr/bin /bin /usr/sbin /sbin
@@ -11,10 +40,9 @@ if [ "Linux" = (uname) ]
 else
   set platform "macos"
 end
-
+# [ "Linux" = (uname) ] && platform="linux" || platform="macos"
 # [ "x86_64" = "$(uname -m)" ] && arch="amd64" || arch="386"
 
-# set -x
 
 # setpath /usr/local/bin /usr/sbin
 # set PATH /usr/local/bin /usr/sbin $PATH
@@ -34,9 +62,9 @@ end
 # Checks that the path exists before adding it.
 function append_path
   set -l dir $argv
-  # FIXME see `checkIfDirectory`
+  # FIXME see `checkIfDirectory`  also fix shell/functions/append_path.fish
   # checkIfDirectory $dir && PATH=$PATH:$dir
-  set -x TMPPATH $TMPPATH $dir
+  set -x TMPPATH $TMPPATH $argv
 end
 
 # Clear current TMPPATH
@@ -48,55 +76,55 @@ set -x TMPPATH ''
 
 if [ $platform = "linux" ]
 
-###################################
-# Misc
-###################################
+  ###################################
+  # Misc
+  ###################################
 
-# Rust / Cargo
-set -x CARGO_HOME $HOME/.cargo
-append_path $CARGO_HOME/bin
+  # Rust / Cargo
+  set -x CARGO_HOME $HOME/.cargo
+  append_path $CARGO_HOME/bin
 
-# Git v2
-set -x GIT_HOME /usr/local/src/git-2.15.1
-append_path $GIT_HOME/bin
+  # Git v2
+  set -x GIT_HOME /usr/local/src/git-2.15.1
+  append_path $GIT_HOME/bin
 
-# Java
-set -x JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk
-append_path $JAVA_HOME/bin
+  # Java
+  set -x JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk
+  append_path $JAVA_HOME/bin
 
-###################################
-# User
-###################################
+  ###################################
+  # User
+  ###################################
 
-# User's private paths
-append_path $HOME/bin
-append_path $HOME/.local/bin
+  # User's private paths
+  append_path $HOME/bin
+  append_path $HOME/.local/bin
 
-###################################
-# System
-###################################
+  ###################################
+  # System
+  ###################################
 
-# /opt  For non-system software.
-# /opt/local For un-vc'd, pre-compiled software.
-# /opt/local/bin For the binaries.
-# /opt/local/sbin For administrative binaries.
+  # /opt  For non-system software.
+  # /opt/local For un-vc'd, pre-compiled software.
+  # /opt/local/bin For the binaries.
+  # /opt/local/sbin For administrative binaries.
 
-# For non-system bundled software binaries.
-append_path /opt/local/bin
-# For administrative non-system bundled software binaries.
-append_path /opt/local/sbin
+  # For non-system bundled software binaries.
+  append_path /opt/local/bin
+  # For administrative non-system bundled software binaries.
+  append_path /opt/local/sbin
 
-# There should be no /opt/bin.  The local route is for stuff we don't
-# want to pull in via git.  If we do, then it goes in /opt/foo-project.
-# Config goes in /etc/opt/foo-project/xx.conf
-# Logs go in /var/opt/foo-project/xx.log
+  # There should be no /opt/bin.  The local route is for stuff we don't
+  # want to pull in via git.  If we do, then it goes in /opt/foo-project.
+  # Config goes in /etc/opt/foo-project/xx.conf
+  # Logs go in /var/opt/foo-project/xx.log
 
-append_path /usr/local/bin
-append_path /usr/bin/
-append_path /bin
-append_path /usr/local/sbin
-append_path /usr/sbin
-append_path /sbin
+  append_path /usr/local/bin
+  append_path /usr/bin/
+  append_path /bin
+  append_path /usr/local/sbin
+  append_path /usr/sbin
+  append_path /sbin
 
 
 ############################################################################
@@ -105,23 +133,22 @@ append_path /sbin
 
 else if [ $platform = 'macos' ]
 
-# User's private paths
-append_path $HOME/bin
-# TODO Remove, transfer to .local/bin
-# Remove bc .local is supposed to be a directory copy of /usr/local
-# so we can put tings liek etc and logs and not need to modify programs to use dots, just change root path.
-append_path $HOME/.local/bin
+  # User's private paths
+  append_path $HOME/bin
+  # TODO Remove, transfer to .local/bin
+  # Remove bc .local is supposed to be a directory copy of /usr/local
+  # so we can put tings liek etc and logs and not need to modify programs to use dots, just change root path.
+  append_path $HOME/.local/bin
 
-# Rust's cargo installed binaries.
-append_path $HOME/.cargo/bin
+  # Rust's cargo installed binaries.
+  append_path $HOME/.cargo/bin
 
-
-# Default Mac Path
-append_path /usr/local/bin
-append_path /usr/bin
-append_path /bin
-append_path /usr/sbin
-append_path /sbin
+  # Default Mac Path
+  append_path /usr/local/bin
+  append_path /usr/bin
+  append_path /bin
+  append_path /usr/sbin
+  append_path /sbin
 
 end
 
@@ -129,6 +156,29 @@ end
 # TMPPATH=${TMPPATH#?}
 # TMPPATH 'echo TMPPATH | sed -r 's/^://''
 
+set -eg PATH
+set -ex PATH
+set -x PATH ''
+
 # Final explicit export
-# export PATH="$TMPPATH"
 set -x PATH $TMPPATH
+# set -U fish_user_paths /usr/local/bin $fish_user_paths
+# Problem is if we set an incorrect path then all the shells will crap out?
+# set -U fish_user_paths $TMPPATH
+
+# TODO File a bug report on fish, show echos and outputs
+# For some reason a `.` is being added to the beginning of PATH
+# which seemingly occurs precisely when the path is set on line:
+# `set -x PATH $TMPPATH`
+# This line removes it.
+# Could be that dot means current directory?
+set PATH (string match -v . $PATH)
+
+# echo $fish_user_paths
+# echo $PATH
+#
+# echo ''
+# echo aaaaaa
+# echo $TMPPATH
+# echo aaaaaa
+# echo ''

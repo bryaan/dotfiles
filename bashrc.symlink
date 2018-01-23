@@ -7,27 +7,31 @@
 # 	source /etc/bashrc
 # fi
 
+# do we really need this here?
+[ "Linux" = "$(uname)" ] && platform="linux" || platform="macos"
+[ "x86_64" = "$(uname -m)" ] && arch="amd64" || arch="386"
+
+if [ "linux" = "$platform" ]; then
+	# Bring nix-env and its packages into env.
+	if test -e $HOME/.nix-profile/etc/profile.d/nix.sh; then
+	  # If ~.nix-profile/sbin doesn't exist this will echo a warning.
+	  # To avoid seeing that we pipe its output to null.
+	  source $HOME/.nix-profile/etc/profile.d/nix.sh 2>/dev/null
+	fi
+fi
+
+if [ "macos" = "$platform" ]; then
+	if test -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'; then
+	  source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+	fi
+fi
+
 # Set only this required var.
 export DOTFILES_ROOT="$HOME/src/dotfiles"
 
 # Import shell index file that imports everything else.
 # source $DOTFILES_ROOT/build/shell/index.zsh
 
-# Bring nix-env and its packages into env.
-if test -e $HOME/.nix-profile/etc/profile.d/nix.sh; then
-  # If ~.nix-profile/sbin doesn't exist this will echo a warning.
-  # To avoid seeing that we pipe its output to null.
-  source $HOME/.nix-profile/etc/profile.d/nix.sh 2>/dev/null
-fi
-
-source $HOME/.nix-profile/etc/profile.d/nix.sh
-
-# (thinking this will be needed for some
-# programs that call the bash shell, but havent run into anything yet so maybe not)
-
-# TODO Easier: bash starts a fish shell that simply dumps its PATH, *to bash's stdout*.
-
-# TODO Copy fish PATH to bash. 
 
 # Add a source 'file' line in .bashrc.
 # The target file is written to by fish, on demand, with PATH setting code.

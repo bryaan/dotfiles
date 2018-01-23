@@ -4,25 +4,20 @@
 # https://github.com/jaagr/dots/blob/master/.aliases
 #
 
-# Allows aliases to be run under sudo.
-# TODO does fish require this?
-alias sudo='sudo '
+setenv EDITOR 'kak'
+setenv VISUAL 'subl'
+setenv GIT_EDITOR 'kak'
+setenv SUDO_EDITOR 'kak'
+setenv PAGER 'vimpager'
 
+setenv BROWSER "/usr/bin/google-chrome"
+# /usr/bin/firefox
+# /usr/bin/chrome-gnome-shell  # What is this?
 
-set -x EDITOR 'kak'
-set -x VISUAL 'subl'
-set -x GIT_EDITOR 'kak'
-set -x SUDO_EDITOR 'kak'
-set -x PAGER 'vimpager'
-
-set -x BROWSER "/usr/bin/google-chrome"
-# BROWSER=/usr/bin/firefox
-# BROWSER=/usr/bin/chrome-gnome-shell  # Try this, not sure if this is chrome in the shell or what?
-
-set -x SSH_KEY_PATH "~/.ssh/rsa_id"
+setenv SSH_KEY_PATH "~/.ssh/rsa_id"
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
-# export SYSTEMD_PAGER=
+setenv SYSTEMD_PAGER $PAGER
 
 ####################################################
 # Dotfile Dev Commands
@@ -51,7 +46,7 @@ end
 function fish.reload.soft
   source ~/.config/fish/config.fish
 end
-
+# TODO reload.terminals
 
 ####################################################
 # Local Utility Commands

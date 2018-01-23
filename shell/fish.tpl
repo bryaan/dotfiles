@@ -3,7 +3,7 @@
 # brew manages fzf on macos.
 # But might want to define the FZF_HOME on mac anyway for future scripts.
 {% if os.linux %}
-  set -x FZF_HOME "$HOME/.fzf"
+  set -x FZF_HOME $HOME/.fzf
   append_path $FZF_HOME/bin
 {% endif %}
 

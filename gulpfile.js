@@ -2,11 +2,10 @@ var gulp  = require('gulp')
 var gutil = require('gulp-util')
 var exec = require('child_process').exec
 
-function clearTerminal () {
-  console.log('\n'.repeat(1000))
-}
 
-gulp.task('clearTerminal', clearTerminal)
+gulp.task('clear_terminal', function () {
+  console.log('\n'.repeat(1000))
+})
 
 
 // TODO Possibly use spinners from here
@@ -15,14 +14,29 @@ gulp.task('clearTerminal', clearTerminal)
 
 // Compile Our Dotfiles
 gulp.task('bootstrap', function (cb) {
+  gulp.start('clear_terminal')
   exec('sh bootstrap/bootstrap.sh', function (err, stdout, stderr) {
     // I think calling it in a gulp task prevents an intermittent error.
-    gulp.start('clearTerminal')
+    // gulp.start('clearTerminal')
     console.log(stdout)
     console.log(stderr)
     cb(err)
   })
 })
+
+// # TODO gaze.js error
+// # By default, the maximum number of files that Mac OS X can open is set to 12,288 and the maximum number of files a given process can open is 10,240
+// # sysctl -A | grep kern.maxfiles
+// # kern.maxfiles: 12288
+// # kern.maxfilesperproc: 10240
+// #
+// # sysctl -w kern.maxfiles=20480
+// #
+// # To make permanent:
+// # sudo nvim /etc/sysctl.conf 
+// # kern.maxfiles=20480 
+// # kern.maxfilesperproc=24576
+
 
 // Watch Files For Changes
 // Template filenames must match end with *.tpl
@@ -34,7 +48,7 @@ gulp.task('watch', function () {
   const watchedDirs = [
     '**/*.tpl',
     'shell/**',
-    '!.git/**',
+    '!.git/*',
     '!build/**',
     '!**/*.md',
     '!**/*.txt'

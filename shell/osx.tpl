@@ -3,7 +3,6 @@
 ####################################################
 {% if os.mac %}
 
-
 # iTerm2 Shell Integration
 if test -e ~/.iterm2_shell_integration.fish
   source ~/.iterm2_shell_integration.fish

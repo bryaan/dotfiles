@@ -1,28 +1,4 @@
 
-function dots
-  cd $DOTFILES_ROOT; gulp
-end
-function dots.bootstrap
-  $DOTFILES_ROOT/bootstrap/bootstrap.sh
-end
-function reload
-  clear; fish.reload
-  # clear; spin fish.reload
-end
-function fish.reload -d "Reload fish process via exec, keeping some context"
-  set -q CI; and return 0
-  # see what those vars do. And i thinks history is getting saved already.
-  # history --save
-  # set -gx dirprev $dirprev
-  # set -gx dirnext $dirnext
-  # set -gx dirstack $dirstack
-  # set -gx fish_greeting ''
-  exec fish
-end
-function fish.reload.soft
-  source ~/.config/fish/config.fish
-end
-
 ############################################################################
 # Program/System Shorcuts
 ############################################################################

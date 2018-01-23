@@ -4,6 +4,8 @@
 
 # TODO ~/.tool-versions move to version control.
 
+# TODO Given nix's features it's probable we don't need asdf!
+
 {% if os.linux %}
 
   set -x ASDF_HOME $HOME/.asdf
@@ -13,9 +15,9 @@
 
 {% if os.mac %}
 
-  set -x ASDF_HOME /usr/local/opt/asdf
+  setenv ASDF_HOME /usr/local/opt/asdf
   # export ASDF_BIN=$ASDF_HOME/bin/asdf
-  set -x ASDF_INSTALL_DIR $ASDF_HOME/installs
+  setenv ASDF_INSTALL_DIR $ASDF_HOME/installs
 
 {% endif %}
 
@@ -98,8 +100,9 @@ end
 # set -x GOROOT ''
 
 # Where public go packages go.
-set -x GOPATH "$HOME/go"
+setenv GOPATH $HOME/go
 
-# # Add each one's bin directory to PATH.
+# Add each one's bin directory to PATH.
 set -x PATH "$GOPATH/bin" $PATH
-# set -x PATH "$GOROOT/bin" $PATH
+
+
