@@ -1,6 +1,11 @@
 {
   "folders": [
     {
+      "path": "~/src/dotfiles/docs/",
+      "name": "Documentation",
+      "file_exclude_patterns": ["*.css"]
+    },
+    {
       "path": "~/src/dotfiles/",
       // Exclude from showing or indexing.
       "folder_exclude_patterns": [
@@ -15,11 +20,6 @@
         "build/**"
       ],
       "follow_symlinks": true
-    },
-    {
-      "path": "~/src/dotfiles/docs",
-      "name": "Documentation",
-      "file_exclude_patterns": ["*.css"]
     }
   ],
   "settings": {

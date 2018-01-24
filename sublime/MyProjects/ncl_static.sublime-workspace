@@ -1,0 +1,762 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"en",
+				"env_dict"
+			],
+			[
+				"sub",
+				"sublimerge"
+			],
+			[
+				"link",
+				"link_file"
+			],
+			[
+				"bas",
+				"bash_profile"
+			],
+			[
+				"avil",
+				"availableRates"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/home/bryan/src/static/sources/scripts/js/booking/679_Q_cruise-quote-controller.js",
+			"settings":
+			{
+				"buffer_size": 126031,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/bryan/src/static/sources/scripts/js/booking/675_Q_cruise-quote.js",
+			"settings":
+			{
+				"buffer_size": 44106,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 15032 files for \"createBooking\"\n\n/home/bryan/src/static/assets/scripts/ncl.booking-funnel.scripts.js:\n 7970  }\n 7971  \n 7972: function trackCreateBookingError(isCCError, errorCode, errorMsg) {\n 7973  \n 7974      var siteCatalystObject = getCommonSiteCatalystObject( \"Booking : Step 4 Payment Information\" );\n ....\n 9281      svc.submitBookingPayment = function (cruiseQuote) {\n 9282  \n 9283:         var url = NCLResources.urls.bookingFunnelBaseUrl + \"/createBooking\";\n 9284  \n 9285          return $http.post(url, cruiseQuote);\n ....\n 13131              var errorMsg = response && response.data && response.data.errorMsg ? response.data.errorMsg : NCLResources.strings.errorCreatingBooking;\n 13132              $scope.stepFourPanelOneError = errorMsg;\n 13133:             trackCreateBookingError(false, response.data.errorCode, errorMsg);\n 13134              scrollToElementId(\"stepFourPanelOneError\");\n 13135          });\n\n/home/bryan/src/static/sources/scripts/angular/apps/main-apps/670_Q_nclcom-booking-quote-app.js:\n  454  }\n  455  \n  456: function trackCreateBookingError(isCCError, errorCode, errorMsg) {\n  457  \n  458      var siteCatalystObject = getCommonSiteCatalystObject( \"Booking : Step 4 Payment Information\" );\n\n/home/bryan/src/static/sources/scripts/js/booking/675_Q_cruise-quote.js:\n  950      svc.submitBookingPayment = function (cruiseQuote) {\n  951  \n  952:         var url = NCLResources.urls.bookingFunnelBaseUrl + \"/createBooking\";\n  953  \n  954          return $http.post(url, cruiseQuote);\n\n/home/bryan/src/static/sources/scripts/js/booking/679_Q_cruise-quote-controller.js:\n 2869              var errorMsg = response && response.data && response.data.errorMsg ? response.data.errorMsg : NCLResources.strings.errorCreatingBooking;\n 2870              $scope.stepFourPanelOneError = errorMsg;\n 2871:             trackCreateBookingError(false, response.data.errorCode, errorMsg);\n 2872              scrollToElementId(\"stepFourPanelOneError\");\n 2873          });\n\n/home/bryan/Desktop/Find Results:\n    1: Searching 15031 files for \"/booking-quote/createBooking\"\n    2  \n    3  0 matches\n\n7 matches across 5 files\n\n\nSearching 15032 files for \" var absHref = elm.prop('href');\n  // get the actual href attribute - see\n  // http://msdn.microsoft.com/en-us/library/ie/dd347148(v=vs.85).aspx\n  var relHref = elm.attr('href') ||\"\n\n0 matches\n\nSearching 15032 files for \"hile (nodeName_(elm[0]) !== 'a\"\n\n/home/bryan/src/static/assets/scripts/cbe.assisted.libraries.js:\n 26958  \n 26959        // traverse the DOM up to find first A tag\n 26960:       while (nodeName_(elm[0]) !== 'a') {\n 26961          // ignore rewriting if no A tag (reached root element, or no parent - removed from document)\n 26962          if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;\n\n/home/bryan/src/static/assets/scripts/cbe.libraries.js:\n 26958  \n 26959        // traverse the DOM up to find first A tag\n 26960:       while (nodeName_(elm[0]) !== 'a') {\n 26961          // ignore rewriting if no A tag (reached root element, or no parent - removed from document)\n 26962          if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;\n\n/home/bryan/src/static/assets/scripts/home.libraries.js:\n 46081  \n 46082        // traverse the DOM up to find first A tag\n 46083:       while (nodeName_(elm[0]) !== 'a') {\n 46084          // ignore rewriting if no A tag (reached root element, or no parent - removed from document)\n 46085          if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;\n\n/home/bryan/src/static/assets/scripts/ncl.bootstrap.libraries.js:\n 46081  \n 46082        // traverse the DOM up to find first A tag\n 46083:       while (nodeName_(elm[0]) !== 'a') {\n 46084          // ignore rewriting if no A tag (reached root element, or no parent - removed from document)\n 46085          if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;\n\n/home/bryan/src/static/assets/scripts/ncl.shorex.libraries.js:\n 46081  \n 46082        // traverse the DOM up to find first A tag\n 46083:       while (nodeName_(elm[0]) !== 'a') {\n 46084          // ignore rewriting if no A tag (reached root element, or no parent - removed from document)\n 46085          if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;\n\n/home/bryan/src/static/assets/scripts/norway.libraries.js:\n 46081  \n 46082        // traverse the DOM up to find first A tag\n 46083:       while (nodeName_(elm[0]) !== 'a') {\n 46084          // ignore rewriting if no A tag (reached root element, or no parent - removed from document)\n 46085          if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;\n\n/home/bryan/src/static/sources/library/angular/angular.js:\n 14228  \n 14229        // traverse the DOM up to find first A tag\n 14230:       while (nodeName_(elm[0]) !== 'a') {\n 14231          // ignore rewriting if no A tag (reached root element, or no parent - removed from document)\n 14232          if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;\n\n7 matches across 7 files\n\n\nSearching 15032 files for \"forceAsyncEvents[eventName] && $rootScop\"\n\n/home/bryan/src/static/assets/scripts/cbe.assisted.libraries.js:\n 39724                  fn(scope, {$event: event});\n 39725                };\n 39726:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 39727                  scope.$evalAsync(callback);\n 39728                } else {\n\n/home/bryan/src/static/assets/scripts/cbe.libraries.js:\n 39724                  fn(scope, {$event: event});\n 39725                };\n 39726:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 39727                  scope.$evalAsync(callback);\n 39728                } else {\n\n/home/bryan/src/static/assets/scripts/home.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/assets/scripts/ncl.bootstrap.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/assets/scripts/ncl.shorex.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/assets/scripts/norway.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/sources/library/angular/angular.js:\n 26994                  fn(scope, {$event: event});\n 26995                };\n 26996:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 26997                  scope.$evalAsync(callback);\n 26998                } else {\n\n7 matches across 7 files\n\n\nSearching 15032 files for \"forceAsyncEvents[eventName] && $rootScop\"\n\n/home/bryan/src/static/assets/scripts/cbe.assisted.libraries.js:\n 39724                  fn(scope, {$event: event});\n 39725                };\n 39726:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 39727                  scope.$evalAsync(callback);\n 39728                } else {\n\n/home/bryan/src/static/assets/scripts/cbe.libraries.js:\n 39724                  fn(scope, {$event: event});\n 39725                };\n 39726:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 39727                  scope.$evalAsync(callback);\n 39728                } else {\n\n/home/bryan/src/static/assets/scripts/home.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/assets/scripts/ncl.bootstrap.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/assets/scripts/ncl.shorex.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/assets/scripts/norway.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/sources/library/angular/angular.js:\n 26994                  fn(scope, {$event: event});\n 26995                };\n 26996:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 26997                  scope.$evalAsync(callback);\n 26998                } else {\n\n7 matches across 7 files\n\n\nSearching 15032 files for \"createBooking\"\n\n/home/bryan/src/static/assets/scripts/ncl.booking-funnel.scripts.js:\n 7970  }\n 7971  \n 7972: function trackCreateBookingError(isCCError, errorCode, errorMsg) {\n 7973  \n 7974      var siteCatalystObject = getCommonSiteCatalystObject( \"Booking : Step 4 Payment Information\" );\n ....\n 9281      svc.submitBookingPayment = function (cruiseQuote) {\n 9282  \n 9283:         var url = NCLResources.urls.bookingFunnelBaseUrl + \"/createBooking\";\n 9284  \n 9285          return $http.post(url, cruiseQuote);\n ....\n 13131              var errorMsg = response && response.data && response.data.errorMsg ? response.data.errorMsg : NCLResources.strings.errorCreatingBooking;\n 13132              $scope.stepFourPanelOneError = errorMsg;\n 13133:             trackCreateBookingError(false, response.data.errorCode, errorMsg);\n 13134              scrollToElementId(\"stepFourPanelOneError\");\n 13135          });\n\n/home/bryan/src/static/sources/scripts/angular/apps/main-apps/670_Q_nclcom-booking-quote-app.js:\n  454  }\n  455  \n  456: function trackCreateBookingError(isCCError, errorCode, errorMsg) {\n  457  \n  458      var siteCatalystObject = getCommonSiteCatalystObject( \"Booking : Step 4 Payment Information\" );\n\n/home/bryan/src/static/sources/scripts/js/booking/675_Q_cruise-quote.js:\n  950      svc.submitBookingPayment = function (cruiseQuote) {\n  951  \n  952:         var url = NCLResources.urls.bookingFunnelBaseUrl + \"/createBooking\";\n  953  \n  954          return $http.post(url, cruiseQuote);\n\n/home/bryan/src/static/sources/scripts/js/booking/679_Q_cruise-quote-controller.js:\n 2869              var errorMsg = response && response.data && response.data.errorMsg ? response.data.errorMsg : NCLResources.strings.errorCreatingBooking;\n 2870              $scope.stepFourPanelOneError = errorMsg;\n 2871:             trackCreateBookingError(false, response.data.errorCode, errorMsg);\n 2872              scrollToElementId(\"stepFourPanelOneError\");\n 2873          });\n\n/home/bryan/Desktop/Find Results:\n    1: Searching 15031 files for \"/booking-quote/createBooking\"\n    2  \n    3  0 matches\n\n7 matches across 5 files\n\n\nSearching 15032 files for \"submitBookingPayment\"\n\n/home/bryan/src/static/assets/scripts/ncl.bge.scripts.js:\n 13045          };\n 13046  \n 13047:         svc.submitBookingPayment = function(clientId, reservationId, methodList, selectedPaymentAmount) {\n 13048              if (methodList.length == 1) {\n 13049                  methodList[0].amount = selectedPaymentAmount;\n .....\n 14373              $scope.paymentPosted = true;\n 14374  \n 14375:             paymentSvc.submitBookingPayment($scope.clientId, $scope.reservationId, $scope.paymentMethods, $scope.paymentOptions.guiState.selectedPaymentAmount)\n 14376                  .then(function(response) {\n 14377                  //Clear cached cart\n\n/home/bryan/src/static/assets/scripts/ncl.booking-funnel.scripts.js:\n 4942          };\n 4943  \n 4944:         svc.submitBookingPayment = function(clientId, reservationId, methodList, selectedPaymentAmount) {\n 4945              if (methodList.length == 1) {\n 4946                  methodList[0].amount = selectedPaymentAmount;\n ....\n 6270              $scope.paymentPosted = true;\n 6271  \n 6272:             paymentSvc.submitBookingPayment($scope.clientId, $scope.reservationId, $scope.paymentMethods, $scope.paymentOptions.guiState.selectedPaymentAmount)\n 6273                  .then(function(response) {\n 6274                  //Clear cached cart\n ....\n 9279      };\n 9280  \n 9281:     svc.submitBookingPayment = function (cruiseQuote) {\n 9282  \n 9283          var url = NCLResources.urls.bookingFunnelBaseUrl + \"/createBooking\";\n ....\n 13115          var postData = $scope.cruiseQuote.postData();\n 13116  \n 13117:         paymentSvc.submitBookingPayment( postData ).then(function(response) {\n 13118  \n 13119              var loc = response.data.redirect;\n\n/home/bryan/src/static/assets/scripts/ncl.onboard.bge.scripts.js:\n 12970          };\n 12971  \n 12972:         svc.submitBookingPayment = function(clientId, reservationId, methodList, selectedPaymentAmount) {\n 12973              if (methodList.length == 1) {\n 12974                  methodList[0].amount = selectedPaymentAmount;\n .....\n 14298              $scope.paymentPosted = true;\n 14299  \n 14300:             paymentSvc.submitBookingPayment($scope.clientId, $scope.reservationId, $scope.paymentMethods, $scope.paymentOptions.guiState.selectedPaymentAmount)\n 14301                  .then(function(response) {\n 14302                  //Clear cached cart\n\n/home/bryan/src/static/sources/scripts/angular/bge/640_GQ_payment.js:\n  168          };\n  169  \n  170:         svc.submitBookingPayment = function(clientId, reservationId, methodList, selectedPaymentAmount) {\n  171              if (methodList.length == 1) {\n  172                  methodList[0].amount = selectedPaymentAmount;\n  ...\n 1496              $scope.paymentPosted = true;\n 1497  \n 1498:             paymentSvc.submitBookingPayment($scope.clientId, $scope.reservationId, $scope.paymentMethods, $scope.paymentOptions.guiState.selectedPaymentAmount)\n 1499                  .then(function(response) {\n 1500                  //Clear cached cart\n\n/home/bryan/src/static/sources/scripts/js/booking/675_Q_cruise-quote.js:\n  948      };\n  949  \n  950:     svc.submitBookingPayment = function (cruiseQuote) {\n  951  \n  952          var url = NCLResources.urls.bookingFunnelBaseUrl + \"/createBooking\";\n\n/home/bryan/src/static/sources/scripts/js/booking/679_Q_cruise-quote-controller.js:\n 2853          var postData = $scope.cruiseQuote.postData();\n 2854  \n 2855:         paymentSvc.submitBookingPayment( postData ).then(function(response) {\n 2856  \n 2857              var loc = response.data.redirect;\n\n12 matches across 6 files\n",
+			"settings":
+			{
+				"buffer_size": 15244,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 400.0,
+		"last_filter": "xml",
+		"selected_items":
+		[
+			[
+				"xml",
+				"Set Syntax: HTML"
+			],
+			[
+				"set syntax",
+				"Set Syntax: TextMate Preferences (PList / XML)"
+			],
+			[
+				"fish",
+				"Set Syntax: friendly interactive shell (fish)"
+			],
+			[
+				"json",
+				"Set Syntax: JSON"
+			],
+			[
+				"bash",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"re",
+				"Package Control: Remove Package"
+			],
+			[
+				"conflic",
+				"Git Conflict Resolver: Find Next Conflict"
+			],
+			[
+				"merge",
+				"Sublimerge: Show Changes Between Current and Remote..."
+			],
+			[
+				"high",
+				"HighlightWords: Toggle Settings"
+			],
+			[
+				"toggle l",
+				"SublimeLinter: Toggle Linter"
+			],
+			[
+				"column",
+				"SublimeLinter: No Column Only Marks Gutter"
+			],
+			[
+				"column ",
+				"SublimeLinter: No Column Highlights Entire Line"
+			],
+			[
+				"mark sty",
+				"SublimeLinter: Choose Mark Style"
+			],
+			[
+				"rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"i",
+				"Package Control: Install Package"
+			],
+			[
+				"isnt",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Preferences: Browse Packages"
+			],
+			[
+				"mark",
+				"Set Syntax: Markdown"
+			],
+			[
+				"todo",
+				"Set Syntax: Todo"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"remove pa",
+				"Package Control: Remove Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"install ",
+				"Install Package Control"
+			]
+		],
+		"width": 536.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/bryan/src/static",
+		"/home/bryan/src/static/sources",
+		"/home/bryan/src/static/sources/library",
+		"/home/bryan/src/static/sources/scripts",
+		"/home/bryan/src/static/sources/scripts/js",
+		"/home/bryan/src/static/sources/scripts/js/booking"
+	],
+	"file_history":
+	[
+		"/home/bryan/src/static/assets/scripts/ncl.booking-funnel.scripts.js",
+		"/home/bryan/src/static/assets/scripts/cbe.libraries.js",
+		"/home/bryan/Desktop/Find Results",
+		"/home/bryan/src/static/sources/library/angular/angular.js",
+		"/home/bryan/src/static/assets/scripts/ncl.bootstrap.libraries.js",
+		"/home/bryan/src/static/assets/scripts/norway.libraries.js",
+		"/home/bryan/src/dotfiles/README.md",
+		"/home/bryan/notes/ai.txt",
+		"/home/bryan/notes/readme.txt",
+		"/home/bryan/src/dotfiles/shell/index.tpl",
+		"/home/bryan/src/dotfiles/shell/pathfile",
+		"/home/bryan/src/dotfiles/zsh/zshrc.symlink",
+		"/home/bryan/src/dotfiles/shell/base.tpl",
+		"/home/bryan/src/dotfiles/build/shell/index.fish",
+		"/home/bryan/src/dotfiles/shell/git.tpl",
+		"/home/bryan/src/dotfiles/shell/ncl.tpl",
+		"/home/bryan/src/dotfiles/shell/dev.tpl",
+		"/home/bryan/.zshrc",
+		"/home/bryan/src/dotfiles/bootstrap/bootstrap.sh",
+		"/home/bryan/src/dotfiles/gulpfile.js",
+		"/home/bryan/src/dotfiles/.sublime-project",
+		"/home/bryan/.zpath",
+		"/home/bryan/src/dotfiles/bootstrap/jinja_script.py",
+		"/home/bryan/src/dotfiles/bashrc.symlink",
+		"/home/bryan/src/dotfiles/package.json",
+		"/home/bryan/.bashrc",
+		"/home/bryan/.bash_aliases",
+		"/tmp/tmp.qZG8efC2Wk.fish",
+		"/tmp/fish.P6Ykbb/rg.fish",
+		"/tmp/fish.udn8mQ/rg.fish",
+		"/home/bryan/src/dotfiles/fish/init.fish",
+		"/tmp/fish_funced.Rl1Q6Dac52.fish",
+		"/tmp/fish_funced.nwZ4ycq0xm.fish",
+		"/tmp/fish_funced.P9r9vo8nv8.fish",
+		"/tmp/fish_funced.KvbA9EOYz1.fish",
+		"/home/bryan/src/dotfiles/.gitignore",
+		"/home/bryan/src/dotfiles/trash",
+		"/home/bryan/src/dotfiles/shell/dev/git.tpl",
+		"/home/bryan/src/dotfiles/shell/dev/aliases.tpl",
+		"/home/bryan/src/dotfiles/shell/base/aliases.tpl",
+		"/home/bryan/src/dotfiles/zsh/zshenv.symlink",
+		"/home/bryan/.zshenv",
+		"/home/bryan/src/dotfiles/shell/ncl/aliases.tpl",
+		"/tmp/fish_funced.yj9AdEUhyh.fish",
+		"/home/bryan/src/dotfiles/bootstrap/install_dotfiles.sh",
+		"/home/bryan/src/dotfiles/.realize.yaml",
+		"/home/bryan/src/dotfiles/nodemon.json",
+		"/tmp/fish_funced.UuNTnk9LrE.fish",
+		"/home/bryan/notes/fish.txt",
+		"/home/bryan/src/dotfiles/bootstrap/link_file.sh",
+		"/home/bryan/src/dotfiles/bootstrap/install.sh",
+		"/home/bryan/.config/sublime-text-3/Packages/User/HighlightWords.sublime-settings",
+		"/home/bryan/.config/sublime-text-3/Packages/HighlightWords/HighlightWords.sublime-settings",
+		"/home/bryan/.config/sublime-text-3/Packages/User/Plain text.sublime-settings",
+		"/home/bryan/.config/sublime-text-3/Packages/User/TodoHighlight.YAML-tmLanguage",
+		"/home/bryan/.config/sublime-text-3/Packages/User/all-files.sublime-syntax",
+		"/home/bryan/src/dotfiles/shell/ncl/aliases",
+		"/home/bryan/src/dotfiles/shell/dev/aliases",
+		"/home/bryan/notes/nix.txt",
+		"/home/bryan/notes/nomad.txt",
+		"/home/bryan/notes/microkernel.txt",
+		"/home/bryan/.config/fish/functions/fish_prompt.fish",
+		"/home/bryan/.config/omf/init.fish",
+		"/home/bryan/src/dotfiles/shell/base/dir_colors",
+		"/home/bryan/.devrc",
+		"/home/bryan/src/dotfiles/shell/aliases2",
+		"/home/bryan/src/dotfiles/shell/functions/os_distro_check",
+		"/home/bryan/src/dotfiles/bootstrap/bootstrap.js",
+		"/home/bryan/me/readme.txt",
+		"/home/bryan/src/dotfiles/bootstrap/package.json",
+		"/home/bryan/src/deployments/ncl-com-service.yaml",
+		"/home/bryan/src/deployments/run-my-nginx.yaml",
+		"/home/bryan/src/deployments/ncl-com-endpoint.yaml",
+		"/home/bryan/me/kube.txt",
+		"/home/bryan/me/kube-overview.txt",
+		"/home/bryan/src/dotfiles/install.sh",
+		"/home/bryan/src/dotfiles/bootstrap.js",
+		"/home/bryan/bin/syncDrupalDb",
+		"/home/bryan/.config/terminator/config",
+		"/home/bryan/.oh-my-zsh/plugins/sublime/sublime.plugin.zsh",
+		"/etc/environment",
+		"/home/bryan/bin/charlieLoop",
+		"/home/bryan/Desktop/runBackup",
+		"/home/bryan/.gitconfig",
+		"/etc/hosts",
+		"/home/bryan/bin/batcharge.py",
+		"/home/bryan/bin/battery.sh",
+		"/tmp/zshxmV8va",
+		"/etc/haproxy/haproxy.cfg",
+		"/home/bryan/me/.git/COMMIT_EDITMSG",
+		"/home/bryan/bin/dockerFiles/php53/php.ini",
+		"/home/bryan/src/dotfiles/git/gitignore.symlink",
+		"/home/bryan/src/dotfiles/git/.gitignore.symlink",
+		"/home/bryan/.gitignore",
+		"/home/bryan/src/dotfiles/macos/set-defaults.sh",
+		"/home/bryan/README.txt",
+		"/home/bryan/src/dotfiles/macos/install.sh",
+		"/home/bryan/.zlogin",
+		"/home/bryan/src/dotfiles/zshrc.symlink",
+		"/home/bryan/.zshenv.backup",
+		"/home/bryan/.gitdonfig",
+		"/home/bryan/.tmux.conf",
+		"/home/bryan/.tmuxinator/ncldev.yml",
+		"/home/bryan/.zprofile",
+		"/home/bryan/.oh-my-zsh/oh-my-zsh.sh",
+		"/home/bryan/.bin/charlieLoop",
+		"/home/bryan/.profile",
+		"/home/bryan/.tmux-session",
+		"/home/bryan/.bin/tmux-session",
+		"/home/bryan/.tmux.socket",
+		"/home/bryan/.oh-my-zsh/themes/absolute.zsh-theme",
+		"/home/bryan/.oh-my-zsh/custom/example.zsh",
+		"/home/bryan/.oh-my-zsh/custom/plugins/example/example.plugin.zsh",
+		"/home/bryan/oh-my-zsh/oh-my-zsh.sh",
+		"/home/bryan/src/cbe-java/cbe/oh-my-zsh.sh",
+		"/home/bryan/.tmux/design1",
+		"/home/bryan/src/static/sources/scripts/js/booking/677_Q_cruise-quote-form.js",
+		"/home/bryan/src/static/sources/scripts/js/cbe/050_CBN_norwegian.helper.js",
+		"/home/bryan/src/static/sources/scripts/js/cbe/200_CBN_norwegian.directsearch.js",
+		"/home/bryan/src/static/sources/scripts/js/leads/690_A_leads.js",
+		"/home/bryan/src/static/sources/scripts/js/leads/695_I_inside-scoop.js",
+		"/home/bryan/src/static/sources/scripts/angular/apps/main-apps/670_Q_nclcom-booking-quote-app.js",
+		"/home/bryan/src/static/sources/scripts/angular/favorites/610_A_favorites-browse.js",
+		"/home/bryan/src/static/sources/scripts/js/home/620_BCH_header.js",
+		"/home/bryan/src/static/sources/scripts/js/cbe/booking/510_C_norwegian.booking.guestinfo.js",
+		"/home/bryan/src/static/sources/scripts/js/drupal/norway/110_N_app.js",
+		"/home/bryan/src/static/sources/scripts/angular/bge/630_G_product-details.js",
+		"/home/bryan/src/static/sources/scripts/angular/bge/610_G_vacation-summary.js"
+	],
+	"find":
+	{
+		"height": 24.0
+	},
+	"find_in_files":
+	{
+		"height": 104.0,
+		"where_history":
+		[
+			"*",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"submitBookingPayment",
+			"createBooking",
+			"forceAsyncEvents[eventName] && $rootScop",
+			"hile (nodeName_(elm[0]) !== 'a",
+			" var absHref = elm.prop('href');\n  // get the actual href attribute - see\n  // http://msdn.microsoft.com/en-us/library/ie/dd347148(v=vs.85).aspx\n  var relHref = elm.attr('href') ||",
+			"createBooking",
+			"/booking-quote/createBooking"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/home/bryan/src/static/sources/scripts/js/booking/679_Q_cruise-quote-controller.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 126031,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								118089,
+								118168
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 45600.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/home/bryan/src/static/sources/scripts/js/booking/675_Q_cruise-quote.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 44106,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								41539,
+								41559
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 14852.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15244,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										150,
+										163
+									],
+									[
+										463,
+										476
+									],
+									[
+										788,
+										801
+									],
+									[
+										1070,
+										1083
+									],
+									[
+										1451,
+										1464
+									],
+									[
+										1852,
+										1865
+									],
+									[
+										2080,
+										2093
+									],
+									[
+										2575,
+										2605
+									],
+									[
+										2941,
+										2971
+									],
+									[
+										3308,
+										3338
+									],
+									[
+										3684,
+										3714
+									],
+									[
+										4057,
+										4087
+									],
+									[
+										4426,
+										4456
+									],
+									[
+										4795,
+										4825
+									],
+									[
+										5289,
+										5329
+									],
+									[
+										5585,
+										5625
+									],
+									[
+										5882,
+										5922
+									],
+									[
+										6188,
+										6228
+									],
+									[
+										6491,
+										6531
+									],
+									[
+										6790,
+										6830
+									],
+									[
+										7089,
+										7129
+									],
+									[
+										7491,
+										7531
+									],
+									[
+										7787,
+										7827
+									],
+									[
+										8084,
+										8124
+									],
+									[
+										8390,
+										8430
+									],
+									[
+										8693,
+										8733
+									],
+									[
+										8992,
+										9032
+									],
+									[
+										9291,
+										9331
+									],
+									[
+										9605,
+										9618
+									],
+									[
+										9918,
+										9931
+									],
+									[
+										10243,
+										10256
+									],
+									[
+										10525,
+										10538
+									],
+									[
+										10906,
+										10919
+									],
+									[
+										11307,
+										11320
+									],
+									[
+										11535,
+										11548
+									],
+									[
+										11759,
+										11779
+									],
+									[
+										12069,
+										12089
+									],
+									[
+										12416,
+										12436
+									],
+									[
+										12720,
+										12740
+									],
+									[
+										12993,
+										13013
+									],
+									[
+										13237,
+										13257
+									],
+									[
+										13474,
+										13494
+									],
+									[
+										13784,
+										13804
+									],
+									[
+										14132,
+										14152
+									],
+									[
+										14436,
+										14456
+									],
+									[
+										14777,
+										14797
+									],
+									[
+										15097,
+										15117
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								14349,
+								14349
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"git_gutter_is_enabled": false,
+							"line_numbers": false,
+							"output_tag": 7,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 4528.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 24.0
+	},
+	"input":
+	{
+		"height": 36.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.mdpopups":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "ncl_static.sublime-project",
+	"replace":
+	{
+		"height": 44.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 341.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

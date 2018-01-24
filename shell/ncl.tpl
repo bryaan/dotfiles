@@ -94,7 +94,9 @@ function nclCbeCompile
     mvn clean install -U -s settings.xml \
       -Dbuild=local \
       -DskipTests=true \
+      # >| /usr/bin/vim
       | tee $CBE_LOG_DIR/cbe-build.log
+    # vimpager $CBE_LOG_DIR/cbe-build.log
 end
 
 function nclCbeDebug
@@ -136,37 +138,42 @@ end
 # Check that a running container with given name does not exist.
 function dockerRunningContainerExists
   # https://docs.docker.com/engine/reference/commandline/ps/#usage
-  local containerName=$1
+  set -l containerName $argv
   docker ps -q -f name=$containerName
 end
 
 # Check that an exited container with given name does not exist.
 function dockerExitedContainerExists
   # https://docs.docker.com/engine/reference/commandline/ps/#usage
-  local containerName=$1
+  set -l containerName $argv
   docker ps -aq -f status=exited -f name=$containerName
 end
 
 
-function startDrupal
+function drupal.start
   # Container should exist but be exited.
   if dockerExitedContainerExists drupal
     docker start drupal
   else
     printf "Building drupal first...\n"
-    buildDrupal
-    startDrupal
+    drupal.build
+    drupal.start
   end
 end
 
-function stopDrupal
+function drupal.stop
   # Container should be running to prevent cmd err.
   if dockerRunningContainerExists drupal
     docker stop drupal
   end
 end
 
-function buildDrupal
+function drupal.restart
+  drupal.stop
+  drupal.start
+end
+
+function drupal.build
   # If our container isn't already running:
   if dockerRunningContainerExists drupal
       # If our container is exited, remove it:
@@ -180,10 +187,7 @@ function buildDrupal
   end
 end
 
-function buildDrupal
-  stopDrupal; startDrupal
-end
-function connectDrupal
+function drupal.connect
   docker exec -i -t drupal /bin/bash
 end
 

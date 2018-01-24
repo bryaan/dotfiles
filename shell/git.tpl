@@ -14,6 +14,11 @@ git config --global user.email "mail@bryaan.com"
 git config --global color.ui "auto"
 git config --global core.editor "subl -n --wait"
 
+# Causes `git diff` on a submodule project to act as if
+# the --submodule flag was appended to it. ie Pretty Print submodule info.
+git config --global diff.submodule log
+
+
 #   if commandExists diff-so-fancy
 #     git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
 #

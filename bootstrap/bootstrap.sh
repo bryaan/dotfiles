@@ -40,13 +40,18 @@ warn_not_installed() {
 
 # Compile templates in ./shell to ./build/shell
 compile_templates() {
+  info 'compiling templates'
+  info 'installing dotfiles'
   ./bootstrap/jinja_script.py
+  success 'templates compiled!'
+  success 'dotfiles installed!'
 }
 
 # Copy fish shell configs over to its expected dir.
 # Only runs if fish is installed.
 # Works on mac and linux.
 setup_fish () {
+  info 'installing fish files'
   if [ -d "$HOME/.config/fish/" ]; then
     # Link files in ./fish/ to ~/.config/fish/
     # Do not change method... Problems with recursive links and whatnot await.
@@ -66,11 +71,16 @@ setup_fish () {
   else
     warn_not_installed "Fish Shell"
   fi
+  success 'fish files installed!'
 }
 
+# TODO need to add symlink stuff for the sublime files.
+# Pull section from readme.
 # Only runs if sublime is installed.
-# TODO Make work on linux.
 setup_sublime() {
+  info 'setting up sublime'
+  # This just links the subl binary to ~/.local/bin/
+  # Only needed on mac.
   if [[ "$platform" == 'macos' ]]; then
     local subl_app_path="/Applications/Sublime Text.app"
     local subl_bin_path=$subl_app_path/Contents/SharedSupport/bin/subl
@@ -80,41 +90,40 @@ setup_sublime() {
       warn_not_installed "Sublime Text"
     fi
   fi
+  success 'sublime setup complete!'
 }
 
 setup_nixenv() {
+  info 'setting up nix'
   mkdir -p $HOME/.nixpkgs/
   ln -sf $DOTFILES_ROOT/nix/* $HOME/.nixpkgs/
+  success 'nix setup complete!'
+}
+
+# TODO Resolve vim bundles.
+# Only package we need to automate install is vundle.
+# So really just tell user to do a:
+setup_vim() {
+  info 'setting up vim'
+
+  # Check test -d ~/.vim/bundle/Vundle.vim/ exists
+  # If not tell user:
+  # git clone <url> ~/.vim/bundle/Vundle.vim
+# And only after that should the vimrc and other folders be synced.
+# This means delete everything but bundle folder when symlinking.
+  # ln -sfn $DOTFILES_ROOT/vim/* $HOME/.vim/
+
+  success 'vim setup complete!'
 }
 
 ####################################################
 # Bootstrap
 ####################################################
 
-info 'compiling templates'
-info 'installing dotfiles'
 compile_templates
-success 'templates compiled!'
-success 'dotfiles installed!'
-
-# # TODO When there is a dotfile to make an overwrite choice on 
-# # the python script fails with no error output.
-# # We should quit with an informative error message to run the bootstrap/bootstrap.sh
-# # directly and then resume.
-# info 'installing dotfiles'
-# # sh bootstrap/install_dotfiles.sh
-# success 'dotfiles installed!'
-
-info 'installing fish files'
 setup_fish
-success 'fish files installed!'
-
-info 'setting up sublime'
 setup_sublime
-success 'sublime setup complete!'
-
-info 'setting up misc'
 setup_nixenv
-success 'misc setup complete!'
+# setup_vim # TODO fix
 
 success 'bootstrap complete!'

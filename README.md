@@ -36,6 +36,8 @@ gulp
 ```bash
 cd $DOTFILES
 git clone ...
+git submodule init
+git submodule update
 dots.bootstrap; reload
 ```
 
@@ -43,6 +45,12 @@ dots.bootstrap; reload
 ```bash
 cd $DOTFILES
 git pull; dots.bootstrap; reload
+```
+
+### To update submodules:
+```bash
+git submodule update --remote
+git submodule update --remote <submodule-repo-name>
 ```
 
 
@@ -221,11 +229,9 @@ https://unix.stackexchange.com/questions/41739/keep-only-successful-commands-in-
 ------------------------------------------------
 
 # Linux install list
-
-## fish
-nix-env -i fish
-then symlink fish into /usr/bin:
-ln -sf $HOME/.nix-profile/bin/fish /usr/bin
+nix-env
+fish
+git
 
 ## oneliners
 pip install ripgrep
@@ -275,6 +281,8 @@ To make tools avialble under Tools → Packages → Package Development,
 
 
 # Things to add to Install Script
+
+nix-env -iA nixos.emacs
 
 Both:
 fish zsh
@@ -466,11 +474,51 @@ helium and titanuim backup
 - https://www.techrepublic.com/article/how-to-create-a-full-backup-of-your-android-device-without-root/  Uses `adb` from android studio to connect to phone and download data.
 
 
+Just a comment that in bash you can get the line numbers while debugging by adding the following:
+#!/bin/bash
+# For testing. First line outputs line numbers. 
+# Second line says to output what is going on in script
+PS4=':${LINENO}+'
+#set -x
+
 
 
 
 
 TODO there is a warn that the underscore var is treied to change.  this is an evn var _=/usr/bin/env  its intermittent
 Probably raised due to bass's code
+
+
+
+
+# Dont need virtualenv with python 3.6+ has it builtin
+python3.6 -m venv my36project
+
+# Activate the my36project sandbox:
+source my36project/bin/activate
+
+# Check the Python version in the sandbox (it should be Python 3.6.3):
+python --version
+
+# Test pip installs work.
+- May need to set python path to something writable.
+pip install hello
+
+# Deactivate the sandbox:
+deactivate
+
+
+[Nix and Python]
+https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/python.md
+https://nixos.org/nixpkgs/manual/#python
+https://ariya.io/2016/06/isolated-development-environment-using-nix
+
+https://github.com/search?p=2&q=python36.withPackages&type=Code&utf8=%E2%9C%93
+
+
+
+
+
+
 
 

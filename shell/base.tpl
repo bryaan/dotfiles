@@ -49,6 +49,12 @@ function fish.reload.soft
 end
 # TODO reload.terminals
 
+# update Vundle plugins
+function updatevim
+    set -lx SHELL (which sh)
+    vim +BundleInstall! +BundleClean +qall
+end
+
 ####################################################
 # Local Utility Commands
 ####################################################
