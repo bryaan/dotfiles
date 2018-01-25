@@ -21,20 +21,20 @@ set -x NCL_STATIC_PATH $NCL_SRC/static
 # NCL Common
 ###########################################################
 
-function nclCom
+function ncl.com.run
    cd $NCL_COM_PATH
    sbt -jvm-debug 9393  "run 9000 -Dconfig.file=conf/local.conf -Dhttps.port=9443 -Dscala.color=true"
 end
 
-function nclComCompile
+function ncl.com.compile
    cd $NCL_COM_PATH
    sbt clean compile
 end
 
-function nclComComplete
-  nclComCompile
-  nclCom
-end
+# function nclComComplete
+#   nclComCompile
+#   nclCom
+# end
 
 # function nclcom-custom-run() {
 #    cd $NCL_COM_PATH
@@ -45,7 +45,7 @@ end
 # NCL Shorex
 ###########################################################
 
-function nclShorex
+function ncl.shorex.run
    cd $NCL_SHOREX_PATH
    sbt -jvm-debug 9899  "run 9001 -Dconfig.file=conf/local.conf -Dscala.color=true"
 end
@@ -54,7 +54,7 @@ end
 # NCL Search
 ###########################################################
 
-function nclSearch
+function ncl.search.run
    cd $NCL_SEARCH_PATH
    sbt -jvm-debug 9799  "~run 9003"
 end
@@ -63,9 +63,9 @@ end
 # NCL CBE - Customer Booking Engine
 ###########################################################
 
-set -x CBE_LOG_DIR "/home/bryan/.cbe"
+set -x CBE_LOG_DIR $HOME/.cbe
 
-function setCbeLogDirectory
+function set_cbe_log_directory
     echo "Running Jetty..."
     if not test -d $CBE_LOG_DIR
         echo "No log directory found, using home"
@@ -73,9 +73,25 @@ function setCbeLogDirectory
     end
 end
 
-function nclCbe
+function ncl.cbe.clear
+   curl -X POST localhost:8080/cache
+end
+
+function ncl.cbe.compile
     cd $NCL_CBE_PATH
-    setCbeLogDirectory
+    set_cbe_log_directory
+
+    mvn clean install -U -s settings.xml \
+      -Dbuild=local \
+      -DskipTests=true \
+      # >| /usr/bin/vim
+      | tee $CBE_LOG_DIR/cbe-build.log
+    # vimpager $CBE_LOG_DIR/cbe-build.log
+end
+
+function ncl.cbe.run
+    cd $NCL_CBE_PATH
+    set_cbe_log_directory
 
     cd cbe-war
     mvn jetty:run \
@@ -87,21 +103,9 @@ function nclCbe
       | tee $CBE_LOG_DIR/cbe-server.log
 end
 
-function nclCbeCompile
+function ncl.cbe.debug
     cd $NCL_CBE_PATH
-    setCbeLogDirectory
-
-    mvn clean install -U -s settings.xml \
-      -Dbuild=local \
-      -DskipTests=true \
-      # >| /usr/bin/vim
-      | tee $CBE_LOG_DIR/cbe-build.log
-    # vimpager $CBE_LOG_DIR/cbe-build.log
-end
-
-function nclCbeDebug
-    cd $NCL_CBE_PATH
-    setCbeLogDirectory
+    set_cbe_log_directory
 
 #  export MAVEN_OPTS=''
 # export JAVA_OPTS='-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8070,server=y,suspend=n'
@@ -117,18 +121,14 @@ function nclCbeDebug
       | tee $CBE_LOG_DIR/cbe-server.log
 end
 
-function nclCbeCompileDebug
-   nclCbeCompile
-   nclCbeDebug
+function ncl.cbe.debug.complete
+   ncl.cbe.compile
+   ncl.cbe.debug
 end
 
-function nclCbeComplete
-   nclCbeCompile
-   nclCbe
-end
-
-function nclCbeClear
-   curl -X POST localhost:8080/cache
+function ncl.cbe.complete
+   ncl.cbe.compile
+   ncl.cbe.run
 end
 
 ###########################################################
@@ -191,17 +191,17 @@ function drupal.connect
   docker exec -i -t drupal /bin/bash
 end
 
-function drushCC
+function drupal.drushCC
   docker exec -it drupal  /root/drushCC.sh
 end
-function drushUpDb
+function drupal.drushUpDb
   docker exec -it drupal  /root/drushUpDb.sh
 end
 
-function patchDrupal
+function drupal.patch
   cd ~/src/drupal; scripts/patch-drupal
 end
-function unPatchDrupal
+function drupal.unpatch
   cd ~/src/drupal; scripts/patch-drupal -r
 end
 

@@ -80,6 +80,9 @@ if [ $platform = "linux" ]
   # Misc
   ###################################
 
+  ### yarn global packages ###
+  append_path $HOME/.yarn/bin
+
   # Rust / Cargo
   set -x CARGO_HOME $HOME/.cargo
   append_path $CARGO_HOME/bin

@@ -19,6 +19,8 @@ Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'tpope/vim-fugitive'
 
+Plugin 'vim-utils/vim-man'
+
 "Plugin to help review logs files within VIM. Particularly for Java.
 Plugin 'andreshazard/vim-logreview'
 

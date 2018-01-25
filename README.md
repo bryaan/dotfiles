@@ -225,49 +225,48 @@ https://unix.stackexchange.com/questions/41739/keep-only-successful-commands-in-
 
 
 
+
 ------------------------------------------------
+https://github.com/sdegutis/hydra
+
 ------------------------------------------------
 
-# Linux install list
+# install list
 nix-env
+nix-env -iA nixos.emacs
+nix-env -i yarn
 fish
 git
-
-## oneliners
 pip install ripgrep
 pip install glances
-nvim?
-nix-env -i yarn
 vimpager - from github compile
+cargo install exa
+yarn global add gulp tern
 
 # Mac install list
 
-# TODO alfred
+TODO alfred
 https://www.alfredapp.com/
-https://github.com/sdegutis/hydra
 
 brew install nvim vimpager
 brew install glances kak
 brew install ag ripgrep fzf
 bi yarn
+sublime?
 
 highlight check works with fzf preview
 
 brew cask install virtualbox
 brew cask install virtualbox-extension-pack
 
-
-# Same on all linux and mac
-> If can do with brew on mac and pip on linux dont add to this list.
-yarn global add gulp
-cargo install exa
-
+## Dependency Notes
+spacemacs requirements:
+emacs - a recent version
+tern - for the js layer
 
 # RHEL 7
 nix-env -i gcc-wrapper-7.2.0
 nix-env -iA nixpkgs.fish
-
-## Sublime Packages To Install Auto:
 
 ### PackageDev
 https://github.com/SublimeText/PackageDev
@@ -280,14 +279,9 @@ To make tools avialble under Tools → Packages → Package Development,
 
 
 
-# Things to add to Install Script
-
-nix-env -iA nixos.emacs
-
-Both:
-fish zsh
+fish
 asdf
-- Recommnded Pkgs: 
+- Recommnded Pkgs:
   brew install coreutils automake autoconf openssl libyaml readline libxslt libtool unixodbc
   brew install asdf
 
@@ -518,7 +512,77 @@ https://github.com/search?p=2&q=python36.withPackages&type=Code&utf8=%E2%9C%93
 
 
 
+# TODO should seperate jina_script 
+compile and install_dotfiles
 
 
 
 
+
+# Emacs
+C-g  Like vim ESC
+
+### Major Keymaps: ###
+C-x  Main Commands
+C-c  User Keybindings
+    - Note that only `C-c ...` are allowed as `C-c C-...` are used by system and apps.
+
+M-x  Search for command and execute
+
+x stands for “execute”.
+
+### C-x + ... ###
+
+C-s  Save file
+C-c  Quit Emacs
+
+b    Switch Buffers
+k    Kill Buffer
+
+C-;  Comment line
+
+
+
+C-d  List directory
+C-f  Find files
+SPC f f  Find files
+
+
+
+
+Search in buffer:
+/<search-term>  press enter
+navigate fwd `n` back `N`
+
+
+;;;; The Help Key
+; Control-h is the help key;
+; after typing control-h, type a letter to
+; indicate the subject about which you want help.
+; For an explanation of the help facility,
+; type control-h two times in a row.
+Just remember: type C-h two times for help.
+
+; To find out about any mode, type control-h m
+; while in that mode.  For example, to find out
+; about mail mode, enter mail mode and then type
+; control-h m.
+
+
+Type M-x search for ivy, look at all ivy plugins.
+https://github.com/Kungsgeten/ivy-todo
+
+
+ivy counsel swiper
+Ivy, a generic completion mechanism for Emacs.
+
+Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
+
+Swiper, an Ivy-enhanced alternative to isearch.
+
+counsel-fzf
+
+
+
+sr-speedbar
+tabbar

@@ -8,7 +8,6 @@ setenv EDITOR 'kak'
 setenv VISUAL 'subl'
 setenv GIT_EDITOR 'kak'
 setenv SUDO_EDITOR 'kak'
-setenv PAGER 'vimpager'
 setenv FILTER 'fzf'  # used by `fisher omf/marlin`
 
 setenv BROWSER "/usr/bin/google-chrome"
@@ -17,12 +16,22 @@ setenv BROWSER "/usr/bin/google-chrome"
 
 setenv SSH_KEY_PATH "~/.ssh/rsa_id"
 
+
+setenv PAGER 'vimpager'
+# TODO can pipe stdout into vim directly.
+# setenv PAGER 'vim -Rn -'
+
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 setenv SYSTEMD_PAGER $PAGER
+# vimpager not working well with manpages on linux.
+# TODO check mac.
+setenv MANPAGER 'less'
 
 ####################################################
 # Dotfile Dev Commands
 ####################################################
+
+abbr -a r reload
 
 function dots
   cd $DOTFILES_ROOT; gulp
@@ -50,7 +59,7 @@ end
 # TODO reload.terminals
 
 # update Vundle plugins
-function updatevim
+function vim.update
     set -lx SHELL (which sh)
     vim +BundleInstall! +BundleClean +qall
 end
@@ -65,8 +74,9 @@ set -l UID (id -u (whoami))
 # Commands to proxy thru sudo when not su.
 if [ UID != 0 ]
     alias reboot='sudo reboot'
-    # TODO Only on when yum command present && linux
-    alias update='sudo yum upgrade'
+    {% if os.linux %}
+      alias update='sudo yum upgrade'
+    {% endif %}
 end
 
 function warn
@@ -121,12 +131,21 @@ alias hibernate='systemctl --no-wall hybrid-sleep'
 alias h='history'
 alias j='jobs -l'
 # alias path='echo -e ${PATH//:/\\n}'
-# TODO make work with fish. - fish had its own way of showing path.
-alias now='date +"%T"'
-alias nowtime=now
-alias nowdate='date +"%d-%m-%Y"'
+# TODO make work with fish. - fish has its own way of showing path.
 # alias su='sudo -i'
 
+abbr -a reboot 'sudo reboot'
+abbr -a poweroff 'sudo poweroff'
+abbr -a halt 'sudo halt'
+alias tv='tvremote'
+
+# TODO doesnt seem to work, try on mac, if no also remove vimrc plugin
+function viman
+  vim -c "Man $argv $argv" -c 'silent only'
+end
+
+# alias vim="nvim"
+# alias vi="nvim"
 
 # TODO So dont put password here, pull password from system keyring.
 # Linux
@@ -138,6 +157,9 @@ alias nowdate='date +"%d-%m-%Y"'
 # security find-generic-password -a ${USER} -s playground -w
 alias rebootlinksys="curl -u 'admin:my-super-password' 'http://192.168.1.2/setup.cgi?todo=reboot'"
 
+## replace mac with your actual server mac address #
+# alias wakeupnas01='/usr/bin/wakeonlan 00:11:22:33:44:FC'
+
 
 # # Works on Mac and Linux
 # function command_exists {
@@ -145,20 +167,20 @@ alias rebootlinksys="curl -u 'admin:my-super-password' 'http://192.168.1.2/setup
 #   # usage: "if command_exists foo; then echo it exists; fi"
 #   type "$1" &> /dev/null
 # }
-
+#
 function command_exists
   command -v $1 >/dev/null
 end
 
-# TODO find replace -> run_silent or something more witty
 # Note this is using sh, may need to be bash/fish depending on use.
-function runSilent
+function run_silent
   sh -c 'nohup "$@" &>/dev/null 2>&1 &'
 end
 
 function rimraf
     rm -rf $argv
 end
+
 
 
 function fssh -d "Fuzzy-find ssh host and ssh into it"
@@ -207,48 +229,53 @@ end
 # And paste them at cursor.
 
 
-## replace mac with your actual server mac address #
-# alias wakeupnas01='/usr/bin/wakeonlan 00:11:32:11:15:FC'
-
-
 ####################################################
 # Built-in Commands
 ####################################################
 
-alias ls="exa"
-alias vim="nvim"
-alias vi="nvim"
-alias reboot="sudo reboot"
-alias poweroff="sudo poweroff"
-alias halt="sudo halt"
-alias tv="tvremote"
+alias now='date +"%T"'
+alias nowtime=now
+alias nowdate='date +"%d-%m-%Y"'
+
+### Directory Structure & Size ###
+alias ls='exa'
+alias ll='exa --long --git --header'
+alias l.='exa --all --long --git --header'
+abbr -a tree 'exa --tree --level=2'
 
 # Don't need these since using `exa`
 # alias ll="ls -lh"
 # alias l="ls -la"
 # alias l.="ls -d .*"  # Show hidden files
 
-alias ll="exa --long --git --header"
-alias l.="exa --all --long --git --header"
-alias tree="exa --tree --level=2"
-
 # Create parent directories if not exist.
-alias mkdir='mkdir -pv'
+abbr -a mkdir 'mkdir -pv'
 
-# File System Structure & Size
-alias df='df -H'
-alias du='du -ch'
-{% if os.mac %}
+### File System Structure & Size ###
+abbr -a df 'df -H'
+abbr -a du 'du -ch'
 # List all files and folders in current directory with size.
 abbr -a du.all 'du -shc .??* *'
-{% endif %}
 
 # Open calc in math mode...?
 alias bc='bc -l'
 
+### Disk Mounting ###
 # Make mount command output pretty and human readable format
-alias mount='mount | column -t'
+abbr -a mount 'mount | column -t'
 
+### ss - Socket Statistics ###
+# By default only CONNECTED sockets will show
+# with `-a` both CONNECTED and LISTENING will show.
+abbr -a ss.tcp 'ss -A tcp'
+abbr -a ss.udp 'ss -a -A udp'
+abbr -a ss.unix 'ss -A unix'
+abbr -a ss.tcp.listening 'ss -ltn'
+abbr -a ss.udp.listening 'ss -lun'
+
+### ps - Process Status ###
+# Usage: pid.info <pid>
+abbr -a pid.info 'ps -Flww -p'
 
 
 ####################################################
@@ -282,6 +309,4 @@ alias ln='ln -i'
   alias chown='chown --preserve-root'
   alias chmod='chmod --preserve-root'
   alias chgrp='chgrp --preserve-root'
-
 {% endif %}
-
