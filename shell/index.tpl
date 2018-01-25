@@ -40,3 +40,8 @@ end
 #
 # Using bash -c *does not* bring over aliases.
 # bash -c "source $shellfilesdir/ncl.zsh"
+
+
+{% if os.linux %}
+xset r rate 250 50
+{% endif %}

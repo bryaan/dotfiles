@@ -1,4 +1,8 @@
-#!/usr/bin/env sh
+if [ "Linux" = (uname) ]
+  set platform "linux"
+else
+  set platform "macos"
+end
 
 # Resources
 # https://github.com/jaagr/dots/blob/master/.aliases
@@ -182,6 +186,27 @@ function rimraf
 end
 
 
+# gnome-screenshot -a
+
+# if imagemagick is installed
+set -x SCREENSHOT_DIR $HOME/Desktop/Screenshots
+function screenshot
+  set -l date (date +"%d-%m-%Y")
+  set -l time (date +"%T")
+  mkdir -p $SCREENSHOT_DIR
+  import $SCREENSHOT_DIR/$date-$time.png
+end
+
+# Short for gui.open
+abbr -a gop gui.open
+function gui.open
+  if [ $platform = 'linux' ]
+    gnome-open $argv
+  else if [ $platform = 'macos' ]
+    open $argv
+  end
+end
+
 
 function fssh -d "Fuzzy-find ssh host and ssh into it"
   ag '^host [^*]' ~/.ssh/config | cut -d ' ' -f 2 | fzf | xargs -o ssh
@@ -252,7 +277,7 @@ abbr -a tree 'exa --tree --level=2'
 abbr -a mkdir 'mkdir -pv'
 
 ### File System Structure & Size ###
-abbr -a df 'df -H'
+abbr -a df 'df -H -T'
 abbr -a du 'du -ch'
 # List all files and folders in current directory with size.
 abbr -a du.all 'du -shc .??* *'
