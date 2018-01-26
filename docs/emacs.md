@@ -66,3 +66,16 @@ counsel-fzf
 
 sr-speedbar
 tabbar
+
+
+
+
+
+M-x rgrep For example, say you want to find all instances of the word python in any .md (markdown) in a given directory:
+
+
+
+kill-buffer-and-window   C-x 4 0
+
+evil-quit-all
+regular quit emacs

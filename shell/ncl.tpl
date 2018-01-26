@@ -31,6 +31,11 @@ function ncl.com.compile
    sbt clean compile
 end
 
+function ncl.com.debug
+   cd $NCL_COM_PATH
+   sbt ensimeRunDebug
+   # -Dconfig.file=conf/local.conf -Dhttps.port=9443 -Dscala.color=true
+end
 # function nclComComplete
 #   nclComCompile
 #   nclCom

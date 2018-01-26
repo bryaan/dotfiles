@@ -26,3 +26,5 @@ stdenv.mkDerivation rec {
 # nix-shell --command 'env HOME=/tmp/foo fish'
 #
 # To start fish so it doesnt inherit sys path, we clear the env.
+
+

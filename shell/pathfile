@@ -92,7 +92,8 @@ if [ $platform = "linux" ]
   append_path $GIT_HOME/bin
 
   # Java
-  set -x JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk
+  # set -x JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk
+  set -x JAVA_HOME /usr/lib/jvm/jdk1.8.0_172
   append_path $JAVA_HOME/bin
 
   ###################################

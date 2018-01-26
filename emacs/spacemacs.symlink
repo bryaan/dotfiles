@@ -2,12 +2,6 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-;; TODO can we do it periodically instead?
-;; If non nil then spacemacs will check for updates at startup
-;; when the current branch is not `develop'. Note that checking for
-;; new versions works via git commands, thus it calls GitHub services
-;; whenever you start Emacs. (default nil)
-(setq dotspacemacs-check-for-update t)
 
 
 (defun dotspacemacs/layers ()
@@ -39,6 +33,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     shell-scripts
      markdown
      python
      javascript
@@ -78,6 +73,7 @@ values."
    ;; them if they become unused. `all' installs *all* packages supported by
    ;; Spacemacs and never uninstall them. (default is `used-only')
    dotspacemacs-install-packages 'used-only))
+   ; dotspacemacs-install-packages 'used-but-keep-unused))
 
 (defun dotspacemacs/init ()
   "Initialization function.
@@ -112,7 +108,7 @@ values."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'vim
+   dotspacemacs-editing-style 'hybrid
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
@@ -122,6 +118,7 @@ values."
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
    dotspacemacs-startup-banner 'official
+   ; dotspacemacs-startup-banner nil
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
@@ -143,11 +140,18 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
-                               :weight normal
-                               :width normal
-                               :powerline-scale 1.1)
+   ; dotspacemacs-default-font '("Source Code Pro"
+   ;                             :size 13
+   ;                             :weight normal
+   ;                             :width normal
+   ;                             :powerline-scale 1.1)
+
+   ; ; http://spacemacs.org/doc/DOCUMENTATION.html#font
+   ; dotspacemacs-default-font '("Source Code Pro"
+   ;                             :size 16
+   ;                             :weight normal
+   ;                             :width normal
+   ;                             :powerline-offset 1.1)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -287,7 +291,7 @@ values."
    dotspacemacs-highlight-delimiters 'all
    ;; If non nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
-   dotspacemacs-persistent-server nil
+   dotspacemacs-persistent-server nil ; TODO benefits?
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
    ;; (default '("ag" "pt" "ack" "grep"))
@@ -304,87 +308,183 @@ values."
    dotspacemacs-whitespace-cleanup nil
    ))
 
+; Initialization function for user code.
+; It is called immediately after `dotspacemacs/init', before layer configuration
+; executes.
+;  This function is mostly useful for variables that need to be set
+; before packages are loaded. If you are unsure, you should try in setting them in
+; `dotspacemacs/user-config' first."
 (defun dotspacemacs/user-init ()
-  "Initialization function for user code.
-It is called immediately after `dotspacemacs/init', before layer configuration
-executes.
- This function is mostly useful for variables that need to be set
-before packages are loaded. If you are unsure, you should try in setting them in
-`dotspacemacs/user-config' first."
-  )
 
+  (use-package spacemacs-theme :ensure t
+    :init
+    (load-theme 'spacemacs-light t)
+    (setq spacemacs-theme-org-agenda-height nil)
+    (setq spacemacs-theme-org-height nil))
+
+  (setq-default
+    ;; TODO https://themegallery.robdor.com/
+    ;; lush afternoon  underwater ample-zen
+   ; dotspacemacs-themes '(ample-zen)
+   dotspacemacs-line-numbers t
+   ;; dotspacemacs-line-numbers 'relative
+      ; http://spacemacs.org/doc/DOCUMENTATION.html#font
+   dotspacemacs-default-font '("Source Code Pro"
+                               :size 16
+                               :weight normal
+                               :width normal
+                               :powerline-offset 1.1)
+))
+
+; TODO !!!!!!!!!!!!!!!!!!
+; TODO the reason emacs continues to have to download everything is 
+; TODO because nix is delting the info!  check `nix sandbox` or something for solution.
+
+
+; "Configuration function for user code.
+; This function is called at the very end of Spacemacs initialization after
+; layers configuration.
+; This is the place where most of your configurations should be done. Unless it is
+; explicitly specified that a variable should be set before a package is loaded,
+; you should place your code here."
 (defun dotspacemacs/user-config ()
-  "Configuration function for user code.
-This function is called at the very end of Spacemacs initialization after
-layers configuration.
-This is the place where most of your configurations should be done. Unless it is
-explicitly specified that a variable should be set before a package is loaded,
-you should place your code here."
+  ;; scratch buffer on stratup
+  ;; TODO to remove brief flash: 
+  ;; https://github.com/syl20bnr/spacemacs/issues/6899#issuecomment-306805429
+  (when (string= "*scratch*" (buffer-name))
+    (spacemacs/switch-to-scratch-buffer))
+
+
+  ;; TODO can we do it periodically instead?
+  ;; If non nil then spacemacs will check for updates at startup
+  ;; when the current branch is not `develop'. Note that checking for
+  ;; new versions works via git commands, thus it calls GitHub services
+  ;; whenever you start Emacs. (default nil) or t for true
+  (setq dotspacemacs-check-for-update nil)
+  (setq enable-recursive-minibuffers t)
+
+  (use-package spaceline :ensure t
+    :init
+    (setq
+     powerline-height 48
+     powerline-default-separator 'wave
+     spaceline-flycheck-bullet "❖ %s"
+     spaceline-separator-dir-left '(right . right)
+     spaceline-separator-dir-right '(left . left))
+    :config
+    (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
+
+  ; (use-package spaceline-config :ensure spaceline
+  ;   :config
+  ;   (spaceline-helm-mode 1)
+  ;   (spaceline-spacemacs-theme))
+
+  ; http://amitp.blogspot.com/2017/01/emacs-spaceline-mode-line.html
+  (use-package spaceline-config :ensure spaceline
+    :config
+    (spaceline-helm-mode 1)
+    (spaceline-install
+     'main
+     '((buffer-modified)
+       ((remote-host buffer-id) :face highlight-face)
+       (process :when active))
+     '((selection-info :face region :when mark-active)
+       ((flycheck-error flycheck-warning flycheck-info) :when active)
+       (which-function)
+       (version-control :when active)
+       (line-column)
+       (global :when active)
+       (major-mode))))
+
+
+
+  ; (use-package spaceline
+  ;   :demand t
+  ;   :init
+  ;   (setq powerline-default-separator 'arrow-fade)
+  ;   :config
+  ;   (require 'spaceline-config)
+  ;   (spaceline-emacs-theme))
+
+  ; (use-package sr-speedbar :ensure t
+  ;   :config
+  ;   (setq speedbar-show-unknown-files t))
+
+  ; ;; TODO move to readme "setup"
+  ; ;; Must run `M-x all-the-icons-install-fonts` for it to work!
+  ; (use-package all-the-icons :ensure t
+  ;   :config
+  ;   (all-the-icons-icon-for-buffer)
+  ;   (all-the-icons-faicon  "user-plus"))      ;; Weather Icon for tornado
+
+; all-the-icons-icon-alist
+    ;; GitHub Octicon for Binary File
+  ; (all-the-icons-octicon "file-text")
+  ; (all-the-icons-faicon  "text")
+  ; (all-the-icons-wicon   "txt")
+  ; (all-the-icons-wicon   "ttf")
+  ; (all-the-icons-faicon  "md")
+  ; (all-the-icons-octicon "js")
+
+  ; (use-package spaceline-all-the-icons :ensure t
+  ;   :after spaceline
+  ;   :config (spaceline-all-the-icons-theme))
+
+
+
+
+
+  ;; counsel should import ivy and swiper
+  (use-package counsel :ensure t
+    :config
+    (counsel-mode 1))
 
   (use-package ivy :ensure t
-    :diminish (ivy-mode . "")
-    :bind
-    (:map ivy-mode-map
-     ("C-'" . ivy-avy))
     :config
-    (ivy-mode 1)
-    ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
-    (setq ivy-use-virtual-buffers t)
-    ;; number of result lines to display
-    (setq ivy-height 10)
-    ;; does not count candidates
-    (setq ivy-count-format "")
-    ;; no regexp by default
-    (setq ivy-initial-inputs-alist nil)
-    ;; configure regexp engine.
-    (setq ivy-re-builders-alist
-    ;; allow input not in order
-          '((t   . ivy--regex-ignore-order))))
+    (setq ivy-use-virtual-buffers t
+          ivy-count-format "(%d/%d) "))
 
-    (use-package counsel :ensure t
-
-      :config
-      (counsel-mode 1)
-      )
-
-
-    ;;(setq ivy-use-virtual-buffers t)
-    (setq enable-recursive-minibuffers t)
-    ;;(global-set-key "\C-s" 'swiper)
-    (global-set-key (kbd "C-c C-r") 'ivy-resume)
-    (global-set-key (kbd "<f6>") 'ivy-resume)
-    (global-set-key (kbd "M-x") 'counsel-M-x)
-    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-    (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-    (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-    (global-set-key (kbd "<f1> l") 'counsel-find-library)
-    (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-    (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-    (global-set-key (kbd "C-c g") 'counsel-git)
-    (global-set-key (kbd "C-c j") 'counsel-git-grep)
-    (global-set-key (kbd "C-c k") 'counsel-ag)
-    (global-set-key (kbd "C-x l") 'counsel-locate)
-    (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-    (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-
-    (global-set-key (kbd "C-s") 'swiper)
-    (global-set-key (kbd "M-x") 'counsel-M-x)
-    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-    (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-    (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-    (global-set-key (kbd "<f1> l") 'counsel-find-library)
-    (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-    (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-
-    (global-set-key (kbd "C-c g") 'counsel-git)
-    (global-set-key (kbd "C-c j") 'counsel-git-grep)
-    (global-set-key (kbd "C-c k") 'counsel-ag)
-    (global-set-key (kbd "C-x l") 'counsel-locate)
-    (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-
-    (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  ;   :diminish (ivy-mode . "")
+  ;   :bind
+  ;   (:map ivy-mode-map
+  ;    ("C-'" . ivy-avy))
+  ;   :config
+  ;   (ivy-mode 1)
+  ;   ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
+  ;   (setq ivy-use-virtual-buffers t)
+  ;   ;; number of result lines to display
+  ;   (setq ivy-height 10)
+  ;   ;; does not count candidates
+  ;   (setq ivy-count-format "")
+  ;   ;; no regexp by default
+  ;   (setq ivy-initial-inputs-alist nil)
+  ;   ;; configure regexp engine.
+  ;   (setq ivy-re-builders-alist
+  ;   ;; allow input not in order
+  ;         '((t   . ivy--regex-ignore-order))))
 
 
+
+
+  ;   (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  ;   (global-set-key (kbd "<f6>") 'ivy-resume)
+
+  ;   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+
+  ;   (global-set-key (kbd "C-s") 'swiper)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  ;   (global-set-key (kbd "<f1> l") 'counsel-find-library)
+  ;   (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  ;   (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+
+  ;   (global-set-key (kbd "C-c g") 'counsel-git)
+  ;   (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c k") 'counsel-ag)
+  ;   (global-set-key (kbd "C-x l") 'counsel-locate)
+  ;   (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
   )
 
 
@@ -395,9 +495,11 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#080808" "#d70000" "#67b11d" "#875f00" "#268bd2" "#af00df" "#00ffff" "#b2b2b2"])
  '(package-selected-packages
    (quote
-    (mmm-mode markdown-toc markdown-mode gh-md ag counsel-projectile counsel ivy tern yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode anaconda-mode pythonic web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc coffee-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (spacemacs-theme solarized-theme powerline-evil mmm-mode markdown-toc markdown-mode gh-md spaceline-all-the-icons all-the-icons-ivy all-the-icons sr-speedbar ivy lush-theme insert-shebang fish-mode counsel ensime tern yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode anaconda-mode pythonic web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc coffee-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
