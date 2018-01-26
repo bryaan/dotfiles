@@ -2,19 +2,47 @@
 
 # Installation media setup
 
-Download NixOS minimal iso and copy to USB stick. For example on Mac OSX
+Download NixOS minimal iso and copy to USB stick.
 
+Check hash
+```
+$ pv nixos-minimal.iso | openssl sha256
+```
+
+On Mac OSX
+```
 $ diskutil list
-$ diskutil unmountDisk /dev/disk1 # Make sure you got right device
-$ dd if=nixos-minimal-17.09.2378.af7e47921c4-x86_64-linux.iso of=/dev/disk1
+$ diskutil unmountDisk /dev/disk2 # Make sure you got right device
+$ dd if=nixos-minimal.iso | pv | dd of=/dev/disk2
+```
+
+TODO get file size and replace 2G
+dd if=nixos-minimal.iso | pv -s 2G | dd of=/dev/disk2
+
 
 # NixOS install
 
-Boot from the USB stick and setup networking. (optionally setup SSH if you want to complete the install from another computer)
+Boot from the USB stick and setup networking.
 
-
+Setup SSH to continue from another computer:
+```
+ifconfig  # to get ip
+passwd    # to set pass for root
+systemctl start sshd
+```
 
 ## Partitioning
+
+Machine CLASS:
+
+NAME                 MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda                    8:0    0 119.2G  0 disk
+├─sda1                 8:1    0   500M  0 part /mnt/boot/efi
+└─sda2                 8:2    0 118.8G  0 part
+  ├─NixVolGroup-swap 254:0    0     8G  0 lvm  [SWAP]
+  └─NixVolGroup-root 254:1    0 110.8G  0 lvm  /mnt
+
+Machine ??:
 
 NAME             MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINT
 sda                8:0    0 931.5G  0 disk
@@ -27,41 +55,47 @@ nvme0n1          259:0    0 465.8G  0 disk
     ├─vg-swap    254:1    0     4G  0 lvm   [SWAP]
     └─vg-root    254:2    0 461.2G  0 lvm   /
 
-```
-# fdisk /dev/sda # (or whatever device you want to install on)
-# mkfs.ext4 -L nixos /dev/sda1
-# mkswap -L swap /dev/sda2
-# swapon /dev/sda2
-# mount /dev/disk/by-label/nixos /mnt
-# nixos-generate-config --root /mnt
-# nano /mnt/etc/nixos/configuration.nix
-# nixos-install
-# reboot
-```
+
 
 #### Create the partitions:
 
-TODO for classified need to use MBR not GPT i think.
-MBR vs GPT
-BIOS vs EFI/UEFI
-I think class can do both GPT and EFI.
-
 > Can also use cgdisk for a curses based install.
-
-[example partioning for: boot grub swap root](https://www.funtoo.org/Partitioning_using_gdisk)
-
-
-Create a 500MB EFI boot partition, and parition the rest for LVM.
+> Can find out extra fs types using option L in gdisk.
 
 ```
+lsblk # Figure out physical disk to partition
 $ gdisk /dev/sda # (or whatever device you want to install on)
 ```
 
-o (create new empty partition table)
-n (add partition, default, default, +500M, type ef00 EFI)
-n (add partition, remaining space, type 8e00 Linux LVM, Read note below if installing Debian)
+For UEFI Boot Systems:
+
+```
+o (create a new empty GUID partition table (GPT))
+n (add partition, 1, default, +500M, type ef00 EFI)
+n (add partition, 2, default, default, type 8e00 Linux LVM)
+p (optionally print partition table)
+w (write partition table and exit)
+```
+
+Includes BIOS Partition - For use on CLASS
+This procedure only on CLASS:
+
+```
+o (create a new empty GUID partition table (GPT))
+n (add partition, 1, default, +1M,   type ef02 BIOS)
+n (add partition, 2, default, +500M, type ef00 EFI)
+n (add partition, 3, default, default, type 8e00 Linux LVM)
+p (optionally print partition table)
 w (write partition table and exit)
 
+Number  Start (sector)    End (sector)  Size       Code  Name
+   1            2048            4095   1024.0 KiB  EF02  BIOS boot partition
+   2            4096         1028095   500.0 MiB   EF00  EFI System
+   3         1028096       312581774   148.6 GiB   8E00  Linux LVM
+```
+
+Some common fs types:
+```
 ef00 EFI System
 ef01 MBR partition scheme
 ef02 BIOS boot partition (Where GRUB goes)
@@ -69,10 +103,19 @@ ef02 BIOS boot partition (Where GRUB goes)
 8e00 Linux LVM
 8300 Linux filesystem
 fd00 Linux RAID
+```
 
+> If using these instructions on a Debian based install:
 > Beware, using 8e00 “Linux LVM” for an LUKS-encrypted LVM partition might confuse the Debian
 > installer into destroying your partition in certain circumstances!
 > In the apparent absence of a dedicated LUKS code, go with 8301 “Linux reserved”.
+
+##### If you mess up:
+1. Delete partitions using gdisk and option `d`, then write with `w` and reboot.
+2. Use `vgdisplay` to see the names of all LVM volume groups.  Then delete each one with `vgremove <vg-name>` (Might have to umount some disks)
+
+
+[example partioning for: boot grub swap root](https://www.funtoo.org/Partitioning_using_gdisk)
 
 
 #### Setup LVM
@@ -83,6 +126,8 @@ Conventions:
 Solid State Drive: sd<drive_letter>
 Hard Disk: hd<drive_letter>
 NVMe Drive: nvme<drive_number>
+
+[Why ext4](https://www.phoronix.com/scan.php?page=article&item=linux-412-fs&num=2)
 
 Another way to look at is this:
 ```
@@ -97,12 +142,6 @@ Another way to look at is this:
  ext4  ext4  xfs (filesystems)
 ```
 
-mkfs.ext4
-mkfs.xfs
-mkfs.btrfs
-[Why ext4](https://www.phoronix.com/scan.php?page=article&item=linux-412-fs&num=2)
-
-
 PVs are setup for each partition we create with gdisk.
 
 > Sets up 8G of SWAP and uses rest for root.
@@ -110,12 +149,12 @@ PVs are setup for each partition we create with gdisk.
 
 
 ```
-export PhysicalVolumes='/dev/mapper/nixos'
-export PhysicalVolumes='/dev/mapper/crypted-nixos' # Could use this as well.
-export PhysicalVolumes='/dev/sda /dev/hda /dev/hdb' # Or even this.
+lsblk   # to verify the partitions just created.  Those are added to the volumes below.
 
-export vg_name=NixVolGroup
+export PhysicalVolumes='/dev/sda3' # Note we do not include the bios or efi partition
+export PhysicalVolumes='/dev/mapper/crypted-nixos' # mapper is used when dealing with encrypted partitions. additional setup required. TODO should i just delete this?
 
+export vg_name=nix-vg
 
 $ pvcreate $PhysicalVolumes
 $ vgcreate $vg_name $PhysicalVolumes
@@ -125,14 +164,16 @@ $ lvcreate --extents '100%FREE' --name root $vg_name
 
 #### Format and mount the partitions:
 
+boot_device is the EFI Partition, never the BIOS partition
+
 ```
-export boot_device=/dev/sda1  # Or with nvme drive /dev/nvme0n1p1
+export boot_device=/dev/sda2  # Or with nvme drive /dev/nvme0n1p1
 export root_device=/dev/$vg_name/root
 export swap_device=/dev/$vg_name/swap
 
 $ mkfs.fat -F 32 $boot_device  # EFI partition requires FAT32
-$ mkswap -L swap $swap_device
 $ mkfs.ext4 -L root $root_device
+$ mkswap -L swap $swap_device
 
 $ mount $root_device /mnt
 $ mkdir -p /mnt/boot/efi
@@ -141,41 +182,130 @@ $ swapon $swap_device
 
 ```
 
-export home_device=/dev/mapper/crypted-data
-export data_device=/dev/mapper/crypted-data
+export home_device=/dev/$vg_name/home   #mapper/crypted-data
+export data_device=/dev/$vg_name/data   #mapper/crypted-data
 
 $ mkfs.ext4 -L home $home_device
 $ mkfs.ext4 -L data $data_device
 
-
-Format the partitions and mount
-
-$ mkfs.fat -F 32 /dev/nvme0n1p1
-$ mkswap -L swap /dev/vg/swap
-$ mkfs.ext4 -L root /dev/vg/root
-$ mkfs.ext4 -L data /dev/mapper/crypted-data
-
-$ mount /dev/vg/root /mnt
-$ mkdir -p /mnt/boot/efi
-$ mount /dev/nvme0n1p1 /mnt/boot/efi
-$ swapon /dev/vg/swap
+Not sure if this line is needed
+$ mount $data_device /mnt/home
 
 
+# Generate NixOS Config
+
+```
+$ nixos-generate-config --root /mnt
+
+TODO This should just be same file as below
+$ vim /mnt/etc/nixos/configuration.nix
+boot.loader.grub.efiSupport = true;
+boot.loader.grub.efiSysMountPoint = "/boot/efi"
+boot.loader.grub.device = "/dev/sda"
+networking.hostname = "..."
+```
+
+# Install NixOS
+
+```
+ nixos-install
+```
+
+# On First Login
+
+```
+# Change root password (if install script was used)
+passwd
+
+nixos-generate-config
+
+TODO vim /etc/nixos/configuration.nix
+
+- add user
+- enable ssh
+- enable graphical?
+- add amd and nvidia drivers
+- copy start miner script TODO copy from centos
+
+nixos-rebuild switch
+
+# After reboot set the new user's passwd
+passwd bryan
+```
+
+> Note the configuration.nix from before is erased as it was only for writing things to proper boot locations.
+
+> adding user to "wheel" group gives them access to sudo.
+
+TODO add to file below: to fix vim cant moe cursor:
+export TERM=xterm
+
+TODO The left right keys still dont work in bash.  May have to set keybindings for it. Or just use fish!
+
+{ config, pkgs, ... }:
+{
+
+  # This fixes some keyboard issues.
+  environment.variables.TERM = "xterm";
+
+  # Boot settings.
+  boot = {
+    loader.efi.efiSysMountPoint = "/boot/efi";
+    loader.grub = {
+      enable = true;
+      version = 2;
+      efiSupport = true;
+      # Drive to install GRUB on.
+      device = "/dev/sda"; # or "nodev" for UEFI only
+    };
+  };
+
+  networking.hostname = "classified";
+
+  # enable sshd on boot
+  services.openssh = {
+    enable = true;
+    startWhenNeeded = true;
+    # TODO This was for before i have this file being copied. remove it bc user logs in with keypair.
+    permitRootLogin = "yes";
+  };
+
+  users.extraUsers.bryan = {
+    name = "bryan";
+    group = "users";
+    extraGroups = [
+      "wheel" "disk" "audio" "video"
+      "networkmanager" "systemd-journal"
+    ];
+    createHome = true;
+    uid = 1000;
+    home = "/home/bryan";
+    shell = "/run/current-system/sw/bin/bash";
+    # TODO use a file instead. reference guest.nix
+    openssh.authorizedKeys.keys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDa9ZfwADEW6fmUs+1IQb8/kmi9winuu+zsFPV90P2igrWvq/lN2MvNHdTicrsjKgIwWzpHNxAVh0/HS8mQH2CXg40XA5vGZjpWKQ9RUxCs6mUKk93kHlSkYluIyyRVtiPH+4gAEMaQDdkKjpUqW6dUAJklymtZs8mU48DtM2DcE+JkLdvyr5WzDZaHLiHGdlwWvTZ4l+Vx2gNmNuzQS3cKoFCnZlYTXHnNCtB50sHj1k8KIOp58T+3GF9mwDH3DbiPpVVvxDbsz5qkDK1Rz6hCO6W6tYY/sXGslxt67LnFGhLJLU7T+6atNHHtOLRrPTEAM0EBgYD5QBGW6lbp2ZL7uf7Yeuboe5WYCUfo/4CPGfmQA+LbZT1imchEqWfksp770OdbYtEAqYYsbDgLawDGCXnXHWkxEUsyOC0GkklkZ5y9cIrjAe50LPYvx7v7+pxmcI6npgy1/xY4YFYLI85GQsbEFvnFrI1UUJttp5pjeKJbpGaVIn9lOMkgfFMM2O84qFGPtdED1hLnbCxYW5I2OpAr5Amj+abXNSV4nlW/M/o2hgIWA4v0KiqsK9GrCiEzxNViHSWdWPeM5n6+zn2y57WTj8YQ3j7S0ieoOZpWzmG4wdfqnINU7CWgvau49p9rNUr0SYEGkXfYdI8hEpErUqr2oYTqoVSt/Qiy4ArUlw== bryan@Bryans-Air"
+    ];
+  };
+
+}
 
 
 
+# Updating NixOS
 
-Follow instructions:
-https://nixos.org/nixos/manual/index.html#sec-installation
-(bring them over here for now, a script can be made of it later if we must redo)
+[Upgrade Docs](https://nixos.org/nixos/manual/index.html#sec-upgrading)
+[Auto Upgrade Docs](https://nixos.org/nixos/manual/index.html#idm140737316801280)
+
+```
+# nix-channel --add https://nixos.org/channels/nixos-17.09 nixos
+# nix-channel --add https://nixos.org/channels/nixos-17.09-small nixos
+# nix-channel --add https://nixos.org/channels/nixos-unstable nixos
+
+# nixos-rebuild switch --upgrade
+```
 
 
-
-Copy scripts and files over somehow. Curl. Another USB? partition on same usb, is that even posssible?
-
-
-
-
+TODO If doing a UEFI system this guide must be modified
 
 Config File:
 - For UEFI systems there are differences.
@@ -183,33 +313,6 @@ https://nixos.org/nixos/manual/index.html#sec-uefi-installation
 
 graphical install is easy but should be avoided for now, for simplicity.
 very simple basefile with nvidia and amd drivers.
-
-
-
-{ config, pkgs, ... }:
-
-{
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
-
-  boot.loader.grub.device = "/dev/sda";
-
-  # Note: setting fileSystems is generally not
-  # necessary, since nixos-generate-config figures them out
-  # automatically in hardware-configuration.nix.
-  #fileSystems."/".device = "/dev/disk/by-label/nixos";
-
-  # Enable the OpenSSH server.
-  services.sshd.enable = true;
-}
-
-
-
-
-
-
 
 
 
@@ -275,7 +378,11 @@ $ chmod 000 /mnt/boot/initrd.keys.gz
 
 # Notes
 
-Why LVM:
+### Why gdisk:
+- gdisk is newer than fdisk and works on partitions > 2TB.
+- UEFI is not a requirement to use gdisk.
+
+### Why LVM:
 - resizable disk
 - snapshot backups - actually more involved, will require scripts.
 - make sure to not extend across physical drives bc of failure 1 drive out both are lost.
@@ -284,13 +391,10 @@ Why LVM:
 - For a home folder backups do make sense, but likely better to use a tool like rsync or whatever.
   Only benefit of lvm in this case is resizeable disk but only use case i see is when home and swap are on same disk, and we want to change swaps size.
 
-
-
-Why gdisk:
-- gdisk is newer than fdisk and works on partitions > 2TB.
-- UEFI is not a requirement to use gdisk.
-
-
+### Why "no" encryption
+- Because I need the server to restart gracefully when I am not physically present and power outages are a problem.
+- Because I don't have time to write the secure network key server and install scripts.
+- Because its better to have userland encryption as that tends to protect against more attack types.
 
 
 # Resources & Thanks
