@@ -4,7 +4,7 @@
 # NCL Dev
 ###########################################################
 
-function runCharlie
+function charles.run
   ~/bin/charlieLoop
 end
 
