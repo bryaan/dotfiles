@@ -517,28 +517,10 @@ https://ariya.io/2016/06/isolated-development-environment-using-nix
 https://github.com/search?p=2&q=python36.withPackages&type=Code&utf8=%E2%9C%93
 
 
-yo insert
-;;jjkjkjxxkkjkxkyj
-ffdd
 
 # TODO should seperate jina_script 
 compile and install_dotfiles
 
 
 
-dfdfd   dfdfdfd   dfdfdf   dfddf
 
-    dsfdfd  dfdf  dfdfdf  dfdfdfdfdf
-    
-    
-    dfdfdfdfd
-    dfdfdfdf
-    dfdfdf
-    sdsd
-    ddf
-    df
-    d
-    
-    
-
-    

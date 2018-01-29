@@ -43,5 +43,6 @@ end
 
 
 {% if os.linux %}
+# Sets the keyrepeat rate; and hold delay before beginning repeat.
 xset r rate 250 50
 {% endif %}

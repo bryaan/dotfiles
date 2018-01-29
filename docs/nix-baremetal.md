@@ -31,6 +31,20 @@ passwd    # to set pass for root
 systemctl start sshd
 ```
 
+
+Copy to host:
+```
+scp file.txt username@to_host:/remote/directory/
+
+scp -r ~/src/nix-configs/class/ username@to_host:/etc/nixos/
+```
+
+Copy from host:
+```
+scp root@10.0.1.135:file.txt ~/Desktop/
+```
+
+
 ## Partitioning
 
 Machine CLASS:
