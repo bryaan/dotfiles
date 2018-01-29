@@ -110,9 +110,13 @@ defaults write com.apple.finder QLEnableTextSelection -bool TRUE
 # Where Screenshots Are Saved To
 defaults write com.apple.screencapture location ~/Desktop/Screenshots
 
-# Always show scrollbars
-defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
+# Always show scrollbars - This produced some nasty whitespace on some windows,
+# particularly those associated with dmg installs.
 # Possible values: `WhenScrolling`, `Automatic` and `Always`
+# default = Automatic
+# defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
+defaults write NSGlobalDomain AppleShowScrollBars -string "Automatic"
+
 
 # Save to disk (not to iCloud) by default
 defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
@@ -177,11 +181,11 @@ defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 
 # Disable press-and-hold for keys in favor of key repeat
 # TODO which one is new way?
-defaults write -g ApplePressAndHoldEnabled -bool false
-defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+defaults write -g ApplePressAndHoldEnabled -bool true
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool true
 
-# Set a really fast key repeat.
-defaults write NSGlobalDomain KeyRepeat -int 5
+# Set a really fast key repeat. was 5.
+defaults write NSGlobalDomain KeyRepeat -int 10
 
 ###############################################################################
 # Screen                                                                      #

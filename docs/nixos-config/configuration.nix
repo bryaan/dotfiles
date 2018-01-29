@@ -13,6 +13,13 @@
   	./hardware-configuration.nix
   ];
 
+  # rxvt fixed the backspace and delete key problem!
+  #environment.variables.TERM = "term";
+  environment.variables.TERM = "rxvt";
+  # TODO When logging in via ssh it should be set to:
+  # Is it possible to do this thru fish config?
+  environment.variables.TERM = "iterm2";
+
   ### Boot Settings ###
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
@@ -76,7 +83,6 @@
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDa9ZfwADEW6fmUs+1IQb8/kmi9winuu+zsFPV90P2igrWvq/lN2MvNHdTicrsjKgIwWzpHNxAVh0/HS8mQH2CXg40XA5vGZjpWKQ9RUxCs6mUKk93kHlSkYluIyyRVtiPH+4gAEMaQDdkKjpUqW6dUAJklymtZs8mU48DtM2DcE+JkLdvyr5WzDZaHLiHGdlwWvTZ4l+Vx2gNmNuzQS3cKoFCnZlYTXHnNCtB50sHj1k8KIOp58T+3GF9mwDH3DbiPpVVvxDbsz5qkDK1Rz6hCO6W6tYY/sXGslxt67LnFGhLJLU7T+6atNHHtOLRrPTEAM0EBgYD5QBGW6lbp2ZL7uf7Yeuboe5WYCUfo/4CPGfmQA+LbZT1imchEqWfksp770OdbYtEAqYYsbDgLawDGCXnXHWkxEUsyOC0GkklkZ5y9cIrjAe50LPYvx7v7+pxmcI6npgy1/xY4YFYLI85GQsbEFvnFrI1UUJttp5pjeKJbpGaVIn9lOMkgfFMM2O84qFGPtdED1hLnbCxYW5I2OpAr5Amj+abXNSV4nlW/M/o2hgIWA4v0KiqsK9GrCiEzxNViHSWdWPeM5n6+zn2y57WTj8YQ3j7S0ieoOZpWzmG4wdfqnINU7CWgvau49p9rNUr0SYEGkXfYdI8hEpErUqr2oYTqoVSt/Qiy4ArUlw== bryan@Bryans-Air"
     ];
   };
-
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

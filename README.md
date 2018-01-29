@@ -224,6 +224,8 @@ https://unix.stackexchange.com/questions/41739/keep-only-successful-commands-in-
 - some other approach
 
 
+TODO Add Christmas tree to terminal greeting schedule Thanksgiving+1 to Jan/Feb End
+https://www.cyberciti.biz/open-source/command-line-hacks/linux-unix-desktop-fun-christmas-tree-for-your-terminal/
 
 
 ------------------------------------------------
@@ -245,6 +247,7 @@ yarn global add gulp tern
 
 # Mac install list
 
+
 TODO alfred
 https://www.alfredapp.com/
 
@@ -258,6 +261,10 @@ highlight check works with fzf preview
 
 brew cask install virtualbox
 brew cask install virtualbox-extension-pack
+
+## Enable Extra Casks (Beta Nightly mostly)
+brew tap caskroom/versions
+brew cask install firefox-nightly
 
 ## Dependency Notes
 spacemacs requirements:

@@ -1,4 +1,8 @@
 
+function ssh.classified --description='Log into remote server'
+  ssh -t bryan@classified "export TERM=iterm2; fish"
+end
+
 ############################################################################
 # Program/System Shorcuts
 ############################################################################
