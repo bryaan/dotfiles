@@ -155,6 +155,15 @@ function dockerExitedContainerExists
 end
 
 
+
+function drupal.pull
+  rm sites/all/modules/jquery_update/replace/jquery-1.7.2.js
+  rm sites/all/modules/jquery_update/replace/jquery-1.7.2.min.js
+  git stash
+  git pull
+  drupal.patch
+end
+
 function drupal.start
   # Container should exist but be exited.
   if dockerExitedContainerExists drupal

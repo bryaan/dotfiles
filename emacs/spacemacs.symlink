@@ -322,6 +322,7 @@ values."
     (setq spacemacs-theme-org-agenda-height nil)
     (setq spacemacs-theme-org-height nil))
 
+
   (setq-default
     ;; TODO https://themegallery.robdor.com/
     ;; lush afternoon  underwater ample-zen
@@ -348,6 +349,11 @@ values."
 ; explicitly specified that a variable should be set before a package is loaded,
 ; you should place your code here."
 (defun dotspacemacs/user-config ()
+
+  (global-set-key (kbd "C-x b") 'helm-mini)
+
+
+
   ;; scratch buffer on stratup
   ;; TODO to remove brief flash: 
   ;; https://github.com/syl20bnr/spacemacs/issues/6899#issuecomment-306805429
@@ -396,6 +402,54 @@ values."
        (global :when active)
        (major-mode))))
 
+  ;;; helm-smex
+  (use-package helm-smex :ensure t)
+  (global-set-key (kbd "M-x") #'helm-smex)
+  (global-set-key (kbd "M-X") #'helm-smex-major-mode-commands)
+  ;; This is your old M-x.
+  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+  ; (global-set-key [remap execute-extended-command] #'helm-smex)
+
+
+  ; TODO redefine all used shortcuts for use as quickref
+
+  ; Find File (same as C-x f)
+  ; SPC f f
+
+  ; Switch Buffers (same as C-x b)
+  ; SPC b b
+
+  ; Opens neotree
+  ; SPC f t
+
+
+  (use-package sidebar :ensure ov
+    :load-path
+    "~/.local/share/sidebar"
+    :init
+    (use-package icons-in-terminal
+      :load-path
+      "~/.local/share/icons-in-terminal/"
+      ))
+
+  (use-package neotree :ensure t
+    :load-path
+    "~/.local/share/icons-in-terminal/"
+    :init
+    (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+
+
+
+
+  ; ; ;;; sidebar
+  ; (push "~/.local/share/icons-in-terminal/" load-path)
+  ; (push "~/.local/share/sidebar/" load-path)
+  ; ;(load-file "~/.local/share/sidebar/sidebar.el")
+  ; (add-to-list 'load-path "~/.local/share/sidebar/")
+  ; (add-to-list 'load-path "~/.local/share/icons-in-terminal/")
+  ; (require 'sidebar)
+  ; (global-set-key (kbd "C-x C-f") 'sidebar-open)
+  ; (global-set-key (kbd "C-x C-a") 'sidebar-buffers-open)
 
 
   ; (use-package spaceline
@@ -432,18 +486,6 @@ values."
 
 
 
-
-
-  ;; counsel should import ivy and swiper
-  (use-package counsel :ensure t
-    :config
-    (counsel-mode 1))
-
-  (use-package ivy :ensure t
-    :config
-    (setq ivy-use-virtual-buffers t
-          ivy-count-format "(%d/%d) "))
-
   ;   :diminish (ivy-mode . "")
   ;   :bind
   ;   (:map ivy-mode-map
@@ -466,25 +508,35 @@ values."
 
 
 
-  ;   (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  ;   (global-set-key (kbd "<f6>") 'ivy-resume)
+  ; ;; counsel should import ivy and swiper
+  ; (use-package counsel :ensure t
+  ;   :config
+  ;   (counsel-mode 1))
 
-  ;   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+  ; (use-package ivy :ensure t
+  ;   :config
+  ;   (setq ivy-use-virtual-buffers t
+  ;         ivy-count-format "(%d/%d) "))
 
-  ;   (global-set-key (kbd "C-s") 'swiper)
-  (global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-  ;   (global-set-key (kbd "<f1> l") 'counsel-find-library)
-  ;   (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-  ;   (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  ; ;   (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  ; ;   (global-set-key (kbd "<f6>") 'ivy-resume)
 
-  ;   (global-set-key (kbd "C-c g") 'counsel-git)
-  ;   (global-set-key (kbd "C-c j") 'counsel-git-grep)
-  (global-set-key (kbd "C-c k") 'counsel-ag)
-  ;   (global-set-key (kbd "C-x l") 'counsel-locate)
-  ;   (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+  ; ;   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+
+  ; ;   (global-set-key (kbd "C-s") 'swiper)
+  ; (global-set-key (kbd "M-x") 'counsel-M-x)
+  ; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  ; (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  ; (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  ; ;   (global-set-key (kbd "<f1> l") 'counsel-find-library)
+  ; ;   (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  ; ;   (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+
+  ; ;   (global-set-key (kbd "C-c g") 'counsel-git)
+  ; ;   (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  ; (global-set-key (kbd "C-c k") 'counsel-ag)
+  ; ;   (global-set-key (kbd "C-x l") 'counsel-locate)
+  ; ;   (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
   )
 
 
@@ -497,9 +549,10 @@ values."
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#080808" "#d70000" "#67b11d" "#875f00" "#268bd2" "#af00df" "#00ffff" "#b2b2b2"])
+ '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (spacemacs-theme solarized-theme powerline-evil mmm-mode markdown-toc markdown-mode gh-md spaceline-all-the-icons all-the-icons-ivy all-the-icons sr-speedbar ivy lush-theme insert-shebang fish-mode counsel ensime tern yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode anaconda-mode pythonic web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc coffee-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (ov sidebar imenu-list svg helm-smex spacemacs-theme solarized-theme powerline-evil mmm-mode markdown-toc markdown-mode gh-md spaceline-all-the-icons all-the-icons-ivy all-the-icons sr-speedbar ivy lush-theme insert-shebang fish-mode counsel ensime tern yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode anaconda-mode pythonic web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc coffee-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

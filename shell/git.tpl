@@ -14,6 +14,10 @@ git config --global user.email "mail@bryaan.com"
 git config --global color.ui "auto"
 git config --global core.editor "subl -n --wait"
 
+# Global .gitignore file.
+git config --global core.excludesfile ~/.gitignore_global
+
+
 # Causes `git diff` on a submodule project to act as if
 # the --submodule flag was appended to it. ie Pretty Print submodule info.
 git config --global diff.submodule log
