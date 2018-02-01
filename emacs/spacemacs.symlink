@@ -422,6 +422,14 @@ values."
   ; Opens neotree
   ; SPC f t
 
+  ; Close Split Window (current window)
+  ; C-x 0
+
+  ; C-z
+  ; Suspend Emacs (suspend-emacs) or iconify a frame (iconify-or-deiconify-frame).
+
+  ; C-x C-c
+  ; Kill Emacs (save-buffers-kill-emacs).
 
   (use-package sidebar :ensure ov
     :load-path

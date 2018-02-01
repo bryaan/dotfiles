@@ -8,6 +8,14 @@ end
 # https://github.com/jaagr/dots/blob/master/.aliases
 #
 
+################################################ ################################################
+
+# TODO rename file util.tpl and move setenv stuff to pathfile or index?
+
+# TODO android.tpl
+# add the adb backup commands.
+
+
 setenv EDITOR 'kak'
 setenv VISUAL 'subl'
 setenv GIT_EDITOR 'kak'
@@ -27,50 +35,14 @@ setenv PAGER 'vimpager'
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 setenv SYSTEMD_PAGER $PAGER
+
 # vimpager not working well with manpages on linux.
 # TODO check mac.
 setenv MANPAGER 'less'
 
-####################################################
-# Dotfile Dev Commands
-####################################################
-
-abbr -a r reload
-
-function dots
-  cd $DOTFILES_ROOT; gulp
-end
-function dots.bootstrap
-  $DOTFILES_ROOT/bootstrap/bootstrap.sh
-end
-function reload
-  clear; fish.reload
-  # clear; spin fish.reload
-end
-function fish.reload -d "Reload fish process via exec, keeping some context"
-  set -q CI; and return 0
-  # see what those vars do. And i thinks history is getting saved already.
-  # history --save
-  # set -gx dirprev $dirprev
-  # set -gx dirnext $dirnext
-  # set -gx dirstack $dirstack
-  # set -gx fish_greeting ''
-  exec fish
-end
-function fish.reload.soft
-  source ~/.config/fish/config.fish
-end
-# TODO reload.terminals
-
-# update Vundle plugins
-function vim.update
-    set -lx SHELL (which sh)
-    vim +BundleInstall! +BundleClean +qall
-end
-
-####################################################
+################################################
 # Local Utility Commands
-####################################################
+################################################
 
 # Current User ID
 set -l UID (id -u (whoami))
@@ -91,12 +63,9 @@ function warnProgramNotInstalled
   warn "Package '$1' Not Installed!\nAlternatively, check that it is available on your PATH.\n"
 end
 
-####################################################
-# Colorize
-####################################################
-
-# Make rg'scolors look like ag's
-alias rg='rg --colors line:fg:yellow --colors line:style:bold --colors path:fg:green --colors path:style:bold --colors match:fg:black --colors match:bg:yellow --colors match:style:nobold'
+################################################
+# Colorize TODO move to files.tpl?
+################################################
 
 # {% if os.linux %}
 #   # alias ls='ls --color=auto'
@@ -107,9 +76,6 @@ alias rg='rg --colors line:fg:yellow --colors line:style:bold --colors path:fg:g
 #   alias fgrep='fgrep --color=auto'
 #   alias egrep='egrep --color=auto'
 #   alias yum='yum --color=always'
-
-#   # TODO Check colordiff command exists.
-#   alias diff='colordiff'
 
 # {% endif %}
 
@@ -123,9 +89,9 @@ if type --quiet colordiff
 end
 
 
-####################################################
+################################################
 # Utility Commands
-####################################################
+################################################
 
 alias c='clear'
 alias cl='clear; ll'
@@ -141,29 +107,21 @@ alias j='jobs -l'
 abbr -a reboot 'sudo reboot'
 abbr -a poweroff 'sudo poweroff'
 abbr -a halt 'sudo halt'
-alias tv='tvremote'
 
-# TODO doesnt seem to work, try on mac, if no also remove vimrc plugin
-function viman
-  vim -c "Man $argv $argv" -c 'silent only'
-end
+alias now='date +"%T"'
+alias nowtime=now
+alias nowdate='date +"%d-%m-%Y"'
 
-# alias vim="nvim"
-# alias vi="nvim"
 
-# TODO So dont put password here, pull password from system keyring.
-# Linux
-# secret-tool store --label='Password for mydrive' drive mydrive
-# secret-tool lookup drive mydrive
-# Mac
-# security add-generic-password -a ${USER} -s playground -w `pwgen`
-# security delete-generic-password -a ${USER} -s playground
-# security find-generic-password -a ${USER} -s playground -w
-alias rebootlinksys="curl -u 'admin:my-super-password' 'http://192.168.1.2/setup.cgi?todo=reboot'"
+# Open calc in math mode...?
+alias bc='bc -l'
 
-## replace mac with your actual server mac address #
-# alias wakeupnas01='/usr/bin/wakeonlan 00:11:22:33:44:FC'
 
+
+
+# TODO move to util.tpl and import or to functions/util or each file.
+# TODO move to util.tpl and import or to functions/util or each file.
+# TODO move to util.tpl and import or to functions/util or each file.
 
 # # Works on Mac and Linux
 # function command_exists {
@@ -174,15 +132,29 @@ alias rebootlinksys="curl -u 'admin:my-super-password' 'http://192.168.1.2/setup
 #
 function command_exists
   command -v $1 >/dev/null
+  # Also there is type --quiet xxx, TODO what is diff?
 end
 
 # Note this is using sh, may need to be bash/fish depending on use.
 function run_silent
-  sh -c 'nohup "$@" &>/dev/null 2>&1 &'
+  sh -c 'nohup "(echo $argv)" &>/dev/null 2>&1 &'
 end
 
 function rimraf
     rm -rf $argv
+end
+
+
+# TODO look into Z autojump and fzf-autojump
+# Short for gui.open
+abbr -a gop gui.open
+
+function gui.open
+  if [ $platform = 'linux' ]
+    gnome-open $argv
+  else if [ $platform = 'macos' ]
+    open $argv
+  end
 end
 
 
@@ -197,36 +169,11 @@ function screenshot
   import $SCREENSHOT_DIR/$date-$time.png
 end
 
-# Short for gui.open
-abbr -a gop gui.open
-function gui.open
-  if [ $platform = 'linux' ]
-    gnome-open $argv
-  else if [ $platform = 'macos' ]
-    open $argv
-  end
-end
 
+# TODO move to util.tpl and import or to functions/util or each file.
+# TODO move to util.tpl and import or to functions/util or each file.
+# TODO move to util.tpl and import or to functions/util or each file.
 
-function fssh -d "Fuzzy-find ssh host and ssh into it"
-  ag '^host [^*]' ~/.ssh/config | cut -d ' ' -f 2 | fzf | xargs -o ssh
-end
-
-function fs -d "Switch tmux session"
-  tmux list-sessions -F "#{session_name}" | fzf | xargs tmux switch-client -t
-end
-
-function fpass -d "Fuzzy-find a Lastpass entry and copy the password"
-  if not lpass status -q
-    lpass login $EMAIL
-  end
-
-  if not lpass status -q
-    exit
-  end
-
-  lpass ls | fzf | string replace -r -a '.+\[id: (\d+)\]' '$1' | xargs lpass show -c --password
-end
 
 
 
@@ -253,85 +200,3 @@ end
 # Instead, do something like sudo where pressing a key twice will copy those args.
 # And paste them at cursor.
 
-
-####################################################
-# Built-in Commands
-####################################################
-
-alias now='date +"%T"'
-alias nowtime=now
-alias nowdate='date +"%d-%m-%Y"'
-
-### Directory Structure & Size ###
-alias ls='exa'
-alias ll='exa --long --git --header'
-alias l.='exa --all --long --git --header'
-abbr -a tree 'exa --tree --level=2'
-
-# Don't need these since using `exa`
-# alias ll="ls -lh"
-# alias l="ls -la"
-# alias l.="ls -d .*"  # Show hidden files
-
-# Create parent directories if not exist.
-abbr -a mkdir 'mkdir -pv'
-
-### File System Structure & Size ###
-abbr -a df 'df -H -T'
-abbr -a du 'du -ch'
-# List all files and folders in current directory with size.
-abbr -a du.all 'du -shc .??* *'
-
-# Open calc in math mode...?
-alias bc='bc -l'
-
-### Disk Mounting ###
-# Make mount command output pretty and human readable format
-abbr -a mount 'mount | column -t'
-
-### ss - Socket Statistics ###
-# By default only CONNECTED sockets will show
-# with `-a` both CONNECTED and LISTENING will show.
-abbr -a ss.tcp 'ss -A tcp'
-abbr -a ss.udp 'ss -a -A udp'
-abbr -a ss.unix 'ss -A unix'
-abbr -a ss.tcp.listening 'ss -ltn'
-abbr -a ss.udp.listening 'ss -lun'
-
-### ps - Process Status ###
-# Usage: pid.info <pid>
-abbr -a pid.info 'ps -Flww -p'
-
-
-####################################################
-# Curl
-####################################################
-
-# get web server headers #
-alias header='curl -I'
-
-# find out if remote server supports gzip / mod_deflate or not #
-alias headerc='curl -I --compress'
-
-# Resume downloads by default
-alias wget='wget -c'
-
-####################################################
-# Safety Nets
-####################################################
-
-# confirmation #
-alias mv='mv -i'
-alias cp='cp -i'
-alias ln='ln -i'
-
-
-{% if os.linux %}
-  # do not delete / or prompt if deleting more than 3 files at a time #
-  alias rm='rm -I --preserve-root'
-
-  # Parenting changing perms on / #
-  alias chown='chown --preserve-root'
-  alias chmod='chmod --preserve-root'
-  alias chgrp='chgrp --preserve-root'
-{% endif %}

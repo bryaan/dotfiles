@@ -1,10 +1,13 @@
-####################################################
+################################################
 # System Perf
-####################################################
+################################################
 
 # Replace htop with glances for now. (learning cmd name)
 alias top='glances'
 alias htop='glances'
+
+
+# TODO split into memory.tpl compute.tpl ??? or merge with other files?
 
 # TODO check what ps -f option is on linux to copy here.
 {% if os.mac %}
@@ -48,21 +51,6 @@ alias htop='glances'
   alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
 
 {% endif %}
-
-####################################################
-# Network Performance
-####################################################
-
-# Stop after sending count ECHO_REQUEST packets #
-alias ping='ping -c 5'
-
-# Do not wait interval 1 second, go fast #
-# alias fastping='ping -c 100 -s.2' # Linux
-alias fastping='ping -c 100 -i .2' # Mac
-
-# Show open ports.
-alias ports='netstat -tulanp'
-
 
 
 

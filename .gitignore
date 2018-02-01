@@ -31,3 +31,15 @@ atom.symlink/storage
 atom.symlink/themes
 atom.symlink/blob-store
 atom.symlink/recovery
+
+
+# TODO temporary, maybe solve by symlink init.el to ~/.emacs.d 
+# then do all imports from init.el from a dotfilesroot folder.
+!emacs/custom-attempt/
+
+emacs/custom-attempt/*
+!emacs/custom-attempt/.emacs.d/
+
+emacs/custom-attempt/.emacs.d/*
+!emacs/custom-attempt/.emacs.d/init.el
+!emacs/custom-attempt/.emacs.d/packages.el

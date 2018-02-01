@@ -111,3 +111,45 @@ function clean_deleted_branches
 	# branch_names | pb_copy
 	# pbpaste | xargs git branch -d
 end
+
+
+#################################
+# git unstaging
+#################################
+
+# https://stackoverflow.com/questions/19730565/how-to-remove-files-from-git-staging-area
+
+# TODO What is difference???
+
+
+# Unstage all files.
+function git.unstage.all --description 'Remove all files from staging area'
+  git checkout -- .
+end
+
+function git.unstage --description 'Remove given files from staging area'
+  git checkout $argv
+end
+
+# Remove all files from staging area
+function git.reset.staging.all --description 'Remove all files from staging area'
+  git reset HEAD -- .
+end
+
+# Remove given files from staging area
+function git.reset.staging --description 'Remove given files from staging area'
+  git reset HEAD -- $argv
+end
+
+
+# Undo                  With
+#
+# git add .             git reset
+# git add <file>        git reset <file>
+
+
+# Undo git add .
+# With git reset
+
+# Undo git add <file>
+# With git reset <file>

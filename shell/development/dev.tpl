@@ -1,19 +1,34 @@
 
+# TODO fish upon entering a directory, runs a local .devrc (or something like that)
+# which sets up functions used for that project.  This way we keep that stuff localt to project.
+
+
+
+function fssh -d "Fuzzy-find ssh host and ssh into it"
+  ag '^host [^*]' ~/.ssh/config | cut -d ' ' -f 2 | fzf | xargs -o ssh
+end
+
+function fs -d "Switch tmux session"
+  tmux list-sessions -F "#{session_name}" | fzf | xargs tmux switch-client -t
+end
+
+
 function ssh.classified --description='Log into remote server'
   ssh -t bryan@classified "export TERM=iterm2; fish"
 end
 
-############################################################################
+################################################
 # Program/System Shorcuts
-############################################################################
+################################################
 
 # lsblk - Tree like view of block devices.
 function idea
-  run_silent ~/bin/idea-IU-173.4301.1/bin/idea.sh
+  sh ~/bin/idea-IU-173.4301.1/bin/idea.sh ^/dev/null &
 end
 
 function gitkraken
-  run_silent /usr/local/src/gitkraken/gitkraken
+  # run_silent /usr/local/src/gitkraken/gitkraken
+  sh /usr/local/src/gitkraken/gitkraken ^/dev/null &
 end
 
 function torrent

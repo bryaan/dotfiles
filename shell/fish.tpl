@@ -1,5 +1,39 @@
 # This file is for settings related to fish and fish utilities.
 
+# TODO mkdir shell/fish and split these sections to files.
+
+################################################
+# reloading
+################################################
+
+function reload
+  clear; fish.reload
+  # clear; spin fish.reload
+end
+
+function fish.reload -d "Reload fish process via exec, keeping some context"
+  set -q CI; and return 0
+  # see what those vars do. And i thinks history is getting saved already.
+  # history --save
+  # set -gx dirprev $dirprev
+  # set -gx dirnext $dirnext
+  # set -gx dirstack $dirstack
+  # set -gx fish_greeting ''
+  exec fish
+end
+
+function fish.reload.soft
+  source ~/.config/fish/config.fish
+end
+
+# TODO reload.terminals
+
+
+################################################
+# fzf
+################################################
+
+
 # brew manages fzf on macos.
 # But might want to define the FZF_HOME on mac anyway for future scripts.
 {% if os.linux %}
@@ -61,9 +95,9 @@ function prepend_command
 end
 
 
-####################################################
+################################################
 # fzf
-####################################################
+################################################
 
 # Check this file for keybindings:
 # nvim /Users/bryan/.config/fish/functions/fish_user_key_bindings.fish
@@ -167,9 +201,9 @@ end
 set -x FZF_ALT_C_COMMAND '_bar_fzf_alt_c_command'
 # set -gx FZF_ALT_C_OPTS "--preview 'tree -C {} | head -200'"
 
-####################################################
+################################################
 # `bobthefish` Theme Specific Settings
-####################################################
+################################################
 
 # Number of chars to show in abbreviated path. 0=show full path
 set -g fish_prompt_pwd_dir_length 3

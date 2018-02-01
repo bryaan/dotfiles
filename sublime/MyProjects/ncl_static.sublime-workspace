@@ -28,10 +28,11 @@
 	"buffers":
 	[
 		{
-			"file": "/home/bryan/src/static/sources/scripts/js/booking/679_Q_cruise-quote-controller.js",
+			"file": "/home/bryan/src/static/sources/scripts/js/casino/007_A_casino.js",
 			"settings":
 			{
-				"buffer_size": 126031,
+				"buffer_size": 1565,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
@@ -44,13 +45,19 @@
 			}
 		},
 		{
-			"contents": "Searching 15032 files for \"createBooking\"\n\n/home/bryan/src/static/assets/scripts/ncl.booking-funnel.scripts.js:\n 7970  }\n 7971  \n 7972: function trackCreateBookingError(isCCError, errorCode, errorMsg) {\n 7973  \n 7974      var siteCatalystObject = getCommonSiteCatalystObject( \"Booking : Step 4 Payment Information\" );\n ....\n 9281      svc.submitBookingPayment = function (cruiseQuote) {\n 9282  \n 9283:         var url = NCLResources.urls.bookingFunnelBaseUrl + \"/createBooking\";\n 9284  \n 9285          return $http.post(url, cruiseQuote);\n ....\n 13131              var errorMsg = response && response.data && response.data.errorMsg ? response.data.errorMsg : NCLResources.strings.errorCreatingBooking;\n 13132              $scope.stepFourPanelOneError = errorMsg;\n 13133:             trackCreateBookingError(false, response.data.errorCode, errorMsg);\n 13134              scrollToElementId(\"stepFourPanelOneError\");\n 13135          });\n\n/home/bryan/src/static/sources/scripts/angular/apps/main-apps/670_Q_nclcom-booking-quote-app.js:\n  454  }\n  455  \n  456: function trackCreateBookingError(isCCError, errorCode, errorMsg) {\n  457  \n  458      var siteCatalystObject = getCommonSiteCatalystObject( \"Booking : Step 4 Payment Information\" );\n\n/home/bryan/src/static/sources/scripts/js/booking/675_Q_cruise-quote.js:\n  950      svc.submitBookingPayment = function (cruiseQuote) {\n  951  \n  952:         var url = NCLResources.urls.bookingFunnelBaseUrl + \"/createBooking\";\n  953  \n  954          return $http.post(url, cruiseQuote);\n\n/home/bryan/src/static/sources/scripts/js/booking/679_Q_cruise-quote-controller.js:\n 2869              var errorMsg = response && response.data && response.data.errorMsg ? response.data.errorMsg : NCLResources.strings.errorCreatingBooking;\n 2870              $scope.stepFourPanelOneError = errorMsg;\n 2871:             trackCreateBookingError(false, response.data.errorCode, errorMsg);\n 2872              scrollToElementId(\"stepFourPanelOneError\");\n 2873          });\n\n/home/bryan/Desktop/Find Results:\n    1: Searching 15031 files for \"/booking-quote/createBooking\"\n    2  \n    3  0 matches\n\n7 matches across 5 files\n\n\nSearching 15032 files for \" var absHref = elm.prop('href');\n  // get the actual href attribute - see\n  // http://msdn.microsoft.com/en-us/library/ie/dd347148(v=vs.85).aspx\n  var relHref = elm.attr('href') ||\"\n\n0 matches\n\nSearching 15032 files for \"hile (nodeName_(elm[0]) !== 'a\"\n\n/home/bryan/src/static/assets/scripts/cbe.assisted.libraries.js:\n 26958  \n 26959        // traverse the DOM up to find first A tag\n 26960:       while (nodeName_(elm[0]) !== 'a') {\n 26961          // ignore rewriting if no A tag (reached root element, or no parent - removed from document)\n 26962          if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;\n\n/home/bryan/src/static/assets/scripts/cbe.libraries.js:\n 26958  \n 26959        // traverse the DOM up to find first A tag\n 26960:       while (nodeName_(elm[0]) !== 'a') {\n 26961          // ignore rewriting if no A tag (reached root element, or no parent - removed from document)\n 26962          if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;\n\n/home/bryan/src/static/assets/scripts/home.libraries.js:\n 46081  \n 46082        // traverse the DOM up to find first A tag\n 46083:       while (nodeName_(elm[0]) !== 'a') {\n 46084          // ignore rewriting if no A tag (reached root element, or no parent - removed from document)\n 46085          if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;\n\n/home/bryan/src/static/assets/scripts/ncl.bootstrap.libraries.js:\n 46081  \n 46082        // traverse the DOM up to find first A tag\n 46083:       while (nodeName_(elm[0]) !== 'a') {\n 46084          // ignore rewriting if no A tag (reached root element, or no parent - removed from document)\n 46085          if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;\n\n/home/bryan/src/static/assets/scripts/ncl.shorex.libraries.js:\n 46081  \n 46082        // traverse the DOM up to find first A tag\n 46083:       while (nodeName_(elm[0]) !== 'a') {\n 46084          // ignore rewriting if no A tag (reached root element, or no parent - removed from document)\n 46085          if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;\n\n/home/bryan/src/static/assets/scripts/norway.libraries.js:\n 46081  \n 46082        // traverse the DOM up to find first A tag\n 46083:       while (nodeName_(elm[0]) !== 'a') {\n 46084          // ignore rewriting if no A tag (reached root element, or no parent - removed from document)\n 46085          if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;\n\n/home/bryan/src/static/sources/library/angular/angular.js:\n 14228  \n 14229        // traverse the DOM up to find first A tag\n 14230:       while (nodeName_(elm[0]) !== 'a') {\n 14231          // ignore rewriting if no A tag (reached root element, or no parent - removed from document)\n 14232          if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;\n\n7 matches across 7 files\n\n\nSearching 15032 files for \"forceAsyncEvents[eventName] && $rootScop\"\n\n/home/bryan/src/static/assets/scripts/cbe.assisted.libraries.js:\n 39724                  fn(scope, {$event: event});\n 39725                };\n 39726:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 39727                  scope.$evalAsync(callback);\n 39728                } else {\n\n/home/bryan/src/static/assets/scripts/cbe.libraries.js:\n 39724                  fn(scope, {$event: event});\n 39725                };\n 39726:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 39727                  scope.$evalAsync(callback);\n 39728                } else {\n\n/home/bryan/src/static/assets/scripts/home.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/assets/scripts/ncl.bootstrap.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/assets/scripts/ncl.shorex.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/assets/scripts/norway.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/sources/library/angular/angular.js:\n 26994                  fn(scope, {$event: event});\n 26995                };\n 26996:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 26997                  scope.$evalAsync(callback);\n 26998                } else {\n\n7 matches across 7 files\n\n\nSearching 15032 files for \"forceAsyncEvents[eventName] && $rootScop\"\n\n/home/bryan/src/static/assets/scripts/cbe.assisted.libraries.js:\n 39724                  fn(scope, {$event: event});\n 39725                };\n 39726:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 39727                  scope.$evalAsync(callback);\n 39728                } else {\n\n/home/bryan/src/static/assets/scripts/cbe.libraries.js:\n 39724                  fn(scope, {$event: event});\n 39725                };\n 39726:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 39727                  scope.$evalAsync(callback);\n 39728                } else {\n\n/home/bryan/src/static/assets/scripts/home.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/assets/scripts/ncl.bootstrap.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/assets/scripts/ncl.shorex.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/assets/scripts/norway.libraries.js:\n 58847                  fn(scope, {$event: event});\n 58848                };\n 58849:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 58850                  scope.$evalAsync(callback);\n 58851                } else {\n\n/home/bryan/src/static/sources/library/angular/angular.js:\n 26994                  fn(scope, {$event: event});\n 26995                };\n 26996:               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {\n 26997                  scope.$evalAsync(callback);\n 26998                } else {\n\n7 matches across 7 files\n\n\nSearching 15032 files for \"createBooking\"\n\n/home/bryan/src/static/assets/scripts/ncl.booking-funnel.scripts.js:\n 7970  }\n 7971  \n 7972: function trackCreateBookingError(isCCError, errorCode, errorMsg) {\n 7973  \n 7974      var siteCatalystObject = getCommonSiteCatalystObject( \"Booking : Step 4 Payment Information\" );\n ....\n 9281      svc.submitBookingPayment = function (cruiseQuote) {\n 9282  \n 9283:         var url = NCLResources.urls.bookingFunnelBaseUrl + \"/createBooking\";\n 9284  \n 9285          return $http.post(url, cruiseQuote);\n ....\n 13131              var errorMsg = response && response.data && response.data.errorMsg ? response.data.errorMsg : NCLResources.strings.errorCreatingBooking;\n 13132              $scope.stepFourPanelOneError = errorMsg;\n 13133:             trackCreateBookingError(false, response.data.errorCode, errorMsg);\n 13134              scrollToElementId(\"stepFourPanelOneError\");\n 13135          });\n\n/home/bryan/src/static/sources/scripts/angular/apps/main-apps/670_Q_nclcom-booking-quote-app.js:\n  454  }\n  455  \n  456: function trackCreateBookingError(isCCError, errorCode, errorMsg) {\n  457  \n  458      var siteCatalystObject = getCommonSiteCatalystObject( \"Booking : Step 4 Payment Information\" );\n\n/home/bryan/src/static/sources/scripts/js/booking/675_Q_cruise-quote.js:\n  950      svc.submitBookingPayment = function (cruiseQuote) {\n  951  \n  952:         var url = NCLResources.urls.bookingFunnelBaseUrl + \"/createBooking\";\n  953  \n  954          return $http.post(url, cruiseQuote);\n\n/home/bryan/src/static/sources/scripts/js/booking/679_Q_cruise-quote-controller.js:\n 2869              var errorMsg = response && response.data && response.data.errorMsg ? response.data.errorMsg : NCLResources.strings.errorCreatingBooking;\n 2870              $scope.stepFourPanelOneError = errorMsg;\n 2871:             trackCreateBookingError(false, response.data.errorCode, errorMsg);\n 2872              scrollToElementId(\"stepFourPanelOneError\");\n 2873          });\n\n/home/bryan/Desktop/Find Results:\n    1: Searching 15031 files for \"/booking-quote/createBooking\"\n    2  \n    3  0 matches\n\n7 matches across 5 files\n\n\nSearching 15032 files for \"submitBookingPayment\"\n\n/home/bryan/src/static/assets/scripts/ncl.bge.scripts.js:\n 13045          };\n 13046  \n 13047:         svc.submitBookingPayment = function(clientId, reservationId, methodList, selectedPaymentAmount) {\n 13048              if (methodList.length == 1) {\n 13049                  methodList[0].amount = selectedPaymentAmount;\n .....\n 14373              $scope.paymentPosted = true;\n 14374  \n 14375:             paymentSvc.submitBookingPayment($scope.clientId, $scope.reservationId, $scope.paymentMethods, $scope.paymentOptions.guiState.selectedPaymentAmount)\n 14376                  .then(function(response) {\n 14377                  //Clear cached cart\n\n/home/bryan/src/static/assets/scripts/ncl.booking-funnel.scripts.js:\n 4942          };\n 4943  \n 4944:         svc.submitBookingPayment = function(clientId, reservationId, methodList, selectedPaymentAmount) {\n 4945              if (methodList.length == 1) {\n 4946                  methodList[0].amount = selectedPaymentAmount;\n ....\n 6270              $scope.paymentPosted = true;\n 6271  \n 6272:             paymentSvc.submitBookingPayment($scope.clientId, $scope.reservationId, $scope.paymentMethods, $scope.paymentOptions.guiState.selectedPaymentAmount)\n 6273                  .then(function(response) {\n 6274                  //Clear cached cart\n ....\n 9279      };\n 9280  \n 9281:     svc.submitBookingPayment = function (cruiseQuote) {\n 9282  \n 9283          var url = NCLResources.urls.bookingFunnelBaseUrl + \"/createBooking\";\n ....\n 13115          var postData = $scope.cruiseQuote.postData();\n 13116  \n 13117:         paymentSvc.submitBookingPayment( postData ).then(function(response) {\n 13118  \n 13119              var loc = response.data.redirect;\n\n/home/bryan/src/static/assets/scripts/ncl.onboard.bge.scripts.js:\n 12970          };\n 12971  \n 12972:         svc.submitBookingPayment = function(clientId, reservationId, methodList, selectedPaymentAmount) {\n 12973              if (methodList.length == 1) {\n 12974                  methodList[0].amount = selectedPaymentAmount;\n .....\n 14298              $scope.paymentPosted = true;\n 14299  \n 14300:             paymentSvc.submitBookingPayment($scope.clientId, $scope.reservationId, $scope.paymentMethods, $scope.paymentOptions.guiState.selectedPaymentAmount)\n 14301                  .then(function(response) {\n 14302                  //Clear cached cart\n\n/home/bryan/src/static/sources/scripts/angular/bge/640_GQ_payment.js:\n  168          };\n  169  \n  170:         svc.submitBookingPayment = function(clientId, reservationId, methodList, selectedPaymentAmount) {\n  171              if (methodList.length == 1) {\n  172                  methodList[0].amount = selectedPaymentAmount;\n  ...\n 1496              $scope.paymentPosted = true;\n 1497  \n 1498:             paymentSvc.submitBookingPayment($scope.clientId, $scope.reservationId, $scope.paymentMethods, $scope.paymentOptions.guiState.selectedPaymentAmount)\n 1499                  .then(function(response) {\n 1500                  //Clear cached cart\n\n/home/bryan/src/static/sources/scripts/js/booking/675_Q_cruise-quote.js:\n  948      };\n  949  \n  950:     svc.submitBookingPayment = function (cruiseQuote) {\n  951  \n  952          var url = NCLResources.urls.bookingFunnelBaseUrl + \"/createBooking\";\n\n/home/bryan/src/static/sources/scripts/js/booking/679_Q_cruise-quote-controller.js:\n 2853          var postData = $scope.cruiseQuote.postData();\n 2854  \n 2855:         paymentSvc.submitBookingPayment( postData ).then(function(response) {\n 2856  \n 2857              var loc = response.data.redirect;\n\n12 matches across 6 files\n",
+			"file": "/home/bryan/src/static/sources/scripts/js/booking/679_Q_cruise-quote-controller.js",
 			"settings":
 			{
-				"buffer_size": 15244,
-				"line_ending": "Unix",
-				"name": "Find Results",
-				"scratch": true
+				"buffer_size": 127706,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/bryan/src/static/sources/scripts/js/cbe/200_CBN_norwegian.directsearch.js",
+			"settings":
+			{
+				"buffer_size": 71431,
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -62,9 +69,17 @@
 	"command_palette":
 	{
 		"height": 400.0,
-		"last_filter": "xml",
+		"last_filter": "in",
 		"selected_items":
 		[
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"json",
+				"Set Syntax: JSON"
+			],
 			[
 				"xml",
 				"Set Syntax: HTML"
@@ -78,16 +93,8 @@
 				"Set Syntax: friendly interactive shell (fish)"
 			],
 			[
-				"json",
-				"Set Syntax: JSON"
-			],
-			[
 				"bash",
 				"Set Syntax: Shell Script (Bash)"
-			],
-			[
-				"in",
-				"Package Control: Install Package"
 			],
 			[
 				"re",
@@ -162,7 +169,7 @@
 				"Install Package Control"
 			]
 		],
-		"width": 536.0
+		"width": 504.0
 	},
 	"console":
 	{
@@ -184,13 +191,16 @@
 	[
 		"/home/bryan/src/static",
 		"/home/bryan/src/static/sources",
-		"/home/bryan/src/static/sources/library",
 		"/home/bryan/src/static/sources/scripts",
 		"/home/bryan/src/static/sources/scripts/js",
-		"/home/bryan/src/static/sources/scripts/js/booking"
+		"/home/bryan/src/static/sources/scripts/js/booking",
+		"/home/bryan/src/static/sources/scripts/js/casino",
+		"/home/bryan/src/static/sources/scripts/js/cbe"
 	],
 	"file_history":
 	[
+		"/home/bryan/post-test.json",
+		"/home/bryan/src/static/sources/scripts/angular/bge/640_GQ_payment.js",
 		"/home/bryan/src/static/assets/scripts/ncl.booking-funnel.scripts.js",
 		"/home/bryan/src/static/assets/scripts/cbe.libraries.js",
 		"/home/bryan/Desktop/Find Results",
@@ -316,13 +326,11 @@
 		"/home/bryan/src/static/sources/scripts/angular/favorites/610_A_favorites-browse.js",
 		"/home/bryan/src/static/sources/scripts/js/home/620_BCH_header.js",
 		"/home/bryan/src/static/sources/scripts/js/cbe/booking/510_C_norwegian.booking.guestinfo.js",
-		"/home/bryan/src/static/sources/scripts/js/drupal/norway/110_N_app.js",
-		"/home/bryan/src/static/sources/scripts/angular/bge/630_G_product-details.js",
-		"/home/bryan/src/static/sources/scripts/angular/bge/610_G_vacation-summary.js"
+		"/home/bryan/src/static/sources/scripts/js/drupal/norway/110_N_app.js"
 	],
 	"find":
 	{
-		"height": 24.0
+		"height": 38.0
 	},
 	"find_in_files":
 	{
@@ -338,6 +346,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"CloseFilterAndDrop",
+			"215807",
+			"makeBooking",
+			"createBooking",
 			"submitBookingPayment",
 			"createBooking",
 			"forceAsyncEvents[eventName] && $rootScop",
@@ -362,24 +374,24 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "/home/bryan/src/static/sources/scripts/js/booking/679_Q_cruise-quote-controller.js",
+					"file": "/home/bryan/src/static/sources/scripts/js/casino/007_A_casino.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 126031,
+						"buffer_size": 1565,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								118089,
-								118168
+								455,
+								455
 							]
 						],
 						"settings":
@@ -390,7 +402,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 45600.0,
+						"translation.y": 48.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
@@ -409,8 +421,8 @@
 						"selection":
 						[
 							[
-								41539,
-								41559
+								41701,
+								41701
 							]
 						],
 						"settings":
@@ -421,238 +433,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 14852.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 15244,
-						"regions":
-						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										150,
-										163
-									],
-									[
-										463,
-										476
-									],
-									[
-										788,
-										801
-									],
-									[
-										1070,
-										1083
-									],
-									[
-										1451,
-										1464
-									],
-									[
-										1852,
-										1865
-									],
-									[
-										2080,
-										2093
-									],
-									[
-										2575,
-										2605
-									],
-									[
-										2941,
-										2971
-									],
-									[
-										3308,
-										3338
-									],
-									[
-										3684,
-										3714
-									],
-									[
-										4057,
-										4087
-									],
-									[
-										4426,
-										4456
-									],
-									[
-										4795,
-										4825
-									],
-									[
-										5289,
-										5329
-									],
-									[
-										5585,
-										5625
-									],
-									[
-										5882,
-										5922
-									],
-									[
-										6188,
-										6228
-									],
-									[
-										6491,
-										6531
-									],
-									[
-										6790,
-										6830
-									],
-									[
-										7089,
-										7129
-									],
-									[
-										7491,
-										7531
-									],
-									[
-										7787,
-										7827
-									],
-									[
-										8084,
-										8124
-									],
-									[
-										8390,
-										8430
-									],
-									[
-										8693,
-										8733
-									],
-									[
-										8992,
-										9032
-									],
-									[
-										9291,
-										9331
-									],
-									[
-										9605,
-										9618
-									],
-									[
-										9918,
-										9931
-									],
-									[
-										10243,
-										10256
-									],
-									[
-										10525,
-										10538
-									],
-									[
-										10906,
-										10919
-									],
-									[
-										11307,
-										11320
-									],
-									[
-										11535,
-										11548
-									],
-									[
-										11759,
-										11779
-									],
-									[
-										12069,
-										12089
-									],
-									[
-										12416,
-										12436
-									],
-									[
-										12720,
-										12740
-									],
-									[
-										12993,
-										13013
-									],
-									[
-										13237,
-										13257
-									],
-									[
-										13474,
-										13494
-									],
-									[
-										13784,
-										13804
-									],
-									[
-										14132,
-										14152
-									],
-									[
-										14436,
-										14456
-									],
-									[
-										14777,
-										14797
-									],
-									[
-										15097,
-										15117
-									]
-								],
-								"scope": ""
-							}
-						},
-						"selection":
-						[
-							[
-								14349,
-								14349
-							]
-						],
-						"settings":
-						{
-							"detect_indentation": false,
-							"git_gutter_is_enabled": false,
-							"line_numbers": false,
-							"output_tag": 7,
-							"result_base_dir": "",
-							"result_file_regex": "^([^ \t].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 4528.0,
+						"translation.y": 14912.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -661,8 +442,71 @@
 			]
 		},
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 2,
+					"file": "/home/bryan/src/static/sources/scripts/js/booking/679_Q_cruise-quote-controller.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 127706,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								117314,
+								117314
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 45440.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/home/bryan/src/static/sources/scripts/js/cbe/200_CBN_norwegian.directsearch.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 71431,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								65666,
+								65666
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 17663.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -694,7 +538,7 @@
 		"cols":
 		[
 			0.0,
-			0.5,
+			0.399356871554,
 			1.0
 		],
 		"rows":
@@ -754,7 +598,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 341.0,
+	"side_bar_width": 313.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
