@@ -6,18 +6,16 @@ var exec = require('child_process').exec
 // https://www.npmjs.com/package/multispinner
 // but that requires integration with the py script.
 
-// # TODO gaze.js error
-// # By default, the maximum number of files that Mac OS X can open is set to 12,288 and the maximum number of files a given process can open is 10,240
-// # sysctl -A | grep kern.maxfiles
-// # kern.maxfiles: 12288
-// # kern.maxfilesperproc: 10240
-// #
-// # sysctl -w kern.maxfiles=20480
-// #
-// # To make permanent:
-// # sudo nvim /etc/sysctl.conf
-// # kern.maxfiles=20480
-// # kern.maxfilesperproc=24576
+// TODO gaze.js error
+// By default, the maximum number of files that Mac OS X can open is set to 12,288 and the maximum number of files a given process can open is 10,240
+//
+// # On RHEL
+// sudo vim /etc/sysctl.conf
+// fs.inotify.max_user_watches=65536 # up from 16384
+//
+// # Didn't try these.  If increasing user_watch doesnt work try these.
+// kern.maxfiles=20480
+// kern.maxfilesperproc=24576
 
 gulp.task('clear_terminal', function () {
   process.stdout.write('\033c')
@@ -43,6 +41,7 @@ gulp.task('watch', function () {
   const watchedDirs = [
     '**/*.tpl',
     'shell/**',
+    'emacs/**',
     '!.git/*',
     '!build/**',
     '!**/*.md',

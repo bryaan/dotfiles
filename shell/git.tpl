@@ -119,11 +119,12 @@ end
 
 # https://stackoverflow.com/questions/19730565/how-to-remove-files-from-git-staging-area
 
-# TODO What is difference???
-
-
 # Unstage all files.
 function git.unstage.all --description 'Remove all files from staging area'
+  # Explantion: git checkout replaces the file/dir that is in the workdir and
+  # cache with the file specified. That means when using `.` the replacement will be the
+  # same file that is already in the cache.  So this cmd has the effect of
+  # keeping all files, as they are now, but removing them from staging.
   git checkout -- .
 end
 
@@ -131,12 +132,12 @@ function git.unstage --description 'Remove given files from staging area'
   git checkout $argv
 end
 
-# Remove all files from staging area
+# TODO so what do these do differently?
+
 function git.reset.staging.all --description 'Remove all files from staging area'
   git reset HEAD -- .
 end
 
-# Remove given files from staging area
 function git.reset.staging --description 'Remove given files from staging area'
   git reset HEAD -- $argv
 end

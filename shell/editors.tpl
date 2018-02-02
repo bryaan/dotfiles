@@ -3,7 +3,7 @@ function emacs.custom
   # -nw No window system. Run in terminal.
   # -q Inhibit loading of site-start.el and default.el that may be
   # pre-existing site-wide configurations. TODO this also ignores the init.el
-  env HOME=$DOTFILES_ROOT/emacs/custom-attempt emacs #-nw
+  env HOME=$DOTFILES_ROOT/emacs/workdir/brymacs emacs #-nw
 end
 
 

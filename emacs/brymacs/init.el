@@ -1,11 +1,12 @@
-;;; oremacs
+;;; brymacs
 ;;* Base directory
+
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
-; (package-initialize)
+(package-initialize)
 
 (defvar emacs-d
   (file-name-directory
@@ -23,8 +24,17 @@
 ; When Melpa download not found error occurs
 ; M-x package-refresh-contents
 
+;; === Third-party manually installed packages ===
+(add-to-list 'load-path "~/.emacs.d/local/")
+
 ;; === Packages ===
 (load-file "~/.emacs.d/packages.el")
+(load-file "~/.emacs.d/keys.el")
+(load-file "~/.emacs.d/iterm.el")
+
+;; === Themes ===
+;; M-x customize-themes
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -43,8 +53,11 @@
 (setq coding-system-for-write 'utf-8 )
 (setq sentence-end-double-space nil)  ; sentence SHOULD end with only a point.
 (setq default-fill-column 80)   ; toggle wrapping text at the 80th character
-(setq initial-scratch-message "Welcome in Emacs") ; print a default message in the empty scratch buffer opened at startup
+(setq initial-scratch-message "Welcome to Emacs") ; print a default message in the empty scratch buffer opened at startup
 
+
+;; To start in fullscreen mode.
+; (set-frame-parameter nil 'fullscreen 'fullboth)
 
 ;; Enables line numbers for all files
 (global-linum-mode)
@@ -69,41 +82,28 @@
 (advice-add 'undo-tree-visualizer-mouse-set :after #'undo-tree-visualizer-update-linum)
 (advice-add 'undo-tree-visualizer-set :after #'undo-tree-visualizer-update-linum)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package avy :ensure t
-  :commands (avy-goto-word-1))
+;; Gives us helper functions to describe commands and define their shortcuts
+(use-package general :ensure t)
 
-(use-package general :ensure t
-  :config
-  (general-define-key "C-'" 'avy-goto-word-1)
-  )
-
-
-
-(use-package ace-window :ensure t
-  :config
-  (general-define-key "M-o" 'ace-window)
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  )
-
-
+;; Gives us the helpful shortcut hints next to commands
 (use-package which-key
   :ensure t
   :pin melpa)
 (which-key-mode)
 
-(general-define-key
- :prefix "C-c"
- ;; bind to simple key press
-  "b" 'ivy-switch-buffer  ; change buffer, chose using ivy
-  "/"   'counsel-git-grep   ; find string in git project
-  ;; bind to double key press
-  "f"   '(:ignore t :which-key "files")
-  "ff"  'counsel-find-file
-  "fr"  'counsel-recentf
-  "p"   '(:ignore t :which-key "project")
-  "pf"  '(counsel-git :which-key "find file in git dir")
-  )
+
+(use-package avy
+  :ensure t
+  :commands (avy-goto-word-1))
+
+(use-package ace-window
+  :ensure t
+  :config
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Evil - Extensible Vi Layer
@@ -115,9 +115,6 @@
 (use-package undo-tree :ensure t)
 (global-undo-tree-mode)
 
-; TODO "C-_" Undo   "M-_" Redo
-
-
 (use-package evil :ensure t)
 (evil-mode 1)
 
@@ -127,25 +124,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;; find-file-in-project and .
-;;
-;; "C-x l" counsel-locate - fuzzy search in all directories
-;;
-;; thanks for the pointers; i've settled on projectile with ivy
-;; completion and a nice hydra for it to
-;; call projectile-find-file and some other projectile functions.
-
 ;; TODO smex is supposed to work also but was having trouble. try it again.
 
 ;; amx - smex replacement
 ;; Listens for ivy-mode and auto binds backend to ivy.
 ;; https://github.com/DarwinAwardWinner/amx
-(add-to-list 'load-path "~/.emacs.d/local/")
 (require 'amx)
 
 
-(use-package counsel :ensure t)
 
+(use-package counsel :ensure t)
 ;; So counsel doesn't open dired when pressing <enter> on a directory.
 ;; https://emacs.stackexchange.com/questions/33701/do-not-open-dired-for-directories-when-using-counsel-find-file
 (with-eval-after-load 'counsel
@@ -155,87 +143,23 @@
     (define-key ivy-minibuffer-map done #'ivy-alt-done) ;; To swap all ivy- completed commands.
     (define-key counsel-find-file-map alt  #'ivy-done)))
 
-(ivy-mode 1)
-(setq ivy-use-virtual-buffers t)
-(setq enable-recursive-minibuffers t)
-(global-set-key "\C-s" 'swiper)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key (kbd "<f6>") 'ivy-resume)
-(global-set-key (kbd "M-x M-p") 'ivy-previous-history-element) ;; command history
-; (global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "M-x") 'amx) ;; amx uses counsel-M-x as backend
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "<f1> f") 'counsel-describe-function)
-(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-(global-set-key (kbd "<f1> l") 'counsel-find-library)
-(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c k") 'counsel-ag)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 
-
-
+; (ivy-mode 1)
+; (setq ivy-use-virtual-buffers t)
+; (setq enable-recursive-minibuffers t)
 (use-package swiper
   :ensure t
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
-  (global-set-key "\C-s" 'swiper)
-  (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  ; (global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file))
+  (setq enable-recursive-minibuffers t))
 
 
 ; https://github.com/jwiegley/use-package#use-package-ensure-system-package
 ; (use-package tern
 ;   :ensure-system-package (tern . "npm i -g tern"))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; macos.el
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; TODO Move this macos.el
-
-;; https://sam217pa.github.io/2016/09/01/emacs-iterm-integration/
-
-;; TODO is this useful?
-;; https://github.com/ataylor284/emacs-shell-mode-iterm-extensions
-
-
-(defun iterm-goto-filedir-or-home ()
-  "Go to present working dir and focus iterm"
-  (interactive)
-  (do-applescript
-   (concat
-    " tell application \"iTerm2\"\n"
-    "   tell the current session of current window\n"
-    (format "     write text \"cd %s\" \n"
-            ;; string escaping madness for applescript
-            (replace-regexp-in-string "\\\\" "\\\\\\\\"
-                                      (shell-quote-argument (or default-directory "~"))))
-    "   end tell\n"
-    " end tell\n"
-    " do shell script \"open -a iTerm\"\n"
-    ))
-  )
-
-(defun iterm-focus ()
-  "Focus the iTerm2 app, without modifying the working directory"
-  (interactive)
-  (do-applescript
-   " do shell script \"open -a iTerm\"\n"
-   ))
-
-(general-define-key
- :states '(normal visual insert emacs)
- :prefix "SPC"
-  "'" '(iterm-focus :which-key "focus iterm")
-  "?" '(iterm-goto-filedir-or-home :which-key "focus iterm - goto dir")
-  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Do Not Modify Below Here
@@ -246,7 +170,38 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (bigint nlinum counsel use-package))))
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["#2d3743" "#ff4242" "#74af68" "#dbdb95" "#34cae2" "#008b8b" "#00ede1" "#e1e1e0"])
+ '(custom-enabled-themes (quote (dracula)))
+ '(custom-safe-themes
+   (quote
+    ("eb25c68d3959c31d34021aa722d5ea1c53ea69714580b2b8c150592becf412cf" "ff7625ad8aa2615eae96d6b4469fcc7d3d20b2e1ebc63b761a349bebbb9d23cb" default)))
+ '(fci-rule-color "#000000")
+ '(package-selected-packages (quote (dracula-theme bigint nlinum counsel use-package)))
+ '(vc-annotate-background "#2f2f2f")
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#dc322f")
+     (40 . "#D01A4E")
+     (60 . "#cb4b16")
+     (80 . "#b58900")
+     (100 . "#b58900")
+     (120 . "#b58900")
+     (140 . "#5f127b")
+     (160 . "#5f127b")
+     (180 . "#859900")
+     (200 . "#859900")
+     (220 . "#859900")
+     (240 . "#859900")
+     (260 . "#2aa198")
+     (280 . "#268bd2")
+     (300 . "#268bd2")
+     (320 . "#268bd2")
+     (340 . "#94BFF3")
+     (360 . "#d33682"))))
+ '(vc-annotate-very-old-color "#d33682"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
