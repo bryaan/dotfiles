@@ -1,4 +1,20 @@
 
+
+
+Wondering if should stay with changed $HOME dir approach.
+1. Must be able to launch different emacs versions and configs.
+  - This pretty much forces us to use changed $HOME??
+
+
+
+
+
+
+
+
+
+
+
 Search in buffer:
 /<search-term>  press enter
 navigate fwd `n` back `N`

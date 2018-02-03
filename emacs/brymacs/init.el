@@ -1,6 +1,34 @@
 ;;; brymacs
 ;;* Base directory
 
+; TODO 
+
+; https://github.com/emacs-tw/awesome-emacs#file-manager
+
+; Modeline
+; https://github.com/Malabarba/smart-mode-line
+; spaceline
+; powerline
+; https://github.com/dbordak/telephone-line
+; https://github.com/hlissner/doom-emacs/tree/screenshots
+; https://www.reddit.com/r/emacs/comments/4n0n8o/what_is_the_best_emacs_mode_line_package/
+
+; https://github.com/sebastiencs/sidebar.el
+; https://github.com/jaypei/emacs-neotree
+; https://www.emacswiki.org/emacs/DiredMode
+
+; https://github.com/noctuid/vertigo.el
+
+
+; http://karl-voit.at/orgmode/
+; https://orgmode.org/manual/Agenda-views.html#Agenda-views
+; http://karl-voit.at/managing-digital-photographs/
+; https://arxiv.org/pdf/1304.1332.pdf
+; https://orgmode.org/org.html#Installation
+
+
+; TODO edit file as root
+; http://emacsredux.com/blog/2013/04/21/edit-files-as-root/
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
@@ -27,15 +55,23 @@
 ;; === Third-party manually installed packages ===
 (add-to-list 'load-path "~/.emacs.d/local/")
 
+;; === Key Bindings ===
+(load-file "~/.emacs.d/keys.el")
+
 ;; === Packages ===
 (load-file "~/.emacs.d/packages.el")
-(load-file "~/.emacs.d/keys.el")
+
+;; === Package Config ===
+(load-file "~/.emacs.d/orgmode.el")
+(load-file "~/.emacs.d/mail.el")
 (load-file "~/.emacs.d/iterm.el")
+(load-file "~/.emacs.d/flycheck.el")
+(load-file "~/.emacs.d/lang/js.el")
+(load-file "~/.emacs.d/lang/scala.el")
 
 ;; === Themes ===
-;; M-x customize-themes
+;; M-x customize-themes  ;; To change themes.
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -105,24 +141,85 @@
   :config
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Evil - Extensible Vi Layer
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; https://github.com/emacs-evil/evil
-
-;; Required by evil. TODO make req of evil
-(use-package undo-tree :ensure t)
-(global-undo-tree-mode)
-
-(use-package evil :ensure t)
-(evil-mode 1)
 
 
+(use-package projectile
+  :ensure t
+  :init   (setq projectile-use-git-grep t)
+  :config (projectile-global-mode t)
+  :bind   (("s-f" . projectile-find-file)
+           ("s-F" . projectile-grep)))
+
+(use-package undo-tree
+  :ensure t
+  :diminish undo-tree-mode
+  :config (global-undo-tree-mode)
+  :bind ("s-/" . undo-tree-visualize))
+
+(use-package evil
+  :ensure t
+  :config (evil-mode 1))
+
+
+(use-package smartparens
+  :ensure t
+  :diminish smartparens-mode
+  :commands
+  smartparens-strict-mode
+  smartparens-mode
+  sp-restrict-to-pairs-interactive
+  sp-local-pair
+  :init
+  (setq sp-interactive-dwim t)
+  :config
+  (require 'smartparens-config)
+  (sp-use-smartparens-bindings)
+
+  (sp-pair "(" ")" :wrap "C-(") ;; how do people live without this?
+  (sp-pair "[" "]" :wrap "s-[") ;; C-[ sends ESC
+  (sp-pair "{" "}" :wrap "C-{")
+
+  ;; WORKAROUND https://github.com/Fuco1/smartparens/issues/543
+  (bind-key "C-<left>" nil smartparens-mode-map)
+  (bind-key "C-<right>" nil smartparens-mode-map)
+
+  (bind-key "s-<delete>" 'sp-kill-sexp smartparens-mode-map)
+  (bind-key "s-<backspace>" 'sp-backward-kill-sexp smartparens-mode-map)
+
+  ;; === ensime / scala ===
+  (sp-local-pair 'scala-mode "(" nil :post-handlers '(("||\n[i]" "RET")))
+  (sp-local-pair 'scala-mode "{" nil :post-handlers '(("||\n[i]" "RET") ("| " "SPC")))
+  (defun sp-restrict-c (sym)
+    "Smartparens restriction on `SYM' for C-derived parenthesis."
+    (sp-restrict-to-pairs-interactive "{([" sym))
+  (bind-key "s-<delete>" (sp-restrict-c 'sp-kill-sexp) scala-mode-map)
+  (bind-key "s-<backspace>" (sp-restrict-c 'sp-backward-kill-sexp) scala-mode-map)
+  (bind-key "s-<home>" (sp-restrict-c 'sp-beginning-of-sexp) scala-mode-map)
+  (bind-key "s-<end>" (sp-restrict-c 'sp-end-of-sexp) scala-mode-map)
+
+  )
+
+
+(defun contextual-backspace ()
+  "Hungry whitespace or delete word depending on context."
+  (interactive)
+  (if (looking-back "[[:space:]\n]\\{2,\\}" (- (point) 2))
+      (while (looking-back "[[:space:]\n]" (- (point) 1))
+        (delete-char -1))
+    (cond
+     ((and (boundp 'smartparens-strict-mode)
+           smartparens-strict-mode)
+      (sp-backward-kill-word 1))
+     ((and (boundp 'subword-mode) 
+           subword-mode)
+      (subword-backward-kill 1))
+     (t
+      (backward-kill-word 1)))))
+
+(global-set-key (kbd "C-<backspace>") 'contextual-backspace)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Counsel, Ivy, Swiper
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;; TODO smex is supposed to work also but was having trouble. try it again.
 
@@ -154,13 +251,26 @@
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t))
 
+;; === windmove ===
+;; Move thru windows with shift+arrow
+;; If errors look here: https://www.emacswiki.org/emacs/WindMove
+(use-package windmove
+  :ensure t
+  :config
+  (when (fboundp 'windmove-default-keybindings)
+    (windmove-default-keybindings)))
 
 ; https://github.com/jwiegley/use-package#use-package-ensure-system-package
 ; (use-package tern
 ;   :ensure-system-package (tern . "npm i -g tern"))
 
+(use-package spaceline
+  :ensure t)
+(require 'spaceline-config)
+(spaceline-spacemacs-theme)
 
-
+;; color the modeline according to the current Evil state
+(setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Do Not Modify Below Here
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -179,7 +289,9 @@
    (quote
     ("eb25c68d3959c31d34021aa722d5ea1c53ea69714580b2b8c150592becf412cf" "ff7625ad8aa2615eae96d6b4469fcc7d3d20b2e1ebc63b761a349bebbb9d23cb" default)))
  '(fci-rule-color "#000000")
- '(package-selected-packages (quote (dracula-theme bigint nlinum counsel use-package)))
+ '(package-selected-packages
+   (quote
+    (js2-refactor dracula-theme bigint nlinum counsel use-package)))
  '(vc-annotate-background "#2f2f2f")
  '(vc-annotate-color-map
    (quote

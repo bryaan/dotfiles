@@ -9,7 +9,8 @@
 ;; TODO is this useful?
 ;; https://github.com/ataylor284/emacs-shell-mode-iterm-extensions
 
-
+;; The applescript would probably be better as a file text snippet.
+;; Which we then interpolate with vars, or have them inserted at top of file.
 
 (defun iterm-goto-filedir-or-home ()
   "Go to present working dir and focus iterm"

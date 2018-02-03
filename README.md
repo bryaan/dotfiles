@@ -228,6 +228,7 @@ TODO Add Christmas tree to terminal greeting schedule Thanksgiving+1 to Jan/Feb 
 https://www.cyberciti.biz/open-source/command-line-hacks/linux-unix-desktop-fun-christmas-tree-for-your-terminal/
 
 
+
 ------------------------------------------------
 https://github.com/sdegutis/hydra
 
@@ -435,7 +436,6 @@ $ brew cask install \
     vlc
 
 
-
 Gitkraken ssap
 hqfaf@slipry.net11
 
@@ -464,30 +464,6 @@ https://console.bluemix.net/docs/services/alchemy-language/migration.html#index
 https://console.bluemix.net/docs/services/alchemy-language/visual-constraints.html#visualConstraints
 
 
-
-
-# Android Backup
-
-helium and titanuim backup
-
-- should be able to do it manually by simply copying everything apparently [check this]
-
-- https://www.techrepublic.com/article/how-to-create-a-full-backup-of-your-android-device-without-root/  Uses `adb` from android studio to connect to phone and download data.
-
-
-Just a comment that in bash you can get the line numbers while debugging by adding the following:
-#!/bin/bash
-# For testing. First line outputs line numbers. 
-# Second line says to output what is going on in script
-PS4=':${LINENO}+'
-#set -x
-
-
-
-
-
-TODO there is a warn that the underscore var is treied to change.  this is an evn var _=/usr/bin/env  its intermittent
-Probably raised due to bass's code
 
 
 
@@ -523,4 +499,8 @@ compile and install_dotfiles
 
 
 
-
+TODO move to ai / jarvis
+http://strategoxt.org/
+http://strategoxt.org/Spoofax/WebHome
+http://strategoxt.org/Transform/ProgramTransformation
+http://strategoxt.org/Stratego/StrategoLanguage

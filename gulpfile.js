@@ -12,6 +12,7 @@ var exec = require('child_process').exec
 // # On RHEL
 // sudo vim /etc/sysctl.conf
 // fs.inotify.max_user_watches=65536 # up from 16384
+// sudo sysctl --system
 //
 // # Didn't try these.  If increasing user_watch doesnt work try these.
 // kern.maxfiles=20480
@@ -31,6 +32,12 @@ gulp.task('bootstrap', function (cb) {
   })
 })
 
+
+const emacsDirs = [
+  'emacs/**',
+  '!emacs/workdir/**'
+]
+
 // Watch Files For Changes
 // Template filenames must match end with *.tpl
 gulp.task('watch', function () {
@@ -41,13 +48,15 @@ gulp.task('watch', function () {
   const watchedDirs = [
     '**/*.tpl',
     'shell/**',
-    'emacs/**',
+    ...emacsDirs,
     '!.git/*',
     '!build/**',
     '!**/*.md',
     '!**/*.txt'
   ]
-	gulp.watch(watchedDirs, ['bootstrap'])
+
+  gulp.watch(watchedDirs, ['bootstrap'])
+
   // gulp.watch('./**/*', gulp.parallel('concat', 'uglify'));
   // gulp.watch('js/*.js', ['lint', 'scripts']);
 })

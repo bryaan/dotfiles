@@ -18,7 +18,10 @@ end
 
 setenv EDITOR 'kak'
 setenv VISUAL 'subl'
-setenv GIT_EDITOR 'kak'
+# TODO export brymacs and prelude to bash so they can be called here,
+setenv GIT_EDITOR 'env OHOME=$HOME \
+      HOME=$DOTFILES_ROOT/emacs/workdir/brymacs \
+      emacs -nw'
 setenv SUDO_EDITOR 'kak'
 setenv FILTER 'fzf'  # used by `fisher omf/marlin`
 
