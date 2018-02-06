@@ -1,48 +1,16 @@
 
 
-# Installation media setup
 
-Download NixOS minimal iso and copy to USB stick.
+# Resources & Thanks
 
-Check hash
-```
-$ pv nixos-minimal.iso | openssl sha256
-```
+https://gist.github.com/martijnvermaat/76f2e24d0239470dd71050358b4d5134
+https://gist.github.com/ladinu/bfebdd90a5afd45dec811296016b2a3f
 
-On Mac OSX
-```
-$ diskutil list
-$ diskutil unmountDisk /dev/disk2 # Make sure you got right device
-$ dd if=nixos-minimal.iso | pv | dd of=/dev/disk2
-```
-
-TODO get file size and replace 2G
-dd if=nixos-minimal.iso | pv -s 2G | dd of=/dev/disk2
+https://debian-administration.org/article/410/A_simple_introduction_to_working_with_LVM
+http://tldp.org/HOWTO/LVM-HOWTO/anatomy.html
+http://tldp.org/HOWTO/LVM-HOWTO/commontask.html
 
 
-# NixOS install
-
-Boot from the USB stick and setup networking.
-
-Setup SSH to continue from another computer:
-```
-ifconfig  # to get ip
-passwd    # to set pass for root
-systemctl start sshd
-```
-
-
-Copy to host:
-```
-scp file.txt username@to_host:/remote/directory/
-
-scp -r ~/src/nix-configs/class/ username@to_host:/etc/nixos/
-```
-
-Copy from host:
-```
-scp root@10.0.1.135:file.txt ~/Desktop/
-```
 
 
 ## Partitioning
@@ -68,6 +36,14 @@ nvme0n1          259:0    0 465.8G  0 disk
   └─root         254:0    0 465.2G  0 crypt
     ├─vg-swap    254:1    0     4G  0 lvm   [SWAP]
     └─vg-root    254:2    0 461.2G  0 lvm   /
+
+
+TODO If doing a UEFI system this guide must be modified
+
+Config File:
+- For UEFI systems there are differences.
+https://nixos.org/nixos/manual/index.html#sec-uefi-installation
+
 
 
 
@@ -206,127 +182,10 @@ Not sure if this line is needed
 $ mount $data_device /mnt/home
 
 
-# Generate NixOS Config
-
-```
-$ nixos-generate-config --root /mnt
-
-TODO This should just be same file as below
-$ vim /mnt/etc/nixos/configuration.nix
-boot.loader.grub.efiSupport = true;
-boot.loader.grub.efiSysMountPoint = "/boot/efi"
-boot.loader.grub.device = "/dev/sda"
-networking.hostname = "..."
-```
-
-# Install NixOS
-
-```
- nixos-install
-```
-
-# On First Login
-
-```
-# Change root password (if install script was used)
-passwd
-
-nixos-generate-config
-
-TODO vim /etc/nixos/configuration.nix
-
-- add user
-- enable ssh
-- enable graphical?
-- add amd and nvidia drivers
-- copy start miner script TODO copy from centos
-
-nixos-rebuild switch
-
-# After reboot set the new user's passwd
-passwd bryan
-```
-
-> Note the configuration.nix from before is erased as it was only for writing things to proper boot locations.
-
-> adding user to "wheel" group gives them access to sudo.
-
-TODO add to file below: to fix vim cant moe cursor:
-export TERM=xterm
-
-TODO The left right keys still dont work in bash.  May have to set keybindings for it. Or just use fish!
-
-{ config, pkgs, ... }:
-{
-
-  # This fixes some keyboard issues.
-  environment.variables.TERM = "xterm";
-
-  # Boot settings.
-  boot = {
-    loader.efi.efiSysMountPoint = "/boot/efi";
-    loader.grub = {
-      enable = true;
-      version = 2;
-      efiSupport = true;
-      # Drive to install GRUB on.
-      device = "/dev/sda"; # or "nodev" for UEFI only
-    };
-  };
-
-  networking.hostname = "classified";
-
-  # enable sshd on boot
-  services.openssh = {
-    enable = true;
-    startWhenNeeded = true;
-    # TODO This was for before i have this file being copied. remove it bc user logs in with keypair.
-    permitRootLogin = "yes";
-  };
-
-  users.extraUsers.bryan = {
-    name = "bryan";
-    group = "users";
-    extraGroups = [
-      "wheel" "disk" "audio" "video"
-      "networkmanager" "systemd-journal"
-    ];
-    createHome = true;
-    uid = 1000;
-    home = "/home/bryan";
-    shell = "/run/current-system/sw/bin/bash";
-    # TODO use a file instead. reference guest.nix
-    openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDa9ZfwADEW6fmUs+1IQb8/kmi9winuu+zsFPV90P2igrWvq/lN2MvNHdTicrsjKgIwWzpHNxAVh0/HS8mQH2CXg40XA5vGZjpWKQ9RUxCs6mUKk93kHlSkYluIyyRVtiPH+4gAEMaQDdkKjpUqW6dUAJklymtZs8mU48DtM2DcE+JkLdvyr5WzDZaHLiHGdlwWvTZ4l+Vx2gNmNuzQS3cKoFCnZlYTXHnNCtB50sHj1k8KIOp58T+3GF9mwDH3DbiPpVVvxDbsz5qkDK1Rz6hCO6W6tYY/sXGslxt67LnFGhLJLU7T+6atNHHtOLRrPTEAM0EBgYD5QBGW6lbp2ZL7uf7Yeuboe5WYCUfo/4CPGfmQA+LbZT1imchEqWfksp770OdbYtEAqYYsbDgLawDGCXnXHWkxEUsyOC0GkklkZ5y9cIrjAe50LPYvx7v7+pxmcI6npgy1/xY4YFYLI85GQsbEFvnFrI1UUJttp5pjeKJbpGaVIn9lOMkgfFMM2O84qFGPtdED1hLnbCxYW5I2OpAr5Amj+abXNSV4nlW/M/o2hgIWA4v0KiqsK9GrCiEzxNViHSWdWPeM5n6+zn2y57WTj8YQ3j7S0ieoOZpWzmG4wdfqnINU7CWgvau49p9rNUr0SYEGkXfYdI8hEpErUqr2oYTqoVSt/Qiy4ArUlw== bryan@Bryans-Air"
-    ];
-  };
-
-}
 
 
 
-# Updating NixOS
 
-[Upgrade Docs](https://nixos.org/nixos/manual/index.html#sec-upgrading)
-[Auto Upgrade Docs](https://nixos.org/nixos/manual/index.html#idm140737316801280)
-
-```
-# nix-channel --add https://nixos.org/channels/nixos-17.09 nixos
-# nix-channel --add https://nixos.org/channels/nixos-17.09-small nixos
-# nix-channel --add https://nixos.org/channels/nixos-unstable nixos
-
-# nixos-rebuild switch --upgrade
-```
-
-
-TODO If doing a UEFI system this guide must be modified
-
-Config File:
-- For UEFI systems there are differences.
-https://nixos.org/nixos/manual/index.html#sec-uefi-installation
-
-graphical install is easy but should be avoided for now, for simplicity.
-very simple basefile with nvidia and amd drivers.
 
 
 
@@ -409,17 +268,3 @@ $ chmod 000 /mnt/boot/initrd.keys.gz
 - Because I need the server to restart gracefully when I am not physically present and power outages are a problem.
 - Because I don't have time to write the secure network key server and install scripts.
 - Because its better to have userland encryption as that tends to protect against more attack types.
-
-
-# Resources & Thanks
-
-https://gist.github.com/martijnvermaat/76f2e24d0239470dd71050358b4d5134
-https://gist.github.com/ladinu/bfebdd90a5afd45dec811296016b2a3f
-
-https://debian-administration.org/article/410/A_simple_introduction_to_working_with_LVM
-http://tldp.org/HOWTO/LVM-HOWTO/anatomy.html
-http://tldp.org/HOWTO/LVM-HOWTO/commontask.html
-
-
-People who spend their time telling others what can't be done only annoy those of us out there doing it.
-

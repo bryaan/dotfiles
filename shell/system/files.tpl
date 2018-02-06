@@ -16,13 +16,18 @@ abbr -a tree 'exa --tree --level=2'
 abbr -a mkdir 'mkdir -pv'
 
 
-################################################
-# ag, rg, find - Search Files & Directories
-################################################
 
-# Make rg'scolors look like ag's
-alias rg='rg --colors line:fg:yellow --colors line:style:bold --colors path:fg:green --colors path:style:bold --colors match:fg:black --colors match:bg:yellow --colors match:style:nobold'
+# TODO look into Z autojump and fzf-autojump
+# Short for gui.open
+abbr -a gop gui.open
 
+function gui.open
+  if [ $platform = 'linux' ]
+    gnome-open $argv
+  else if [ $platform = 'macos' ]
+    open $argv
+  end
+end
 
 
 ################################################

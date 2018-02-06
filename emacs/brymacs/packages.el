@@ -26,10 +26,6 @@
 ; (require 'bind-key)                ;; if you use any :bind variant
 
 
-
-; (use-package ace-window :ensure t)
-
-
 ; (setq package-user-dir
 ;       (expand-file-name "elpa" emacs-d))
 ; (package-initialize)
@@ -38,8 +34,7 @@
 ;         ("gnu" . "http://elpa.gnu.org/packages/")))
 ; (package-refresh-contents)
 
-; (defconst ora-packages
-;   '(ac-cider
+;     ac-cider
 ;     ace-link
 ;     ace-window
 ;     ace-popup-menu
@@ -49,7 +44,6 @@
 ;     auctex
 ;     cmake-mode
 ;     company
-;     counsel
 ;     define-word
 ;     eclipse-theme
 ;     function-args
@@ -65,7 +59,6 @@
 ;     company-jedi
 ;     ivy-hydra
 ;     lispy
-;     magit
 ;     make-it-so
 ;     markdown-mode
 ;     netherlands-holidays
@@ -77,27 +70,59 @@
 ;     rainbow-mode
 ;     request
 ;     slime
-;     smex
-;     swiper
 ;     ukrainian-holidays
-;     use-package
 ;     vimish-fold
 ;     wgrep
 ;     worf
-;     yaml-mode)
-;   "List of packages that I like.")
+;     yaml-mode
 
-; ;; install required
-; (dolist (package ora-packages)
-;   (unless (package-installed-p package)
-;     (ignore-errors
-;       (package-install package))))
+(defconst brymacs-packages
+  '(general
+    paradox
+    use-package
+    async
+    which-key
+    avy
+    ace-window
+    multiple-cursors
+    projectile
+    undo-tree
+    evil
+    smartparens
+    magit
+    amx
+    counsel
+    swiper
+    windmove
+    smex
+    spaceline)
+  "List of packages that I like.")
 
-; ;; upgrade installed
-; (save-window-excursion
+;; install required
+(dolist (package brymacs-packages)
+  (unless (package-installed-p package)
+    (ignore-errors
+      (package-install package))))
+
+; ;; upgrade installed - ora approach
+; (save-excursion
 ;   (package-list-packages t)
 ;   (package-menu-mark-upgrades)
 ;   (condition-case nil
 ;       (package-menu-execute t)
 ;     (error
 ;      (package-menu-execute))))
+
+;; === paradox package manager ===
+;; To upgrade manually, run:
+;; paradox-upgrade-packages
+; (require 'paradox)
+; (paradox-enable)
+(use-package paradox
+   :init
+   ;;(setq paradox-github-token t)
+   ;;(setq paradox-automatically-star t)
+   (setq paradox-execute-asynchronously t)
+   :config
+   (paradox-enable))
+

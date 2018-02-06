@@ -1,24 +1,23 @@
 
 
-```
-
 # Wipe partitions from usb to prevent trouble (may not be required)
 
+```
 lsblk
 gdisk /dev/sdX
 o (create a new empty GUID partition table (GPT))
 w (write partition table and exit)
-
-# Write to USB (Linux)
-
-sudo dd bs=4M if='~/Desktop/CentOS-7-x86_64-Minimal-1708.iso' of=/dev/sdb conv=fsync
-
-# Write to USB (Mac)
-
-dd bs=4m if='~/Desktop/CentOS-7-x86_64-Minimal-1708.iso' of=/dev/sdb
-
 ```
 
+# Write to USB (Linux)
+```
+dd bs=4M if='~/Desktop/CentOS-7-x86_64-Minimal-1708.iso' of=/dev/sdb conv=fsync
+```
+
+# Write to USB (Mac)
+```
+dd bs=4m if='~/Desktop/CentOS-7-x86_64-Minimal-1708.iso' of=/dev/sdb
+```
 
 
 !!!!!!!!!!

@@ -1,15 +1,17 @@
 # nix-install-classified.sh
 #
 # This install is meant particularly for CLASS.
-
-# After booting from iso
-# Download using curl a script that does this:
-# TODO Serve the files by creating a quick nixos vm that uses httpd
-
+# It does the initial minimal install.
+# After this, copy the full configuration over and install.
+#
+# Post Install (open ssh)
 # ifconfig  # to get ip
-# TODO somehow insert pw  
 # passwd  # to set pass for root
 # systemctl start sshd
+#
+# TODO set root pw to some random throwaway value. We have root access via ssh pubkey.
+# TODO ssh should be enabled automatically on first boot post install.
+
 
 # This is the one for CLASS that includes the BIOS partition
 #

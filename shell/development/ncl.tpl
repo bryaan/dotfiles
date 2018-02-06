@@ -18,12 +18,33 @@ set -x NCL_STATIC_PATH $NCL_SRC/static
 
 
 ###########################################################
+# NCL Static
+###########################################################
+
+function ncl.static.js.watch
+  gulp js-watcher
+end
+
+function ncl.static.js.watch.min
+  gulp js-watcher-prod
+end
+
+function ncl.static.js
+  gulp build-scripts
+end
+
+function ncl.static.css
+  gulp build-styles
+end
+
+###########################################################
 # NCL Common
 ###########################################################
 
 function ncl.com.run
    cd $NCL_COM_PATH
-   sbt -jvm-debug 9393  "run 9000 -Dconfig.file=conf/local.conf -Dhttps.port=9443 -Dscala.color=true"
+   # sbt -jvm-debug 9393  "run 9000 -Dconfig.file=conf/local.conf -Dhttps.port=9443 -Dscala.color=true"
+   sbt "run 9000 -Dconfig.file=conf/local.conf -Dhttps.port=9443 -Dscala.color=true"
 end
 
 function ncl.com.compile
@@ -36,10 +57,6 @@ function ncl.com.debug
    sbt ensimeRunDebug
    # -Dconfig.file=conf/local.conf -Dhttps.port=9443 -Dscala.color=true
 end
-# function nclComComplete
-#   nclComCompile
-#   nclCom
-# end
 
 # function nclcom-custom-run() {
 #    cd $NCL_COM_PATH

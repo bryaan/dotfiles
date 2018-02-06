@@ -30,7 +30,7 @@ git config --global diff.submodule log
 #     git config --global diff.tool "diff-so-fancy | less --tabs=4 -RFX"
 #
 #   else
-#     warnProgramNotInstalled 'diff-so-fancy'
+#     warn.program-not-installed 'diff-so-fancy'
 #   end
 
 # The Textual diff tool to use.

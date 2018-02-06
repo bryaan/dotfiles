@@ -1,29 +1,28 @@
+# TODO change usage to capital PLATFORM 
+# $PLATFORM should always be available and set only by us.
 if [ "Linux" = (uname) ]
-  set platform "linux"
+  setenv platform "linux"
 else
-  set platform "macos"
+  setenv platform "macos"
 end
 
 # Resources
 # https://github.com/jaagr/dots/blob/master/.aliases
 #
 
-################################################ ################################################
-
 # TODO rename file util.tpl and move setenv stuff to pathfile or index?
 
 # TODO android.tpl
 # add the adb backup commands.
 
+################################################
+# Environment Config
+################################################
 
-setenv EDITOR 'kak'
+setenv EDITOR 'vim'
 setenv VISUAL 'subl'
-# TODO export brymacs and prelude to bash so they can be called here,
-setenv GIT_EDITOR 'env OHOME=$HOME \
-      HOME=$DOTFILES_ROOT/emacs/workdir/brymacs \
-      emacs -nw'
-setenv SUDO_EDITOR 'kak'
-setenv FILTER 'fzf'  # used by `fisher omf/marlin`
+setenv GIT_EDITOR 'vim'
+setenv SUDO_EDITOR 'vim'
 
 setenv BROWSER "/usr/bin/google-chrome"
 # /usr/bin/firefox
@@ -31,38 +30,27 @@ setenv BROWSER "/usr/bin/google-chrome"
 
 setenv SSH_KEY_PATH "~/.ssh/rsa_id"
 
+setenv FILTER 'fzf'  # used by `fisher omf/marlin`
 
 setenv PAGER 'vimpager'
-# TODO can pipe stdout into vim directly.
+# can also pipe stdout into vim directly.
 # setenv PAGER 'vim -Rn -'
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 setenv SYSTEMD_PAGER $PAGER
 
-# vimpager not working well with manpages on linux.
-# TODO check mac.
+# vimpager not working well with manpages on linux. TODO check mac.
 setenv MANPAGER 'less'
 
 ################################################
 # Local Utility Commands
 ################################################
 
-# Current User ID
-set -l UID (id -u (whoami))
-
-# Commands to proxy thru sudo when not su.
-if [ UID != 0 ]
-    alias reboot='sudo reboot'
-    {% if os.linux %}
-      alias update='sudo yum upgrade'
-    {% endif %}
-end
-
 function warn
   echo [Warning] $1
 end
 
-function warnProgramNotInstalled
+function warn.program-not-installed
   warn "Package '$1' Not Installed!\nAlternatively, check that it is available on your PATH.\n"
 end
 
@@ -115,16 +103,21 @@ alias now='date +"%T"'
 alias nowtime=now
 alias nowdate='date +"%d-%m-%Y"'
 
-
 # Open calc in math mode...?
 alias bc='bc -l'
 
 
+# TODO Copy prev commands.
+# This copies the *args* from the previously run command.
+# Ex. cd prev
+# alias prev='​​!:1-$'
+# Nvm this doesnt quite work.  What we need is something that
+# either we exec, then it asks for the command.  but this is inflexible.
+# Instead, do something like sudo where pressing a key twice will copy those args.
+# And paste them at cursor.
 
 
-# TODO move to util.tpl and import or to functions/util or each file.
-# TODO move to util.tpl and import or to functions/util or each file.
-# TODO move to util.tpl and import or to functions/util or each file.
+# TODO move to util.tpl or to functions/util or each file.
 
 # # Works on Mac and Linux
 # function command_exists {
@@ -148,22 +141,8 @@ function rimraf
 end
 
 
-# TODO look into Z autojump and fzf-autojump
-# Short for gui.open
-abbr -a gop gui.open
 
-function gui.open
-  if [ $platform = 'linux' ]
-    gnome-open $argv
-  else if [ $platform = 'macos' ]
-    open $argv
-  end
-end
-
-
-# gnome-screenshot -a
-
-# if imagemagick is installed
+# TODO add imagemagick to sys deps
 set -x SCREENSHOT_DIR $HOME/Desktop/Screenshots
 function screenshot
   set -l date (date +"%d-%m-%Y")
@@ -171,35 +150,30 @@ function screenshot
   mkdir -p $SCREENSHOT_DIR
   import $SCREENSHOT_DIR/$date-$time.png
 end
-
-
-# TODO move to util.tpl and import or to functions/util or each file.
-# TODO move to util.tpl and import or to functions/util or each file.
-# TODO move to util.tpl and import or to functions/util or each file.
+# gnome-screenshot -a
 
 
 
+# Current User ID
+set -l UID (id -u (whoami))
 
-  # function fish_user_key_bindings
-  #   bind \cs 'prepend_command sudo'
-  #   bind ! bind_bang
-  #   bind '$' bind_dollar
-
-  #   bind \cb fzf-bcd-widget
-
-  #   # If using vi or hybrid mode must specift insert mode.
-  #   # fish_hybrid_key_bindings
-  #   # bind -M insert ! bind_bang
-  #   # bind -M insert '$' bind_dollar
-  # end
+# Commands to proxy thru sudo when not su.
+if [ UID != 0 ]
+    alias reboot='sudo reboot'
+    {% if os.linux %}
+      alias update='sudo yum upgrade'
+    {% endif %}
+end
 
 
-# TODO Copy prev commands.
-# This copies the *args* from the previously run command.
-# Ex. cd prev
-# alias prev='​​!:1-$'
-# Nvm this doesnt quite work.  What we need is something that
-# either we exec, then it asks for the command.  but this is inflexible.
-# Instead, do something like sudo where pressing a key twice will copy those args.
-# And paste them at cursor.
-
+# function fish_user_key_bindings
+#   bind \cs 'prepend_command sudo'
+#   bind ! bind_bang
+#   bind '$' bind_dollar
+#   bind \cb fzf-bcd-widget
+#
+#   # If using vi or hybrid mode must specift insert mode.
+#   # fish_hybrid_key_bindings
+#   # bind -M insert ! bind_bang
+#   # bind -M insert '$' bind_dollar
+# end

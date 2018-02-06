@@ -77,20 +77,20 @@
 
 ;; https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/
 
-(setq delete-old-versions -1 )    ; delete excess backup versions silently
-(setq version-control t )   ; use version control
-(setq vc-make-backup-files t )    ; make backups file even when in version controlled dir
-;TODO (setq backup-directory-alist `(("." . "~/.emacs.d/backups")) ) ; which directory to put backups file
-(setq vc-follow-symlinks t )               ; don't ask for confirmation when opening symlinked file
-;TODO (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)) ) ;transform backups file name
-(setq inhibit-startup-screen t )  ; inhibit useless and old-school startup screen
-(setq ring-bell-function 'ignore )  ; silent bell when you make a mistake
-(setq coding-system-for-read 'utf-8 ) ; use utf-8 by default
-(setq coding-system-for-write 'utf-8 )
-(setq sentence-end-double-space nil)  ; sentence SHOULD end with only a point.
-(setq default-fill-column 80)   ; toggle wrapping text at the 80th character
-(setq initial-scratch-message "Welcome to Emacs") ; print a default message in the empty scratch buffer opened at startup
-
+(setq
+  delete-old-versions -1   ; delete excess backup versions silently
+  version-control t        ; use version control
+  vc-make-backup-files t   ; make backups file even when in version controlled dir
+  ; backup-directory-alist `(("." . "~/.emacs.d/backups")) ; which directory to put backups file
+  vc-follow-symlinks t     ; don't ask for confirmation when opening symlinked file
+  ; auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t))  ;transform backups file name
+  inhibit-startup-screen t       ; inhibit useless and old-school startup screen
+  ring-bell-function 'ignore     ; silent bell when you make a mistake
+  coding-system-for-read 'utf-8  ; use utf-8 by default
+  coding-system-for-write 'utf-8
+  sentence-end-double-space nil  ; sentence SHOULD end with only a point.
+  default-fill-column 80   ; toggle wrapping text at the 80th character
+  initial-scratch-message "Welcome to Emacs") ; print a default message in the empty scratch buffer opened at startup
 
 ;; To start in fullscreen mode.
 ; (set-frame-parameter nil 'fullscreen 'fullboth)
@@ -128,9 +128,8 @@
 ;; Gives us the helpful shortcut hints next to commands
 (use-package which-key
   :ensure t
-  :pin melpa)
-(which-key-mode)
-
+  :pin melpa
+  :config (which-key-mode))
 
 (use-package avy
   :ensure t
@@ -140,8 +139,6 @@
   :ensure t
   :config
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
-
-
 
 (use-package projectile
   :ensure t
@@ -159,7 +156,6 @@
 (use-package evil
   :ensure t
   :config (evil-mode 1))
-
 
 (use-package smartparens
   :ensure t
@@ -195,10 +191,7 @@
   (bind-key "s-<delete>" (sp-restrict-c 'sp-kill-sexp) scala-mode-map)
   (bind-key "s-<backspace>" (sp-restrict-c 'sp-backward-kill-sexp) scala-mode-map)
   (bind-key "s-<home>" (sp-restrict-c 'sp-beginning-of-sexp) scala-mode-map)
-  (bind-key "s-<end>" (sp-restrict-c 'sp-end-of-sexp) scala-mode-map)
-
-  )
-
+  (bind-key "s-<end>" (sp-restrict-c 'sp-end-of-sexp) scala-mode-map))
 
 (defun contextual-backspace ()
   "Hungry whitespace or delete word depending on context."
@@ -217,6 +210,8 @@
       (backward-kill-word 1)))))
 
 (global-set-key (kbd "C-<backspace>") 'contextual-backspace)
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Counsel, Ivy, Swiper
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -226,8 +221,9 @@
 ;; amx - smex replacement
 ;; Listens for ivy-mode and auto binds backend to ivy.
 ;; https://github.com/DarwinAwardWinner/amx
-(require 'amx)
-
+(use-package amx
+  :init
+  (setq amx-show-key-bindings t))
 
 
 (use-package counsel :ensure t)
@@ -240,16 +236,13 @@
     (define-key ivy-minibuffer-map done #'ivy-alt-done) ;; To swap all ivy- completed commands.
     (define-key counsel-find-file-map alt  #'ivy-done)))
 
-
-; (ivy-mode 1)
-; (setq ivy-use-virtual-buffers t)
-; (setq enable-recursive-minibuffers t)
 (use-package swiper
   :ensure t
-  :config
-  (ivy-mode 1)
+  :init
   (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t))
+  (setq enable-recursive-minibuffers t)
+  :config
+  (ivy-mode 1))
 
 ;; === windmove ===
 ;; Move thru windows with shift+arrow
@@ -264,13 +257,24 @@
 ; (use-package tern
 ;   :ensure-system-package (tern . "npm i -g tern"))
 
-(use-package spaceline
-  :ensure t)
-(require 'spaceline-config)
-(spaceline-spacemacs-theme)
+; (use-package spaceline
+;   :ensure t
+;   :config
+;   (use-package spaceline-config
+;     :init
+;     ;; color the modeline according to the current Evil state
+;     (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+;     :config
+;     (spaceline-spacemacs-theme)))
 
-;; color the modeline according to the current Evil state
-(setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+(use-package spaceline
+  :ensure t
+  :config
+  (require 'spaceline-config)
+  ;; color the modeline according to the current Evil state
+  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+  (spaceline-spacemacs-theme))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Do Not Modify Below Here
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -292,6 +296,7 @@
  '(package-selected-packages
    (quote
     (js2-refactor dracula-theme bigint nlinum counsel use-package)))
+ '(paradox-github-token t)
  '(vc-annotate-background "#2f2f2f")
  '(vc-annotate-color-map
    (quote

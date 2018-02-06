@@ -53,30 +53,18 @@ git submodule update --remote
 git submodule update --remote <submodule-repo-name>
 ```
 
+------------------------------------------------------------------------------
 
-# Misc
+# Update fish/fisherman
+fisher up
 
-## Adding asdf plugins
-asdf plugin-add golang
-asdf install golang 1.9.2
-asdf global golang 1.9.2
+# Update fish completions  `fish_update_completions`
+to parse man pages and gernate new completions.
+They go in ~/.config/fish/completions
 
-
-# Shortcuts
-
-Fish:
-Ctrl+S => sudo insert
-
-Ctrl-A => Home button
-Ctrl-E => End Button
-
-RightArrow or Tab: To autcomplete cmd.
-Ctrl+RightArrow: To autocomplete word by word.
-
-Note that erasing from history doesn't require bash shenanigans:
-
-history --delete --prefix some_command
-fish_config history also lets you do it by point-n-click.
+# Update Sublime and Sublime Packages
+Open Command Menu (Super + Shift + p)
+Search for: "Package Control: Upgrade/Overide All Packages"
 
 ------------------------------------------------------------------------------
 
@@ -108,56 +96,34 @@ mv $subldirbase/sublime $subldirbase/User
 
 ------------------------------------------------------------------------------
 
-# TODO Auto Software/System Updates
+# TODOs
 
-# Cron to periodically ask about updating, that is if fish doesnt ask
-# automatically like zsh. Ideally it should trigger a flag, and next time an interactive prompt is opned the user should be asked (try to make sure the shell isnt execing a command, but that the proc is /usr/bin/zsh or similar)
+TODO add brew, cask, chrome, etc examples from
+https://github.com/junegunn/fzf/wiki/examples
 
-# update fish/fisherman
-fisher up
+TODO Auto Software/System Updates
+Cron to periodically ask about updating, or check on first login shell.
 
-# update fish completions  `fish_update_completions`
-to parse man pages and gernate new completions.
-They go in ~/.config/fish/completions
+TODO Do we need to:
+chmod +x ./bootstrap/bootstrap.sh
+chmod +x ./bootstrap/jinja_script.py
 
-# update sublime and packages
-sublime: install/update all packages
+TODO switch task runner from gulp to python?
+pip install watchdog
 
-
-Update all plugins
-asdf plugin-update --all
-
-Update asdf itself
-asdf update
+TODO should seperate jina_script 
+compile and install_dotfiles
 
 
-Sublime Update:
-
-May need to run" Package Control: Upgrade/Overide All Packages"
-to install packages when complete.
-
-------------------------------------------------------------------------------
-
-
-Check out whether to use z or fzf-autojump
+TODO Check out whether to use z or fzf-autojump
 https://github.com/wting/autojump
 https://github.com/rominf/omf-plugin-fzf-autojump
 
-# TODO Bring iterm settings into dotfiles.
+TODO add an `opendir` alias that will open current or given dir in system's finder.
+
+TODO Bring iterm settings into dotfiles.
 # Fix Alt-C on Mac
 53:NOTE: On OS X, Alt-c (Option-c) types ç by default. In iTerm2, you can send the right escape sequence with Esc-c. If you configure the option key to act as +Esc (iTerm2 Preferences > Profiles > Default > Keys > Left option (⌥) acts as: > +Esc), then alt-c will work for fzf as documented.
-
-------------------------------------------------------------------------------
-
-https://github.com/peco/peco
-peco can be a great tool to filter stuff like logs, process stats, find files, because unlike grep, you can type as you think and look through the current result
-
-Searching file contents
-with ag - respects .agignore and .gitignore
-try this with peco
-
-ag --nobreak --nonumbers --noheading . | fzf
-
 
 TODO Copy fish PATH to bash. 
 from fish:
@@ -171,27 +137,14 @@ Impl: Pick a target pattern to delimit code from where path string goes,
 fish script finds that line number, erases anything below,
 then appends a colon seperated list of directories.
 
-
-TODO create an .agignore file for ag searches
-also check if rg has the same.
-
-TODO add an `opendir` alias that will open current or given dir in system's finder.
-
-TODO Do we need to:
-chmod +x ./bootstrap/bootstrap.sh
-chmod +x ./bootstrap/jinja_script.py
-
 TODO Bring zsh aliases (and completions via bass?) over to fish.
 - Make them fish abbreviations.
 - via bass or better yet by copy paste so we know what we've got.
 
+TODO create an .agignore file for ag searches
+also check if rg has the same.
+
 TODO create a `sublime commands` file for easy goto readme and stuff
-
-TODO switch task runner from gulp to python?
-pip install watchdog
-
-TODO add brew, cask, chrome, etc examples from
-https://github.com/junegunn/fzf/wiki/examples
 
 TODO That doc book generator for dotfiles and mac setup.  
 `gitbook`.
@@ -202,7 +155,7 @@ TODO https://github.com/aio-libs/aiomonitor
 python event loop manager
 
 
-# TODO Vinyl - cloud file system
+TODO Vinyl - cloud file system
 https://github.com/gulpjs/vinyl-fs
 can use this with tibra data so large data files can reside off git.
 then project is copied somewhere, then when at location, it downloads what is required.
@@ -211,7 +164,7 @@ then project is copied somewhere, then when at location, it downloads what is re
 also research this vs git-lfs, pretty sure this is way more flexible, indeed we should be able to write a git-lfs backend for vinyl.
 
 
-# TODO My history requirements
+TODO My history requirements
 - All commands enetered in any terminal should be added, in order of runtime, to a global shared history file.
 - However the current history of any given shell should only be those commands that were run in it. (Up arrow search should pull from local history)
 - However if we search in one shell for a command just run in the other, we should be able to find it. (history search should pull from the global file)
@@ -332,55 +285,6 @@ teamviewer teamviewer-host teamviewer-quickjoin quicksupport supportcollector
 
 
 
-
-==================
-## Linux Installs
-
-#### Golang Install
-```
-yum update
-wget ttps://storage.googleapis.com/golang/go1.9.2.linux-amd64.tar.gz
-tar -xzf go1.9.2.linux-amd64.tar.gz
-mv go /opt/go-1.9.2
-Check
-go version
-go env
-```
-
-##### Forking 3rd party golibs
-```
-mkdir -p $GOPATH_PUBLIC/src/github.com/kubernetes-incubator
-cd $_ # or cd $GOPATH_PUBLIC/src/github.com/kubernetes-incubator
-git clone https://github.com/kubernetes-incubator/cri-o # or your fork
-cd cri-o
-```
-
-==================
-## Linux Hierachy ~~Best Practices~~ My Modified Best Practices
-
-http://refspecs.linuxfoundation.org/FHS_3.0/fhs-3.0.html
-
-https://unix.stackexchange.com/questions/11544/what-is-the-difference-between-opt-and-usr-local
-
-## /usr/local/bin -> /opt/local/bin
-
-- new place to store additional (not come with os) binaries.
-
-## /usr/local/
-
-Since this is designed to be read-only by FHS but require RW access in its bin subfolder, we use /opt/local instead.  And now we can make /usr/local read-only if required.
-
-https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch04s09.html
-says /usr/local/ must have a certain set of dirs under it and nothing more.  So...
-
-## /opt/local/
-- will have bin, etc, include, lib, lib64, man, sbin, share, src.
-
-## /opt/
-- has `local` and all other dirs are program names.  then as a subfolder use program version `/opt/go/1.9/...`
-
-- For example, someapp would be installed in /opt/someapp/1.5/, with one of its command being /opt/someapp/1.5/bin/foo, its configuration file would be in /etc/opt/someapp/foo.conf, and its log files in /var/opt/someapp/logs/foo.access.
-
 ----------------------------------------------------
 # Tips / Useful / Misc
 
@@ -457,50 +361,16 @@ npx npm-check
 
 
 
-https://console.bluemix.net/docs/services/alchemy-language/customizing.html#overview
-
-https://console.bluemix.net/docs/services/alchemy-language/migration.html#index
-
-https://console.bluemix.net/docs/services/alchemy-language/visual-constraints.html#visualConstraints
-
-
-
-
-
-
-# Dont need virtualenv with python 3.6+ has it builtin
-python3.6 -m venv my36project
-
-# Activate the my36project sandbox:
-source my36project/bin/activate
-
-# Check the Python version in the sandbox (it should be Python 3.6.3):
-python --version
-
-# Test pip installs work.
-- May need to set python path to something writable.
-pip install hello
-
-# Deactivate the sandbox:
-deactivate
-
-
-[Nix and Python]
-https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/python.md
-https://nixos.org/nixpkgs/manual/#python
-https://ariya.io/2016/06/isolated-development-environment-using-nix
-
-https://github.com/search?p=2&q=python36.withPackages&type=Code&utf8=%E2%9C%93
-
-
-
-# TODO should seperate jina_script 
-compile and install_dotfiles
-
-
 
 TODO move to ai / jarvis
+
 http://strategoxt.org/
 http://strategoxt.org/Spoofax/WebHome
 http://strategoxt.org/Transform/ProgramTransformation
 http://strategoxt.org/Stratego/StrategoLanguage
+
+https://console.bluemix.net/docs/services/alchemy-language/customizing.html#overview
+https://console.bluemix.net/docs/services/alchemy-language/migration.html#index
+https://console.bluemix.net/docs/services/alchemy-language/visual-constraints.html#visualConstraints
+
+

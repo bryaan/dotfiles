@@ -92,6 +92,11 @@
   "'" '(iterm-focus :which-key "focus iterm")
   "?" '(iterm-goto-filedir-or-home :which-key "focus iterm - goto dir"))
 
+;; === multiple-cursors.el ===
+;; http://pragmaticemacs.com/emacs/multiple-cursors/
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C-c m c") 'mc/edit-lines)
+
 
 ; Find File (same as C-x f)
 ; SPC f f

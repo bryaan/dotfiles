@@ -10,11 +10,6 @@ Wondering if should stay with changed $HOME dir approach.
 
 
 
-
-
-
-
-
 Search in buffer:
 /<search-term>  press enter
 navigate fwd `n` back `N`

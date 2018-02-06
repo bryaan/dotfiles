@@ -1,3 +1,64 @@
+TODO TODO TODO
+fileserver - home + K
+virtualbox - nt8 + spcs
+
+mdserve
+https://github.com/bryaan/notes/blob/master/main/mdserve
+
+TODO emacs shortcut to
+take current buffer's file path,
+find it in neotree,
+expand parent folders, highlight file, and scroll into view
+
+TODO Vinyl - cloud file system
+https://matador.cloud/
+https://tahoe-lafs.org/trac/tahoe-lafs
+
+https://developer.nvidia.com/digits
+
+
+
+https://nixos.org/nixos/manual/#ch-containers
+- use of containers for security compartmentalization and bare-bones performance.
+- nomad and consul are go packages, they should likely run on the host (no container).
+  Nomad can spawn raw processess which should also allow for running nix-containers
+  But most likely to be running lots of docker.
+  Only core engines get nix container?
+    we get program dev&prod setup and install for 'free' with nix container spec
+    get better performance
+    get chroot security
+
+
+
+# Dont need virtualenv with python 3.6+ has it builtin
+python3.6 -m venv my36project
+
+# Activate the my36project sandbox:
+source my36project/bin/activate
+
+# Check the Python version in the sandbox (it should be Python 3.6.3):
+python --version
+
+# Test pip installs work.
+- May need to set python path to something writable.
+pip install hello
+
+# Deactivate the sandbox:
+deactivate
+
+
+[Nix and Python]
+https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/python.md
+https://nixos.org/nixpkgs/manual/#python
+https://ariya.io/2016/06/isolated-development-environment-using-nix
+
+https://github.com/search?p=2&q=python36.withPackages&type=Code&utf8=%E2%9C%93
+
+
+
+------------------------------------------------------------------
+
+
 # Resources
 
 !!! README - Nix guide
