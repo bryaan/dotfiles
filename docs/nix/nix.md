@@ -29,6 +29,12 @@ https://nixos.org/nixos/manual/#ch-containers
     get chroot security
 
 
+# Mount Remote Nix FS with SSHFS
+```
+mkdir -pv ~/sshfs/classified
+sshfs root@10.0.1.41:/etc/nixos/ ~/sshfs/classified
+```
+
 
 # Dont need virtualenv with python 3.6+ has it builtin
 python3.6 -m venv my36project

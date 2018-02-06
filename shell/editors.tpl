@@ -1,4 +1,4 @@
-function emacs.custom
+function brymacs
   # Load emacs using custom working directory.
   # -nw No window system. Run in terminal.
   # -q Inhibit loading of site-start.el and default.el that may be
@@ -8,8 +8,10 @@ function emacs.custom
       emacs
 end
 
-function emacs.custom.nogui
-  emacs.custom -nw
+function brymacs.nogui
+  env OHOME=$HOME \
+      HOME=$DOTFILES_ROOT/emacs/workdir/brymacs \
+      emacs -nw
 end
 
 # Install Prelude to dotfiles workdir
@@ -19,11 +21,6 @@ function prelude
   env OHOME=$HOME \
       HOME=$DOTFILES_ROOT/emacs/workdir/prelude \
       emacs
-end
-
-
-function brymacs
-  emacs.custom
 end
 
 
