@@ -1,0 +1,96 @@
+
+# Error - Mismatched Nix and Host Library Linkers
+
+
+# Replicate:
+```
+nix-env -i cargo
+cargo install exa
+exa
+
+exa: relocation error: /usr/lib64/libc.so.6: symbol _dl_starting_up, version GLIBC_PRIVATE not defined in file ld-linux-x86-64.so.2 with link time reference
+
+```
+
+# Facts:
+- the path to the dynamic linker is hard-coded in the binary
+
+# Problem:
+- the dynamic linker we want to use for runtime (RHEL glibc 2.17) doesn't match one that was used to compile exec (nix glibc 2.26)
+
+cargo compiles using whatever glibc version is installed in nix (if not installed the default comes with i think is 2.25, and install ups it to 2.26)
+cargo on compile sets the absolute path to the linker in binary. (which will be same during runtime, so this isnt where error is)
+error is host system uses other libs related to glibc (libc.so.6) which are mismatched with the glibc hardcoded path version.
+
+
+# Workarounds:
+1. Use a nixos host :)
+2. nix has exa as a directly installable package: nix-env -i exa
+3. use patchelf on the generated binary
+  - patchelf Is only needed when using pre-compiled binaries.  I am compiling the binary myself, therefore i can specify libs/linker I want, so I should't have to patch it if I can fix compilation.
+4. figure out how to make nix compile with chosen linker, or make host use newer linker
+get nix or rather cargo to compile using the hosts' ld-linux..so (not recommended bc downgrade)
+or upgrade the hosts' ld-linux to use glibc.
+
+
+# Solution:
+To patch exa on RHEL 7 (either works):
+
+nix-env -i patchelf
+patchelf --set-interpreter /lib64/ld-2.17.so (which exa)
+patchelf --set-interpreter /lib64/ld-linux-x86-64.so.2 (which exa)
+
+# Resources:
+https://unix.stackexchange.com/questions/190719/how-to-use-libraries-installed-by-nix-at-run-time
+
+
+
+
+
+
+
+find /nix -type f -name "ld-2*"
+/nix/store/4h0allsz28x9mdirzb4wv51algacxzr7-glibc-2.26-131/lib/ld-2.26.so
+
+set PATH /nix/store/4h0allsz28x9mdirzb4wv51algacxzr7-glibc-2.26-131/lib $PATH
+set LD_LIBRARY_PATH /nix/store/4h0allsz28x9mdirzb4wv51algacxzr7-glibc-2.26-131/lib
+
+
+
+RHEL original
+ldd --version
+ldd (GNU libc) 2.17
+
+nix glibc
+ldd --version
+ldd (GNU libc) 2.26
+
+$ ldd (which exa)
+
+linux-vdso.so.1 =>  (0x00007ffd93bdd000)
+libdl.so.2 => /usr/lib64/libdl.so.2 (0x00007fece496d000)
+librt.so.1 => /usr/lib64/librt.so.1 (0x00007fece4764000)
+libpthread.so.0 => /usr/lib64/libpthread.so.0 (0x00007fece4548000)
+libgcc_s.so.1 => /usr/lib64/libgcc_s.so.1 (0x00007fece4332000)
+libc.so.6 => /usr/lib64/libc.so.6 (0x00007fece3f6e000)
+/nix/store/4h0allsz28x9mdirzb4wv51algacxzr7-glibc-2.26-131/lib/ld-linux-x86-64.so.2 => /lib64/ld-linux-x86-64.so.2 (0x000056045be53000)
+
+$ readelf -d (which exa)
+Dynamic section at offset 0x1768f8 contains 30 entries:
+  Tag        Type                         Name/Value
+ 0x0000000000000001 (NEEDED)             Shared library: [libdl.so.2]
+ 0x0000000000000001 (NEEDED)             Shared library: [librt.so.1]
+ 0x0000000000000001 (NEEDED)             Shared library: [libpthread.so.0]
+ 0x0000000000000001 (NEEDED)             Shared library: [libgcc_s.so.1]
+ 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]
+ 0x0000000000000001 (NEEDED)             Shared library: [ld-linux-x86-64.so.2]
+ 0x000000000000001d (RUNPATH)            Library runpath: [/usr/lib64:/nix/store/4h0allsz28x9mdirzb4wv51algacxzr7-glibc-2.26-131/lib:/nix/store/kzqrxkxs6lcbhxlalcim7zz6xay0i2f2-gcc-6.4.0-lib/lib]
+
+However, you need to know that glibc consists of many pieces (200+ shared libraries) which all must match. One of the pieces is ld-linux.so.2, and it must match libc.so.6, or you'll see the errors you are seeing.
+
+!!! The error is
+ld-linux from nix
+libc from rhel
+
+
+

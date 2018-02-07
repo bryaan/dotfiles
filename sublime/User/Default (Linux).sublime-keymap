@@ -1,5 +1,5 @@
 [
-	  { "keys": ["f10"], "command": "reindent"},
+	{ "keys": ["f10"], "command": "reindent"},
 	{
 	  "keys": ["f1"],
 	  "command": "dired",

@@ -4,21 +4,6 @@
 
 Anything with an extension of .symlink will get symlinked (without .symlink extension) into $HOME when you run ./install.sh.
 
-
-# Resources
-
-[OMF Packages](https://github.com/oh-my-fish/packages-main/tree/master/packages)
-
-https://github.com/holman/dotfiles
-
-https://github.com/atelic/dotfiles
-
-https://fishshell.com/docs/current/index.html#redirects
-https://github.com/JorgeBucaran/fish-shell-cookbook#how-to-redirect-stdout-or-stderr-to-a-file-in-fish
-
-https://github.com/fisherman/getopts
-
-
 # Setup
 
 Must have the nix package manager installed.
@@ -32,26 +17,26 @@ yarn install
 gulp
 ```
 
-## Cloning To Setup Machine
+## Cloning To New Machine
 ```bash
-cd $DOTFILES
+cd ~/src/dotfiles
 git clone ...
-git submodule init
-git submodule update
-dots.bootstrap; reload
+start at Install Nix instructions below
+
+#git submodule init
+#git submodule update
 ```
 
 ## Updating Machines
 ```bash
-cd $DOTFILES
-git pull; dots.bootstrap; reload
+cd $DOTFILES; git pull; dots.bootstrap; reload
 ```
 
-### To update submodules:
+<!-- ### To update submodules:
 ```bash
 git submodule update --remote
 git submodule update --remote <submodule-repo-name>
-```
+``` -->
 
 ------------------------------------------------------------------------------
 
@@ -68,31 +53,103 @@ Search for: "Package Control: Upgrade/Overide All Packages"
 
 ------------------------------------------------------------------------------
 
-# Linking Sublime Settings
-TODO Move this section to bootstrap script.
+# Install Nix and Fish (RHEL 7)
 
-May need to run" Package Control: Upgrade/Overide All Packages"
-to install packages when complete.
+```
+curl https://nixos.org/nix/install | sh
+source /home/bryan/.nix-profile/etc/profile.d/nix.sh
 
-> Must first be removed so child folders will link properly.
+nix-env -i fish
+curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs https://git.io/fisher
+fish
+set PATH ~/.nix-profile/bin $PATH
+fisher install
+chsh -s (which fish)
+```
 
-Must be setup in such a way that when sublime adds/removes packages or settings, those changes will appear in our dotifles repo. This can only work when the parent directory is symlinked, do not symlink all files in folder as that would not satisfy the latter.
+> None of these commands were neccessary. First install didn't seem to work, but deleting all nix folders in root and home dirs and reinstall worked.  Make sure to use bash shell.
+
+nix-channel --add https://nixos.org/channels/nixos-17.09 nixos
+nix-channel --update
+
+# RHEL - Enable Passwordless sudo for user
+```
+sudo visudo
+# Allow bryan to run sudo command as root on any terminal without passwd
+bryan ALL=(root) NOPASSWD: /usr/bin/sudo
+```
+
+# Build and install dotfiles
+
+```
+cd ~/src/dotfiles
+chmod u+x bootstrap/jinja_script.py
+nix-shell
+gulp
+```
+
+------------------------------------------------------------------------------
+
+# Install nerd-fonts (works mac and linux)
+TODO move to one-shot script
+
+https://nerdfonts.com/
+
+```
+mkdir $HOME/.fonts; cd $HOME/.fonts
+git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
+./nerd-fonts/install.sh Hack
+./nerd-fonts/install.sh Inconsolata
+./nerd-fonts/install.sh Monoid
+./nerd-fonts/install.sh Meslo
+./nerd-fonts/install.sh DroidSansMono
+rm -rf ./nerd-fonts
+```
+
+------------------------------------------------------------------------------
+
+# Sublime Install + Setup
+
+1. Run functions below to copy settings over.
+2. Sublime Cmd Menu -> Install Package Control
+3. Sublime Cmd Menu -> Package Control: Upgrade/Overide All Packages
 
 ## For Linux
 ```bash
-rm -rf $HOME/.config/sublime-text-3/Packages/User; ln -sfn $DOTFILES_ROOT/sublime/ $HOME/.config/sublime-text-3/Packages/User
+
+rm -rf $HOME/.config/sublime-text-3/Packages/User; \
+  rm -rf $HOME/.config/sublime-text-3/Packages/Default; \
+  ln -sfn $DOTFILES_ROOT/sublime/User/ $HOME/.config/sublime-text-3/Packages/; \
+  ln -sfn $DOTFILES_ROOT/sublime/Default/ $HOME/.config/sublime-text-3/Packages/
+
 ```
 
 ## For Mac
-```fish
+```bash
+
 set DOTFILES_ROOT $HOME/src/dotfiles
 set -l subldirbase /Users/bryan/Library/Application\ Support/Sublime\ Text\ 3/Packages/
 
-rm -rf $subldirbase; mkdir $subldirbase; ln -s $DOTFILES_ROOT/sublime $subldirbase
+rm -rf $subldirbase; mkdir $subldirbase; \
+  ln -s $DOTFILES_ROOT/sublime/User/      $subldirbase \
+  ln -s $DOTFILES_ROOT/sublime/Default/   $subldirbase
 
-need this bc folder needs to be named 'User', but want an informative 'sublime' here.
-mv $subldirbase/sublime $subldirbase/User
 ```
+
+------------------------------------------------------------------------------
+
+# Resources
+
+[OMF Packages](https://github.com/oh-my-fish/packages-main/tree/master/packages)
+
+https://github.com/holman/dotfiles
+
+https://github.com/atelic/dotfiles
+
+https://fishshell.com/docs/current/index.html#redirects
+https://github.com/JorgeBucaran/fish-shell-cookbook#how-to-redirect-stdout-or-stderr-to-a-file-in-fish
+
+https://github.com/fisherman/getopts
 
 ------------------------------------------------------------------------------
 
@@ -111,7 +168,7 @@ chmod +x ./bootstrap/jinja_script.py
 TODO switch task runner from gulp to python?
 pip install watchdog
 
-TODO should seperate jina_script 
+TODO should seperate jina_script
 compile and install_dotfiles
 
 
@@ -125,7 +182,7 @@ TODO Bring iterm settings into dotfiles.
 # Fix Alt-C on Mac
 53:NOTE: On OS X, Alt-c (Option-c) types ç by default. In iTerm2, you can send the right escape sequence with Esc-c. If you configure the option key to act as +Esc (iTerm2 Preferences > Profiles > Default > Keys > Left option (⌥) acts as: > +Esc), then alt-c will work for fzf as documented.
 
-TODO Copy fish PATH to bash. 
+TODO Copy fish PATH to bash.
 from fish:
 must format the space delimited to colon delimited, then inject:
 bash -c "export PATH=$fmt_path"
@@ -146,7 +203,7 @@ also check if rg has the same.
 
 TODO create a `sublime commands` file for easy goto readme and stuff
 
-TODO That doc book generator for dotfiles and mac setup.  
+TODO That doc book generator for dotfiles and mac setup.
 `gitbook`.
 http://sourabhbajaj.com/mac-setup/iTerm/zsh.html
 also krypton support ref?
@@ -188,25 +245,36 @@ https://github.com/sdegutis/hydra
 ------------------------------------------------
 
 # install list
-nix-env
-nix-env -iA nixos.emacs
-nix-env -i yarn
-fish
+nix-env -i
 git
+exa
+axel
+emacs mu offlineimap
+gcc
+# gcc-wrapper
+glibc
+# binutils - i think linux/nix only
+cmake
+rustc
+cargo
+# rustBeta.cargo
+yarn
+
+
+
 pip install ripgrep
 pip install glances
 vimpager - from github compile
-cargo install exa
 yarn global add gulp tern
 
-# Mac install list
 
+# Mac install list
 
 TODO alfred
 https://www.alfredapp.com/
 
 brew install nvim vimpager
-brew install glances kak
+brew install glances
 brew install ag ripgrep fzf
 bi yarn
 sublime?
@@ -220,23 +288,39 @@ brew cask install virtualbox-extension-pack
 brew tap caskroom/versions
 brew cask install firefox-nightly
 
-## Dependency Notes
-spacemacs requirements:
-emacs - a recent version
-tern - for the js layer
-
-# RHEL 7
-nix-env -i gcc-wrapper-7.2.0
-nix-env -iA nixpkgs.fish
-
-### PackageDev
-https://github.com/SublimeText/PackageDev
-To make tools avialble under Tools → Packages → Package Development,
-
-### HighlightWords
 
 ### sublimerge
 - and also the binary download
+
+
+# nix-env -q --installed
+
+binutils-2.28.1
+cargo-0.23.0
+cmake-3.10.2
+fish-2.7.1
+gcc-6.4.0
+git-2.16.1
+glibc-2.26-131
+nix-1.11.16
+patchelf-0.9
+rustc-1.22.1
+yarn-1.3.2
+workEnv
+
+
+# Chrome Extensions:
+
+Autofill
+Lastpass
+sessionbuddy
+BrowserStack
+iMacros for Chrome
+JSON Viewer
+Visual Event
+Vue.js devtools
+No Coin
+
 
 
 
@@ -252,7 +336,7 @@ diff-so-fancy
 nerdline fonts (for fish)
 [Avaiable Fonts & Glyphs](https://nerdfonts.com/) (Scroll to bottom)
 - brew tap caskroom/fonts
-  brew cask install font-hack-nerd-font 
+  brew cask install font-hack-nerd-font
   # Doesnt work: font-hasklig-nerd-font
 
 Mac:
@@ -372,5 +456,7 @@ http://strategoxt.org/Stratego/StrategoLanguage
 https://console.bluemix.net/docs/services/alchemy-language/customizing.html#overview
 https://console.bluemix.net/docs/services/alchemy-language/migration.html#index
 https://console.bluemix.net/docs/services/alchemy-language/visual-constraints.html#visualConstraints
+
+
 
 
