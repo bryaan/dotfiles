@@ -1,16 +1,11 @@
 ############################################################
-#
+# .bashrc
 ############################################################
 
-# # Source global definitions
-# if [ -f /etc/bashrc ]; then
-# 	source /etc/bashrc
-# fi
-
-# do we really need this here?
 [ "Linux" = "$(uname)" ] && platform="linux" || platform="macos"
 [ "x86_64" = "$(uname -m)" ] && arch="amd64" || arch="386"
 
+# === nix - linux ===
 if [ "linux" = "$platform" ]; then
 	# Bring nix-env and its packages into env.
 	if test -e $HOME/.nix-profile/etc/profile.d/nix.sh; then
@@ -20,18 +15,23 @@ if [ "linux" = "$platform" ]; then
 	fi
 fi
 
+# === nix - macos ===
 if [ "macos" = "$platform" ]; then
 	if test -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'; then
 	  source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 	fi
 fi
 
-# Set only this required var.
+# === dotfiles ===
 export DOTFILES_ROOT="$HOME/src/dotfiles"
 
 # Import shell index file that imports everything else.
 # source $DOTFILES_ROOT/build/shell/index.zsh
 
+
+
+# === fzf ===
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # Add a source 'file' line in .bashrc.
 # The target file is written to by fish, on demand, with PATH setting code.
@@ -40,4 +40,4 @@ export DOTFILES_ROOT="$HOME/src/dotfiles"
 # then appends a colon seperated list of directories.
 
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+export LD_LIBRARY_PATH=/usr/local/lib:/home/bryan/.nix-profile/lib

@@ -32,7 +32,7 @@ setenv SSH_KEY_PATH "~/.ssh/rsa_id"
 
 setenv FILTER 'fzf'  # used by `fisher omf/marlin`
 
-setenv PAGER 'vimpager'
+setenv PAGER 'less'  # 'vimpager'
 # can also pipe stdout into vim directly.
 # setenv PAGER 'vim -Rn -'
 
