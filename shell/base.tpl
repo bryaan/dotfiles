@@ -1,4 +1,4 @@
-# TODO change usage to capital PLATFORM 
+# TODO change usage to capital PLATFORM
 # $PLATFORM should always be available and set only by us.
 if [ "Linux" = (uname) ]
   setenv platform "linux"
@@ -41,6 +41,12 @@ setenv SYSTEMD_PAGER $PAGER
 
 # vimpager not working well with manpages on linux. TODO check mac.
 setenv MANPAGER 'less'
+
+{% if os.linux %}
+# set -x SHELL /usr/bin/fish
+{% endif %}
+
+
 
 ################################################
 # Local Utility Commands
@@ -140,6 +146,19 @@ function rimraf
     rm -rf $argv
 end
 
+# Source file if it exists.
+function source_if_exists
+  set -l file $argv
+  if test -e $file
+    source $file
+  end
+end
+
+# TODO this belongs in something like linux/set-defaults.sh
+{% if os.linux %}
+# Sets the keyrepeat rate; and hold delay before beginning repeat.
+xset r rate 250 50
+{% endif %}
 
 
 # TODO add imagemagick to sys deps
@@ -165,15 +184,3 @@ if [ UID != 0 ]
     {% endif %}
 end
 
-
-# function fish_user_key_bindings
-#   bind \cs 'prepend_command sudo'
-#   bind ! bind_bang
-#   bind '$' bind_dollar
-#   bind \cb fzf-bcd-widget
-#
-#   # If using vi or hybrid mode must specift insert mode.
-#   # fish_hybrid_key_bindings
-#   # bind -M insert ! bind_bang
-#   # bind -M insert '$' bind_dollar
-# end

@@ -2,34 +2,11 @@
 # pathfile - Set your $PATH here and never be left wondering again.
 ############################################################################
 
-# echo AAAAAAAAAAA
-# echo $PATH
-# echo AAAAAAAAAAA
+# # TODO on non-nix linux we might want these dirs:
+# mkdir -p $HOME/.local/bin
+# mkdir -p /opt/local/bin
+# mkdir -p /opt/local/sbin
 
-# nix-shell executed
-# nix-shell takes the current PATH of fish shell and appends its stuff to the end.
-# then it runs thru the pathfile which resets everything.
-#
-# Question: why is it different for bash? at least the append to path part at first?
-# ah bc we dont load this path in bashrc.  note if do add this in bashrc we may have the same prob
-# ok solution is to use a blank rcfile or equiv.
-# TODO verify this is the case so we know whether to get used to the long command or can just use nix-shell
-
-# Option 0:
-# Verify this is neccessary.  Explicitly explain use cases.
-# Bc i think we will only be running things like gulp and jupyter-start
-# and npm run dev and gin run and such.  Which means no interaction with the
-# shell beyond that intial command.  So I think
-#
-# Option 1:
-# detect and remove the first part of the path.  Could use
-# /sbin as the end marker and assert the next entry starts with /nix/store/
-# then set this as the foremost path entry and can proceed with rest in this:
-#
-# Option 2:
-# We seperated all the shell scripts into their own modules.
-# We only need certain modules per dev env. For dotfiles we would need:
-# nothing really?
 
 # Default Path
 # Temporarily set to run basic shell utilities below.
@@ -44,9 +21,7 @@ end
 # [ "x86_64" = "$(uname -m)" ] && arch="amd64" || arch="386"
 
 
-# setpath /usr/local/bin /usr/sbin
-# set PATH /usr/local/bin /usr/sbin $PATH
-
+# TODO add a directory check before appending to path to avoid missing path errors.
 
 # # FIXME For some very strange reason on macos + bash the directory test
 # # will not work for any of these paths:
@@ -76,10 +51,6 @@ set -x TMPPATH ''
 
 if [ $platform = "linux" ]
 
-  ###################################
-  # Misc
-  ###################################
-
   ### yarn global packages ###
   append_path $HOME/.yarn/bin
 
@@ -87,14 +58,13 @@ if [ $platform = "linux" ]
   set -x CARGO_HOME $HOME/.cargo
   append_path $CARGO_HOME/bin
 
-  # Git v2
-  set -x GIT_HOME /usr/local/src/git-2.15.1
-  append_path $GIT_HOME/bin
+  # # Git v2
+  # set -x GIT_HOME /usr/local/src/git-2.15.1
+  # append_path $GIT_HOME/bin
 
-  # Java
-  # set -x JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk
-  set -x JAVA_HOME /usr/lib/jvm/jdk1.8.0_172
-  append_path $JAVA_HOME/bin
+  # # Java
+  # set -x JAVA_HOME /usr/lib/jvm/jdk1.8.0_172
+  # append_path $JAVA_HOME/bin
 
   ###################################
   # User
@@ -129,7 +99,6 @@ if [ $platform = "linux" ]
   append_path /usr/local/sbin
   append_path /usr/sbin
   append_path /sbin
-
 
 ############################################################################
 # Mac
@@ -177,12 +146,3 @@ set -x PATH $TMPPATH
 # This line removes it.
 # Could be that dot means current directory?
 set PATH (string match -v . $PATH)
-
-# echo $fish_user_paths
-# echo $PATH
-#
-# echo ''
-# echo aaaaaa
-# echo $TMPPATH
-# echo aaaaaa
-# echo ''

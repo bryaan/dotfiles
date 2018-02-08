@@ -44,7 +44,7 @@ end
 # golang
 ###################################
 
-{% if os.mac %}
+# {% if os.mac %}
 
 # # TODO this fun does not work. bc asdf adds mutiple golang varsion to this file..
 # # TODO Use .tool-versions instead.
@@ -91,8 +91,13 @@ end
 # append_path $GOPATH_PUBLIC/bin
 # append_path $GOROOT/bin
 
-{% endif %}
+# {% endif %}
 
+
+# TODO Temporarily made this mac only, during the RHEL transision so I can figure out
+# best way to get golang installed now that we have nix.
+# Escentially, how to replace asdf with nix. (and nix-shell)
+{% if os.mac %}
 
 # When asdf is managing golang a GOROOT is not neccessary!
 # linux - almost verfied
@@ -106,3 +111,4 @@ setenv GOPATH $HOME/go
 set -x PATH "$GOPATH/bin" $PATH
 
 
+{% endif %}

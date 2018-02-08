@@ -24,29 +24,6 @@ Backup
 ~/.icons
 ~/.themes
 
-------------------------------------------
-
-
-
-
-https://nixos.org/nixos/nix-pills/index.html
-
-
-
-
-
-
-
-cargo install exa
-
-nix-env -iA nixos.cargo
-
-chrome-gnome-shell
-
-
-
-
-
 
 
 ------------------------------------------------------

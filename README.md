@@ -161,16 +161,14 @@ https://github.com/junegunn/fzf/wiki/examples
 TODO Auto Software/System Updates
 Cron to periodically ask about updating, or check on first login shell.
 
-TODO Do we need to:
-chmod +x ./bootstrap/bootstrap.sh
-chmod +x ./bootstrap/jinja_script.py
-
 TODO switch task runner from gulp to python?
 pip install watchdog
 
 TODO should seperate jina_script
 compile and install_dotfiles
 
+TODO fishfile erase bug
+TODO fishfile should have brew plugin on mac but not on linux
 
 TODO Check out whether to use z or fzf-autojump
 https://github.com/wting/autojump
@@ -242,13 +240,16 @@ https://www.cyberciti.biz/open-source/command-line-hacks/linux-unix-desktop-fun-
 ------------------------------------------------
 https://github.com/sdegutis/hydra
 
+https://nixos.org/nixos/nix-pills/index.html
+
 ------------------------------------------------
 
 # install list
 nix-env -i
 git
-exa
+exa ripgrep
 axel
+fish fzf
 emacs mu offlineimap
 gcc
 # gcc-wrapper
@@ -260,6 +261,9 @@ cargo
 # rustBeta.cargo
 yarn
 
+!!!!!!!!!!!!!!!!!!!!
+cargo install skim
+cargo install fd-find  # nix: fd
 
 
 pip install ripgrep
@@ -276,7 +280,6 @@ https://www.alfredapp.com/
 brew install nvim vimpager
 brew install glances
 brew install ag ripgrep fzf
-bi yarn
 sublime?
 
 highlight check works with fzf preview
@@ -309,6 +312,45 @@ yarn-1.3.2
 workEnv
 
 
+
+
+fish
+asdf
+- Recommnded Pkgs:
+  brew install coreutils automake autoconf openssl libyaml readline libxslt libtool unixodbc
+  brew install asdf
+
+brew install diff-so-fancy
+
+
+# Mac Extra
+iterm2
+
+https://caskroom.github.io/search
+brew cask install \
+    alfred \
+    virtualbox \
+    google-chrome \
+    firefox \
+    sublime-text \
+
+# Linux Extra
+
+
+# For Krypton:
+
+> Figure out what each one of these does:
+> I think we just need teamviewer-host
+teamviewer teamviewer-host teamviewer-quickjoin quicksupport supportcollector
+
+brew cask install \
+    virtualbox \
+    google-chrome \
+    google-drive \
+    firefox \
+    puppet-agent \ # Actually this should be regualr brew since no gui.
+
+
 # Chrome Extensions:
 
 Autofill
@@ -323,45 +365,7 @@ No Coin
 
 
 
-
-fish
-asdf
-- Recommnded Pkgs:
-  brew install coreutils automake autoconf openssl libyaml readline libxslt libtool unixodbc
-  brew install asdf
-
-diff-so-fancy
-- brew install diff-so-fancy
-
-nerdline fonts (for fish)
-[Avaiable Fonts & Glyphs](https://nerdfonts.com/) (Scroll to bottom)
-- brew tap caskroom/fonts
-  brew cask install font-hack-nerd-font
-  # Doesnt work: font-hasklig-nerd-font
-
-Mac:
-iterm2
-
-
-Linux:
-
-
-
-For Krypton:
-
-https://caskroom.github.io/search
-brew cask install \
-	virtualbox \
-	google-chrome \
-	firefox \
-	puppet-agent \ # Actually this should be regualr brew since no gui.
-> Figure out what each one of these does
-> I think we just need teamviewer-host
-teamviewer teamviewer-host teamviewer-quickjoin quicksupport supportcollector
-
-
-
-=========================================================
+----------------------------------------------------
 
 - Fractal folders.  So in zsh/ git/ etc we have an aliases file and other commons and specifics.
 - All files ending in *.symlink, no matter where they are, are to be symlinked into home.
@@ -380,7 +384,29 @@ script screen.log
 exit
 ```
 
-----------------------------------
+----------------------------------------------------
+
+Gitkraken ssap
+hqfaf@slipry.net11
+
+
+pip install howdoi
+
+sudo dmidecode --type chassis
+
+TODO Install/Check useful Gnome Shell Extensions
+- Desktop Scroller
+- Docker Integration
+- Jump List, but requires install of zeitgeist
+
+Upgrades node+npm. Works great!
+npx dist-upgrade
+
+https://github.com/js-n/awesome-npx
+npx npm-check
+
+
+----------------------------------------------------
 
 Quick Look plugins
 These plugins adds support for the corresponding file type to Mac Quick Look (In Finder, mark a file and press Space to start Quick Look). The plugins includes features like syntax highlighting, markdown rendering, preview of JSON, patch files, csv, zip files and more.
@@ -424,26 +450,7 @@ $ brew cask install \
     vlc
 
 
-Gitkraken ssap
-hqfaf@slipry.net11
-
-
-sudo dmidecode --type chassis
-
-TODO Install/Check useful Gnome Shell Extensions
-- Desktop Scroller
-- Docker Integration
-- Jump List, but requires install of zeitgeist
-pip install howdoi
-Alfred
-
-Upgrades node+npm. Works great!
-npx dist-upgrade
-
-https://github.com/js-n/awesome-npx
-npx npm-check
-
-
+----------------------------------------------------
 
 
 TODO move to ai / jarvis
@@ -460,3 +467,4 @@ https://console.bluemix.net/docs/services/alchemy-language/visual-constraints.ht
 
 
 
+----------------------------------------------------

@@ -6,6 +6,7 @@
 [ "x86_64" = "$(uname -m)" ] && arch="amd64" || arch="386"
 
 # === nix - linux ===
+# TODO check if this is same file as on mac so we can use single command.
 if [ "linux" = "$platform" ]; then
 	# Bring nix-env and its packages into env.
 	if test -e $HOME/.nix-profile/etc/profile.d/nix.sh; then
@@ -25,19 +26,13 @@ fi
 # === dotfiles ===
 export DOTFILES_ROOT="$HOME/src/dotfiles"
 
-# Import shell index file that imports everything else.
-# source $DOTFILES_ROOT/build/shell/index.zsh
 
-
-
+#  first we are using skim/sk now, second
+# we don't directly use bash and i dont think other progs
+# need it available in bash either.
+# Leave for now but TODO delete after some time.
 # === fzf ===
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# # When fzf is managed by nix
+# [ -f ~/.nix-profile/share/fzf/key-bindings.bash ] && source ~/.nix-profile/share/fzf/key-bindings.bash
+# [ -f ~/.nix-profile/share/fzf/completion.bash ] && source ~/.nix-profile/share/fzf/completion.bash
 
-# Add a source 'file' line in .bashrc.
-# The target file is written to by fish, on demand, with PATH setting code.
-# Impl: Pick a target pattern to delimit code from where path string goes,
-# fish script finds that line number, erases anything below,
-# then appends a colon seperated list of directories.
-
-
-export LD_LIBRARY_PATH=/usr/local/lib:/home/bryan/.nix-profile/lib

@@ -1,0 +1,31 @@
+But this no longer seems to be an issue
+
+
+Problem: when running nix-shell  takes the current PATH of fish shell and appends its stuff to the end.
+then it runs thru the pathfile which resets everything.
+
+
+Question: why is it different for bash? at least the append to path part at first?
+ah bc we dont load this path in bashrc.  note if do add this in bashrc we may have the same prob
+ok solution is to use a blank rcfile or equiv.
+TODO verify this is the case so we know whether to get used to the long command or can just use nix-shell
+
+Option 0:
+Verify this is neccessary.  Explicitly explain use cases.
+Bc i think we will only be running things like gulp and jupyter-start
+and npm run dev and gin run and such.  Which means no interaction with the
+shell beyond that intial command.  So I think
+
+Option 1:
+detect and remove the first part of the path.  Could use
+/sbin as the end marker and assert the next entry starts with /nix/store/
+then set this as the foremost path entry and can proceed with rest in this:
+
+Option 2:
+We seperated all the shell scripts into their own modules.
+We only need certain modules per dev env. For dotfiles we would need:
+nothing really?
+
+What follows is the purpose of
+nix-shell --command 'env HOME=/tmp/foo fish'
+
