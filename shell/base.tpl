@@ -5,6 +5,12 @@ if [ "Linux" = (uname) ]
 else
   setenv platform "macos"
 end
+# switch (uname -a)
+#     case "*Darwin*"
+#         echo darwin stuff
+#     case "*Linux*"
+#         echo linux stuf
+# end
 
 # Resources
 # https://github.com/jaagr/dots/blob/master/.aliases
@@ -122,6 +128,10 @@ alias bc='bc -l'
 # Instead, do something like sudo where pressing a key twice will copy those args.
 # And paste them at cursor.
 
+# TODO sk # fkill - kill process
+# fkill() {
+#   ps -ef | sed 1d | fzf -m | awk '{print $2}' | xargs kill -${1:-9}
+# }
 
 # TODO move to util.tpl or to functions/util or each file.
 

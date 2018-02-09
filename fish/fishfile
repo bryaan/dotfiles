@@ -6,7 +6,6 @@ fisherman/get
 fisherman/getopts
 oh-my-fish/plugin-gityaw
 fisherman/last_job_id
-oh-my-fish/plugin-pbcopy
 fisherman/shark
 fisherman/spin
 fisherman/z

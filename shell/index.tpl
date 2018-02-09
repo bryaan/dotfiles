@@ -5,6 +5,24 @@
 # Load pathfile
 source $DOTFILES_ROOT/shell/pathfile
 
+# Load nix
+{% if os.mac %}
+if test -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+  bass source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ^/dev/null
+end
+{% endif %}
+
+{% if os.linux %}
+if test -e $HOME/.nix-profile/etc/profile.d/nix.sh
+  # If ~.nix-profile/sbin doesn't exist this will echo a warning.
+  # To avoid seeing that we pipe its output to null.
+  bass source $HOME/.nix-profile/etc/profile.d/nix.sh ^/dev/null
+end
+{% endif %}
+
+
+
+
 # === source compiled shell templates ===
 # TODO Need ability to order of import. Prepend with numbers?
 # TODO What we do for subfolders is:
@@ -30,3 +48,40 @@ set -l files (rg --files --follow --glob "*.fish" --glob "!.git/*" $DOTFILES_ROO
 for file in $files
   source $file
 end
+
+
+#################################################################33
+
+# TODO temp fix
+set -x __BRYDOTS_DO_ONE_SHOT_SETUP 1
+
+# These files run on boot
+# /etc/rc.d/rc.local, and in Ubuntu, it is located in /etc/rc.local.
+# TODO you would set __BRYDOTS_DO_ONE_SHOT_SETUP to zero here.
+
+function _should_do_one_shot_setup
+  [ $__BRYDOTS_DO_ONE_SHOT_SETUP = 1 ]
+end
+
+if not set -q __BRYDOTS_DO_ONE_SHOT_SETUP
+  echo "Performing One Shot Setup"
+  set -gx __BRYDOTS_DO_ONE_SHOT_SETUP 1
+end
+
+
+
+# TODO must fail with error msg if unkown hostname
+
+set -gx __BRYDOTS_ENV_GEO 'home'
+
+switch (hostname)
+  case "dev-ncl*"
+      set -gx __BRYDOTS_ENV_GEO 'work'
+  case "*Linux*"
+      set -gx __BRYDOTS_ENV_GEO '???'
+end
+
+# === Explicit Imports ===
+source $DOTFILES_ROOT/bootstrap/index.fish
+source $DOTFILES_ROOT/git/index.fish
+source $DOTFILES_ROOT/nix/index.fish

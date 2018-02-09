@@ -1,0 +1,43 @@
+[user]
+	name = Bryan A. Rivera
+	email = brivera@ncl.com
+[core]
+    # editor = subl -n --wait
+	editor = subl -n --wait
+	excludesfile = /home/bryan/.gitignore_global
+[alias]
+    st = status
+    ci = commit
+    br = branch
+    co = checkout
+    cp = cherry-pick
+[push]
+    default = tracking
+[branch]
+    autosetuprebase = remote
+[commit]
+    template = ~/.gitmessage
+[apply]
+    whitespace = fix
+[color]
+	ui = auto
+    status = true
+    branch = true
+    diff = true
+[diff]
+    # Makes `git diff` Pretty Print submodule info.
+	submodule = log
+    # The Textual diff tool to use.
+    # TODO this or diff-so-fancy
+	tool = gvimdiff
+    # Use Sublimerge as GUI Diff Tool
+	guitool = sublimerge
+[merge]
+    # Use Sublimerge as Merge Tool
+	tool = sublimerge
+    # Use 3 way merge
+	conflictstyle = diff3
+[difftool "sublimerge"]
+	cmd = subl -n --wait \"$REMOTE\" \"$LOCAL\" --command \"sublimerge_diff_views {\\\"left_read_only\\\": true, \\\"right_read_only\\\": true}
+[mergetool "sublimerge"]
+	cmd = subl -n --wait \"$REMOTE\" \"$BASE\" \"$LOCAL\" \"$MERGED\" --command \"sublimerge_diff_views\"

@@ -68,17 +68,17 @@ def clean_target():
   os.makedirs(BUILD_DIR, exist_ok=True)
 
 def get_env_vars():
-  env_dict = {}
-  # 'geo': {'work': ''},
+  env_dict = {
+    'geo': {}
+  }
   # 'os': {'linux': '', 'mac': ''},
   # 'shell': {'fish': '', 'zsh': ''}
 
   # Geolocation
-  if 'nclmiami.ncl.com' in socket.gethostname():
-    # IsWork='true'
+  if ('nclmiami.ncl.com' in socket.gethostname() or
+      'dev-ncl' in socket.gethostname()) :
+    print(socket.gethostname())
     env_dict.update({ 'geo': {'work': 'true'} })
-  else:
-    env_dict.update({ 'geo': {} })
 
   # Operating System
   if platform == "linux" or platform == "linux2":

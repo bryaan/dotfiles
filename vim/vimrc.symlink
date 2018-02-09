@@ -1,29 +1,26 @@
-"syntax enable
-"set background=dark
-"colorscheme solarized
-"autocmd BufNewFile * startinsert
+syntax enable
+set background=dark
+colorscheme murphy
+autocmd BufNewFile * startinsert
 
+" Must bc vundle doesn't work with fish "
+set shell=/bin/bash
 
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+"set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.nix-profile/share/vim-plugins/vundle
+call vundle#begin('~/.vim/bundle')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-" Keep Plugin commands between vundle#begin/end.
 
 Plugin 'tpope/vim-fugitive'
-
 Plugin 'vim-utils/vim-man'
-
-"Plugin to help review logs files within VIM. Particularly for Java.
+"help review logs files within VIM. Particularly for Java.
 Plugin 'andreshazard/vim-logreview'
-
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -38,4 +35,8 @@ filetype plugin indent on    " required
 " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
 "
 " see :h vundle for more details or wiki for FAQ
+
 " Put your non-Plugin stuff after this line
+" Put your non-Plugin stuff after this line
+" Put your non-Plugin stuff after this line
+

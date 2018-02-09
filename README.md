@@ -153,88 +153,6 @@ https://github.com/fisherman/getopts
 
 ------------------------------------------------------------------------------
 
-# TODOs
-
-TODO add brew, cask, chrome, etc examples from
-https://github.com/junegunn/fzf/wiki/examples
-
-TODO Auto Software/System Updates
-Cron to periodically ask about updating, or check on first login shell.
-
-TODO switch task runner from gulp to python?
-pip install watchdog
-
-TODO should seperate jina_script
-compile and install_dotfiles
-
-TODO fishfile erase bug
-TODO fishfile should have brew plugin on mac but not on linux
-
-TODO Check out whether to use z or fzf-autojump
-https://github.com/wting/autojump
-https://github.com/rominf/omf-plugin-fzf-autojump
-
-TODO add an `opendir` alias that will open current or given dir in system's finder.
-
-TODO Bring iterm settings into dotfiles.
-# Fix Alt-C on Mac
-53:NOTE: On OS X, Alt-c (Option-c) types ç by default. In iTerm2, you can send the right escape sequence with Esc-c. If you configure the option key to act as +Esc (iTerm2 Preferences > Profiles > Default > Keys > Left option (⌥) acts as: > +Esc), then alt-c will work for fzf as documented.
-
-TODO Copy fish PATH to bash.
-from fish:
-must format the space delimited to colon delimited, then inject:
-bash -c "export PATH=$fmt_path"
-
-programs that call the bash shell, but havent run into anything yet so maybe not)
-Add a source 'file' line in .bashrc.
-The target file is written to by fish, on demand, with PATH setting code.
-Impl: Pick a target pattern to delimit code from where path string goes,
-fish script finds that line number, erases anything below,
-then appends a colon seperated list of directories.
-
-TODO Bring zsh aliases (and completions via bass?) over to fish.
-- Make them fish abbreviations.
-- via bass or better yet by copy paste so we know what we've got.
-
-TODO create an .agignore file for ag searches
-also check if rg has the same.
-
-TODO create a `sublime commands` file for easy goto readme and stuff
-
-TODO That doc book generator for dotfiles and mac setup.
-`gitbook`.
-http://sourabhbajaj.com/mac-setup/iTerm/zsh.html
-also krypton support ref?
-
-TODO https://github.com/aio-libs/aiomonitor
-python event loop manager
-
-
-TODO Vinyl - cloud file system
-https://github.com/gulpjs/vinyl-fs
-can use this with tibra data so large data files can reside off git.
-then project is copied somewhere, then when at location, it downloads what is required.
-- added benefit we keep skeleton files in repo so we know they exist.
-
-also research this vs git-lfs, pretty sure this is way more flexible, indeed we should be able to write a git-lfs backend for vinyl.
-
-
-TODO My history requirements
-- All commands enetered in any terminal should be added, in order of runtime, to a global shared history file.
-- However the current history of any given shell should only be those commands that were run in it. (Up arrow search should pull from local history)
-- However if we search in one shell for a command just run in the other, we should be able to find it. (history search should pull from the global file)
-- TODO Only successful commands should be saved in history. (or reallly i think i mean those commands run without spelling error)
-  - but still allow pressing up to modify typo in last command
-  - delete only after a certain # lines, or cronjob.
-  - errord cmd history line numbers must be saved to another file so we know which lines to delete later on cleanup.
-
-https://unix.stackexchange.com/questions/41739/keep-only-successful-commands-in-bash-history
-- some other approach
-
-
-TODO Add Christmas tree to terminal greeting schedule Thanksgiving+1 to Jan/Feb End
-https://www.cyberciti.biz/open-source/command-line-hacks/linux-unix-desktop-fun-christmas-tree-for-your-terminal/
-
 
 
 ------------------------------------------------
@@ -242,45 +160,91 @@ https://github.com/sdegutis/hydra
 
 https://nixos.org/nixos/nix-pills/index.html
 
+
+# To install from unstable while running stable
+> Shouldnt need to do this, even on non nix host.
+> First check you have unfree packages enabled.
+> Then just add the unstable channel the normal way.
+
+git clone https://github.com/NixOS/nixpkgs.git ~/.nixpkgs/channels/unstable
+nix-env -iA nixos.firefox -f ~/nixpkgs-unstable
+nix-env -iA nixos.slack -f ~/.nixpkgs/channels/unstable
+
+
 ------------------------------------------------
 
-# install list
-nix-env -i
-git
-exa ripgrep
+
+TODO TODO combine
+nix-env -i emacs mu offlineimap ctags
+with my brymacs config
+into a `brymacs.nix` file
+
+the install should then become
+nix-env -i brymacs
+
+And emacs should be fully configured, and working on everysytem!
+
+Now do that with pretty much everything?
+- For sublime check if they have a package in unstable or someone wrote one, or write one myself that downloads and installs with my config. !!
+
+Also we can combine brymacs and sublime and more into a devenv .nix
+
+
+syncthing
+syncthing-inotify
+borgbackup
+encfs
+gnupg
+gitAndTools.git-annex
+sl
+sshfsFuse
+
+
+
+
+# INSTALL LIST #
+nix-env -i ...
+
+# === system-tools ===
+exa ripgrep ag fd
+cargo install skim
 axel
-fish fzf
-emacs mu offlineimap
+fish
+;;fzf
+
+# === communication ===
+slack
+signal-desktop
+
+# === editors ===
+sublime3 vscode atom
+emacs vim mu offlineimap ctags
+vimPlugins.vundle
+
+# === unsorted ===
+git
 gcc
-# gcc-wrapper
+;; gcc-wrapper
 glibc
-# binutils - i think linux/nix only
+;; binutils - i think linux/nix only
 cmake
 rustc
 cargo
-# rustBeta.cargo
+;; rustBeta.cargo
 yarn
-
-!!!!!!!!!!!!!!!!!!!!
-cargo install skim
-cargo install fd-find  # nix: fd
-
-
-pip install ripgrep
 pip install glances
 vimpager - from github compile
 yarn global add gulp tern
 
 
-# Mac install list
+
+# Mac install list #
 
 TODO alfred
 https://www.alfredapp.com/
 
-brew install nvim vimpager
-brew install glances
-brew install ag ripgrep fzf
-sublime?
+brew install vimpager
+brew install diff-so-fancy
 
 highlight check works with fzf preview
 
@@ -313,15 +277,10 @@ workEnv
 
 
 
-
-fish
-asdf
-- Recommnded Pkgs:
+asdf? or fish? Recommnded Pkgs:
   brew install coreutils automake autoconf openssl libyaml readline libxslt libtool unixodbc
-  brew install asdf
 
-brew install diff-so-fancy
-
+gnome3.gnome-characters Simple utility application to find and insert unusual characters
 
 # Mac Extra
 iterm2
@@ -349,6 +308,12 @@ brew cask install \
     google-drive \
     firefox \
     puppet-agent \ # Actually this should be regualr brew since no gui.
+
+# TODO windows backup
+borgbackup
+> Try chocolatey install first on dad's
+https://chocolatey.org/packages/borgbackup/
+https://github.com/billyc/borg-releases
 
 
 # Chrome Extensions:

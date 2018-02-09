@@ -1,20 +1,22 @@
 # .nixpkgs/config.nix
+# nixpkgs/config.nix site:github.com
+# https://github.com/kamilchm/.nixpkgs
 # nix-env -iA nixpkgs.workEnv
+# nix-env -iA nixpkgs.userEnv
 {
+  allowUnfree = true;
+
   packageOverrides = pkgs: with pkgs; {
 
-    # New improved way to do it:
-    # https://github.com/NixOS/nixpkgs/pull/15804
-    # https://github.com/NixOS/nixpkgs/issues/15801
-    # https://github.com/NixOS/nixpkgs/issues/5623
-    # workEnv = python36.withPackages (ps: [
-    #   ps.setuptools
-    #   ps.jinja2
-    # ]);
-    # workEnv2 = python35Full.withPackages (ps: [
-    #   ps.setuptools
-    #   ps.json
-    # ]);
+    userEnv = pkgs.buildEnv {
+      name = "userEnv";
+      paths = [
+        slack
+        signal-desktop
+        vim
+        vimPlugins.vundle
+      ];
+    };
 
     jupyterEnv = python36.withPackages (ps: [
       ps.setuptools
@@ -22,6 +24,16 @@
       ps.scipy
       ps.ipython
     ]);
+
+    # New improved way to do it:
+    # https://github.com/NixOS/nixpkgs/pull/15804
+    # https://github.com/NixOS/nixpkgs/issues/15801
+    # https://github.com/NixOS/nixpkgs/issues/5623
+    # python36 python35Full python27
+    # workEnv = python36.withPackages (ps: [
+    #   ps.setuptools
+    #   ps.jinja2
+    # ]);
 
     # https://github.com/st4nson/nixfiles/blob/7a64212409d81a39e1385112d4e030e7b289b695/nixpkgs-config.nix
     workEnv = pkgs.buildEnv {
@@ -37,16 +49,15 @@
       ];
     };
 
-    # Idea is we use a single command to start a shell
-    # with python and node.  In this shell we can call gulp.
-    # Now we should have all deps required on any system to build dotfiles.
-    dotfilesEnv = pkgs.buildEnv {
-      name = "dotfilesEnv";
+    funopsEnv = with pkgs; buildEnv {
+      name = "all";
       paths = [
-        (python36.withPackages(ps: with ps; [
-          setuptools
-          jinja2
-        ]))
+        iftop
+        # gtk-config
+        # termite-config
+        # qtile-config
+        # bash-config
+        # elixir-config
       ];
     };
 

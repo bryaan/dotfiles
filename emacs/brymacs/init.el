@@ -1,7 +1,7 @@
 ;;; brymacs
 ;;* Base directory
 
-; TODO 
+; TODO
 
 ; https://github.com/emacs-tw/awesome-emacs#file-manager
 
@@ -83,6 +83,7 @@
   vc-make-backup-files t   ; make backups file even when in version controlled dir
   ; backup-directory-alist `(("." . "~/.emacs.d/backups")) ; which directory to put backups file
   vc-follow-symlinks t     ; don't ask for confirmation when opening symlinked file
+  large-file-warning-threshold +1e9 ; Don't warn >1GB
   ; auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t))  ;transform backups file name
   inhibit-startup-screen t       ; inhibit useless and old-school startup screen
   ring-bell-function 'ignore     ; silent bell when you make a mistake
@@ -94,6 +95,20 @@
 
 ;; To start in fullscreen mode.
 ; (set-frame-parameter nil 'fullscreen 'fullboth)
+
+;; Enable standard copy/cut/paste
+;; TODO lookup other features, and rewrite bindings here.
+(cua-mode t)
+(setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
+(transient-mark-mode 1) ;; No region when it is not highlighted
+(setq cua-keep-region-after-copy t) ;; Standard Windows behaviour
+
+(define-key global-map [?\s-x] 'kill-region)
+(define-key global-map [?\s-c] 'kill-ring-save)
+(define-key global-map [?\s-v] 'yank)
+
+; (general-define-key "-o" 'ace-window)
+
 
 ;; Enables line numbers for all files
 (global-linum-mode)
@@ -203,13 +218,37 @@
      ((and (boundp 'smartparens-strict-mode)
            smartparens-strict-mode)
       (sp-backward-kill-word 1))
-     ((and (boundp 'subword-mode) 
+     ((and (boundp 'subword-mode)
            subword-mode)
       (subword-backward-kill 1))
      (t
       (backward-kill-word 1)))))
 
 (global-set-key (kbd "C-<backspace>") 'contextual-backspace)
+
+
+;; === ctags ===
+; Seems to be deps of projectile for ctags, so configure anyway.
+(use-package ctags :ensure t)
+(use-package ctags-update
+  :ensure t
+  :config
+  (ctags-global-auto-update-mode) ; Update TAGS on file save.
+  ;you need manually create TAGS in your project
+  (setq ctags-update-prompt-create-tags nil))
+
+; (use-package etags-select :ensure t)
+
+;; I don't really like counsels interface because you need to press
+;; enter to see matches.
+; (use-package counsel-etags :ensure t)
+
+;; Best ctags browser seems to be projectile.
+
+(use-package counsel-projectile :ensure t)
+(use-package org-projectile :ensure t)
+
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -1,0 +1,34 @@
+[
+  // functions list
+  // http://www.sublimetext.com/docs/3/api_reference.html
+  //
+  // https://www.viget.com/articles/my-overused-sublime-text-keyboard-shortcuts/
+  //
+  { "keys": ["ctrl+shift+d"], "command": "find_under_expand" },
+  { "keys": ["ctrl+d"], "command": "duplicate_line" },
+
+  { "keys": ["ctrl+shift+n"], "command": "new_window" },
+  { "keys": ["ctrl+o"], "command": "prompt_open_file" },
+
+  // TODO use something like cua-mode ? or just remap to super?
+  //
+  //{ "keys": ["ctrl+x", "ctrl+x"], "command": "cut" },
+  //{ "keys": ["ctrl+x"], "command": "cut" },
+  { "keys": ["ctrl+c"], "command": "copy" },
+  { "keys": ["ctrl+v"], "command": "paste" },
+  { "keys": ["super+x"], "command": "cut" },
+  { "keys": ["super+c"], "command": "copy" },
+  { "keys": ["super+v"], "command": "paste" },
+
+  // Affects the selected region
+  { "keys": ["ctrl+t", "u"], "command": "upper_case" },
+  { "keys": ["ctrl+t", "l"], "command": "lower_case" },
+
+  // TODO should be save quit
+  //{ "keys": ["ctrl+c", "q", "q"], "command": "save" },
+
+  // Alt+d 2 w
+  //{ "keys": ["alt+d", "/[0-9]+/" ,"w"], "command": "times $1 deleteWord right" },
+
+]
+

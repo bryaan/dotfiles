@@ -21,17 +21,31 @@
   "p"   '(:ignore t :which-key "projects")
   "pf"  '(counsel-git :which-key "find file in git dir"))
 
+
+;; === C-c User Keybindings ===
 (general-define-key
  :prefix "C-c"
  ;; bind to simple key press
   "b"   'ivy-switch-buffer  ; change buffer, chose using ivy
-  "/"   'counsel-git-grep   ; find string in git project
-  ;; bind to double key press
+  "/"   'counsel-git-grep)   ; find string in git project
+
+;; === +files ===
+(general-define-key
+ :prefix "C-c"
   "f"   '(:ignore t :which-key "files")
   "ff"  'counsel-find-file
-  "fr"  'counsel-recentf
+  "fr"  'counsel-recentf)
+
+;; === +projects ===
+(general-define-key
+ :prefix "C-c"
   "p"   '(:ignore t :which-key "project")
+  "pj"  '(projectile-find-tag :which-key "find ctag")
   "pf"  '(counsel-git :which-key "find file in git dir"))
+
+
+
+
 
 (global-set-key (kbd "M-x") 'amx) ;; amx uses counsel-M-x as backend
 ;(global-set-key (kbd "M-x") 'counsel-M-x)
@@ -96,6 +110,7 @@
 ;; http://pragmaticemacs.com/emacs/multiple-cursors/
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C-c m c") 'mc/edit-lines)
+
 
 
 ; Find File (same as C-x f)

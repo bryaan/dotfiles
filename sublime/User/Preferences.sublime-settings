@@ -1,79 +1,83 @@
 {
-	"theme": "Spacegray Eighties.sublime-theme",
-	"color_scheme": "Packages/User/SublimeLinter/Darkside (rainglow) (SL).tmTheme",
-
-	"tab_size": 2,
-	"translate_tabs_to_spaces": true,
-	"trim_trailing_white_space_on_save": true,
-	"shift_tab_unindent": true,
-	"show_encoding": true,
-	"show_line_endings": true,
-	"overlay_scroll_bars": "disabled",
-
 	"auto_complete": false,
+	"binary_file_patterns":
+	[
+		"*.jpg",
+		"*.jpeg",
+		"*.png",
+		"*.gif",
+		"*.ttf",
+		"*.tga",
+		"*.dds",
+		"*.ico",
+		"*.eot",
+		"*.pdf",
+		"*.swf",
+		"*.jar",
+		"*.zip"
+	],
 	"bold_folder_labels": true,
 	"caret_style": "phase",
-	"fade_fold_buttons": false,
-	"highlight_line": true,
-	"highlight_modified_tabs": true,
-	//"spell_check": true,
-	"tabs_small": true,
-
-
-	"line_padding_bottom": 1,
-	"line_padding_top": 1,
-	"show_definitions": false,
+	"close_windows_when_empty": false,
+	"color_scheme": "Packages/User/SublimeLinter/Darkside (rainglow) (SL).tmTheme",
+	"create_window_at_startup": true,
 	"default_line_ending": "unix",
 	"ensure_newline_at_eof_on_save": true,
+	"fade_fold_buttons": false,
 	"fallback_encoding": "UTF-8",
+	"file_exclude_patterns":
+	[
+		"*.pyc",
+		"*.pyo",
+		"*.exe",
+		"*.dll",
+		"*.obj",
+		"*.o",
+		"*.a",
+		"*.lib",
+		"*.so",
+		"*.dylib",
+		"*.ncb",
+		"*.sdf",
+		"*.suo",
+		"*.pdb",
+		"*.idb",
+		".DS_Store",
+		"*.class",
+		"*.psd",
+		"*.db"
+	],
 	"findreplace_small": true,
-	//"dictionary": "Packages/Language - English/en_GB.dic",
-
-	//
-	// Application Behavior Settings
-	//
-
-	// Exiting the application with hot_exit enabled will cause it to close
-	// immediately without prompting. Unsaved modifications and open files will
-	// be preserved and restored when next starting.
-	//
-	// Closing a window with an associated project will also close the window
-	// without prompting, preserving unsaved changes in the workspace file
-	// alongside the project.
+	"folder_exclude_patterns":
+	[
+		".svn",
+		".git",
+		".hg",
+		"CVS",
+		".sass-cache",
+		"tmp"
+	],
+	"font_size": 10,
+	"highlight_line": true,
+	"highlight_modified_tabs": true,
 	"hot_exit": true,
-
-	// remember_open_files makes the application start up with the last set of
-	// open files. Changing this to false will have no effect if hot_exit is
-	// true
-	"remember_open_files": true,
-
-	// OS X only: When files are opened from finder, or by dragging onto the
-	// dock icon, this controls if a new window is created or not.
-	"open_files_in_new_window": true,
-
-	// OS X only: This controls if an empty window is created at startup or not.
-	"create_window_at_startup": true,
-
-	// Set to true to close windows as soon as the last file is closed, unless
-	// there's a folder open within the window. This is always enabled on OS X,
-	// changing it here won't modify the behavior.
-	"close_windows_when_empty": false,
-
-	// Show the full path to files in the title bar.
-	// On OS X, this value is overridden in the platform specific settings, so
-	// you'll need to place this line in your user settings to override it.
-	//"show_full_path": true,
-
-	// Preview file contents when clicking on a file in the side bar. Double
-	// clicking or editing the preview will open the file and assign it a tab.
-	"preview_on_click": true,
-
-  "folder_exclude_patterns": [".svn", ".git", ".hg", "CVS", ".sass-cache", "tmp"],
-  "file_exclude_patterns": ["*.pyc", "*.pyo", "*.exe", "*.dll", "*.obj","*.o", "*.a", "*.lib", "*.so", "*.dylib", "*.ncb", "*.sdf", "*.suo", "*.pdb", "*.idb", ".DS_Store", "*.class", "*.psd", "*.db"],
-  // These files will still show up in the side bar, but won't be included in
-  // Goto Anything or Find in Files
-  "binary_file_patterns": ["*.jpg", "*.jpeg", "*.png", "*.gif", "*.ttf", "*.tga", "*.dds", "*.ico", "*.eot", "*.pdf", "*.swf", "*.jar", "*.zip"],
-	"ignored_packages": [
+	"ignored_packages":
+	[
 		"Vintage"
-	]
+	],
+	"line_padding_bottom": 1,
+	"line_padding_top": 1,
+	"open_files_in_new_window": true,
+	"overlay_scroll_bars": "disabled",
+	"preview_on_click": true,
+	"remember_open_files": true,
+	"shift_tab_unindent": true,
+	"show_definitions": false,
+	"show_encoding": true,
+	"show_line_endings": true,
+	"tab_size": 2,
+	"tabs_small": true,
+	"theme": "Spacegray Eighties.sublime-theme",
+	"translate_tabs_to_spaces": true,
+	"trim_trailing_white_space_on_save": true
 }
