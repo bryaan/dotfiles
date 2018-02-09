@@ -2,8 +2,21 @@
 # ag, rg, find - Search Files & Directories
 ################################################
 
-# Make rg'scolors look like ag's
-# alias rg='rg --colors line:fg:yellow --colors line:style:bold --colors path:fg:green --colors path:style:bold --colors match:fg:black --colors match:bg:yellow --colors match:style:nobold'
+# Set colors to match ag.
+# 2 Lines above and below matches,
+# max char count of any line 300 chars.
+function rg
+  command rg \
+    # --colors line:fg:yellow      \
+    # --colors line:style:bold     \
+    # --colors path:fg:green       \
+    # --colors path:style:bold     \
+    # --colors match:fg:black      \
+    # --colors match:bg:yellow     \
+    # --colors match:style:nobold  \
+    -A 2  -B 2  --max-columns 300 --pretty \
+    $argv
+end
 
 ################################################
 # Search Commands
@@ -19,29 +32,25 @@
 # search front
 
 function search
-  rg.base -i $argv
+  rg -i $argv
+end
+
+alias search.files='search.files.fuzzy'
+
+function search.files.regex
+  rg -i $argv
+end
+
+function search.files.fuzzy
+  # so we use rg to grab all files from pwd down
+  # then give that to skim where you can fuzzy search
+  rg --files --follow --glob '!.git/*' --glob '!Library/' | sk
 end
 
 # Show match counts only
 function search.countonly
-  rg.base -i --count $argv
+  rg -i --count $argv
 end
-
-# Set colors to match ag.
-# 2 Lines above and below matches,
-# max char count of any line 300 chars.
-function rg.base
-  rg --colors line:fg:yellow      \
-     --colors line:style:bold     \
-     --colors path:fg:green       \
-     --colors path:style:bold     \
-     --colors match:fg:black      \
-     --colors match:bg:yellow     \
-     --colors match:style:nobold  \
-     -A 2  -B 2  --max-columns 300 --pretty \
-     $argv
-end
-
 
 
 # Searching file contents

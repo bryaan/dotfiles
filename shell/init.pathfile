@@ -49,28 +49,20 @@ set -x TMPPATH ''
 # Linux
 ############################################################################
 
-if [ $platform = "linux" ]
+if [ $platform = 'linux' ]
 
-  ### yarn global packages ###
+  ### yarn ###
   append_path $HOME/.yarn/bin
 
-  # Rust / Cargo
+  ### rust / cargo ###
   set -x CARGO_HOME $HOME/.cargo
   append_path $CARGO_HOME/bin
-
-  # # Git v2
-  # set -x GIT_HOME /usr/local/src/git-2.15.1
-  # append_path $GIT_HOME/bin
-
-  # # Java
-  # set -x JAVA_HOME /usr/lib/jvm/jdk1.8.0_172
-  # append_path $JAVA_HOME/bin
 
   ###################################
   # User
   ###################################
 
-  # User's private paths
+  ### User's Private Paths ###
   append_path $HOME/bin
   append_path $HOME/.local/bin
 
@@ -83,16 +75,17 @@ if [ $platform = "linux" ]
   # /opt/local/bin For the binaries.
   # /opt/local/sbin For administrative binaries.
 
-  # For non-system bundled software binaries.
-  append_path /opt/local/bin
-  # For administrative non-system bundled software binaries.
-  append_path /opt/local/sbin
-
   # There should be no /opt/bin.  The local route is for stuff we don't
   # want to pull in via git.  If we do, then it goes in /opt/foo-project.
   # Config goes in /etc/opt/foo-project/xx.conf
   # Logs go in /var/opt/foo-project/xx.log
 
+  # For non-system bundled software binaries.
+  append_path /opt/local/bin
+  # For administrative non-system bundled software binaries.
+  append_path /opt/local/sbin
+
+  ### Default Linux Paths ###
   append_path /usr/local/bin
   append_path /usr/bin/
   append_path /bin
@@ -106,17 +99,15 @@ if [ $platform = "linux" ]
 
 else if [ $platform = 'macos' ]
 
-  # User's private paths
-  append_path $HOME/bin
-  # TODO Remove, transfer to .local/bin
-  # Remove bc .local is supposed to be a directory copy of /usr/local
-  # so we can put tings liek etc and logs and not need to modify programs to use dots, just change root path.
+  ### User's Private Paths ###
+  append_path $HOME/bin # TODO delete me
   append_path $HOME/.local/bin
 
-  # Rust's cargo installed binaries.
-  append_path $HOME/.cargo/bin
+  ### rust / cargo ###
+  set -x CARGO_HOME $HOME/.cargo
+  append_path $CARGO_HOME/bin
 
-  # Default Mac Path
+  ### Default Mac Paths ###
   append_path /usr/local/bin
   append_path /usr/bin
   append_path /bin
@@ -125,19 +116,12 @@ else if [ $platform = 'macos' ]
 
 end
 
-# Remove first `:` from PATH - not needed with fish.
-# TMPPATH=${TMPPATH#?}
-# TMPPATH 'echo TMPPATH | sed -r 's/^://''
-
 set -eg PATH
 set -ex PATH
 set -x PATH ''
 
 # Final explicit export
 set -x PATH $TMPPATH
-# set -U fish_user_paths /usr/local/bin $fish_user_paths
-# Problem is if we set an incorrect path then all the shells will crap out?
-# set -U fish_user_paths $TMPPATH
 
 # TODO File a bug report on fish, show echos and outputs
 # For some reason a `.` is being added to the beginning of PATH
@@ -146,3 +130,25 @@ set -x PATH $TMPPATH
 # This line removes it.
 # Could be that dot means current directory?
 set PATH (string match -v . $PATH)
+
+
+# === Load nix ===
+# Comes after above so PATH set by nix script isnt messed with
+#
+if [ $platform = 'linux' ]
+
+  if test -e $HOME/.nix-profile/etc/profile.d/nix.sh
+    bass source $HOME/.nix-profile/etc/profile.d/nix.sh ^/dev/null
+  end
+
+else if [ $platform = 'macos' ]
+
+  # TODO shouldn't this match the linux one?
+  # Or at least correct it to pull from user's ~/nix-profile
+  if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+    bass source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ^/dev/null
+  end
+  # if test -e $HOME/.nix-profile/etc/profile.d/nix-daemon.sh
+  #   bass source $HOME/.nix-profile/etc/profile.d/nix-daemon.sh ^/dev/null
+  # end
+end

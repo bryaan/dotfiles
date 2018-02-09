@@ -1,11 +1,57 @@
 #!/usr/bin/env sh
 
+# Sets the keyrepeat rate; and hold delay before beginning repeat.
+xset r rate 250 50
+
 
 # === General Preferences ===
 gsettings set org.gnome.desktop.wm.preferences num-workspaces "6"
 gsettings set org.gnome.desktop.wm.preferences audible-bell false # disable bell
-gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "<Shift><Super>l"
-# todo set lock screen also
+
+# screenshot
+gsettings set org.gnome.gnome-screenshot auto-save-directory 'file:///home/bryan/Desktop'
+gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot-clip "'Print'"
+gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot "'<Primary>Print'"
+gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot-clip "'<Shift>Print'"
+gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot "'<Primary><Shift>Print'"
+gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot-clip "'<Alt>Print'"
+gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot "'<Primary><Alt>Print'"
+
+# lock screen
+gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver '<Primary><Alt>l'
+gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "<Super>9"
+gsettings set org.gnome.desktop.lockdown disable-lock-screen false
+
+# unset annoying default keybindings
+gsettings set org.gnome.desktop.wm.keybindings raise-or-lower "['']"
+gsettings set org.gnome.desktop.wm.keybindings set-spew-mark "['']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-11 "['']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-12 "['']"
+gsettings set org.gnome.desktop.wm.keybindings toggle-shaded "['']"
+gsettings set org.gnome.desktop.wm.keybindings lower "['']"
+gsettings set org.gnome.desktop.wm.keybindings raise "['']"
+
+
+# restrict Alt-Tab to current workspace
+gsettings set org.gnome.shell.app-switcher current-workspace-only true
+
+# Desktop
+gsettings set org.gnome.shell always-show-log-out true
+gsettings set org.gnome.nautilus.desktop home-icon-visible true
+gsettings set org.gnome.nautilus.desktop trash-icon-visible true
+gsettings set org.gnome.desktop.background show-desktop-icons true
+gsettings set org.gnome.desktop.interface clock-show-date true
+gsettings set org.gnome.desktop.privacy show-full-name-in-top-bar false
+gsettings set org.gnome.desktop.privacy remember-recent-files false
+gsettings set org.gnome.desktop.interface clock-show-seconds true
+gsettings set org.gnome.desktop.notifications show-banners false
+gsettings set org.gnome.desktop.media-handling autorun-never true
+gsettings set org.gnome.desktop.search-providers disable-external true
+
+# Nautilus
+gsettings set org.gnome.nautilus.icon-view default-zoom-level 'small'
+gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'
+
 
 # === gnome shell ===
 gsettings set org.gnome.shell.keybindings toggle-application-view "['<Super>a']"
@@ -63,6 +109,24 @@ gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']"
 gsettings set org.gnome.desktop.wm.keybindings cycle-windows "['<Alt>Escape']"
 gsettings set org.gnome.desktop.wm.keybindings cycle-panels-backward "['<Shift><Control><Alt>Escape']"
 
+gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
+gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']"
+gsettings set org.gnome.desktop.wm.keybindings panel-main-menu "['']"
+gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Alt>F1']"
+gsettings set org.gnome.desktop.wm.preferences action-middle-click-titlebar 'none'
+
+
+#
+# security
+#
+
+gsettings set org.gnome.desktop.notifications show-in-lock-screen false
+gsettings set org.gnome.desktop.privacy hide-identity true
+gsettings set org.gnome.desktop.privacy show-full-name-in-top-bar false
+gsettings set org.gnome.desktop.screensaver lock-delay 300
+gsettings set org.gnome.desktop.screensaver show-full-name-in-top-bar false
+gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver '<Super>BackSpace'
+
 
 # === Custom Shortcuts ===
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "terminal"
@@ -78,16 +142,6 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "[
 
 
 
-
-# === unsorted ===
-gsettings set org.gnome.desktop.wm.keybindings raise-or-lower "['']"
-
-gsettings set org.gnome.desktop.wm.keybindings set-spew-mark "['']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-11 "['']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-12 "['']"
-gsettings set org.gnome.desktop.wm.keybindings toggle-shaded "['']"
-gsettings set org.gnome.desktop.wm.keybindings lower "['']"
-gsettings set org.gnome.desktop.wm.keybindings raise "['']"
 
 
 

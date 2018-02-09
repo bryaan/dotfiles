@@ -1,6 +1,8 @@
 {
 	"extensions":
 	[
-		"tpl"
+		"tpl",
+		"fish-keybindings",
+		"pathfile"
 	]
 }

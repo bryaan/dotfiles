@@ -1,7 +1,7 @@
 # git/index.fish.tpl
 #
 
-source git/functions.fish
+source $DOTFILES_ROOT/git/git-functions.fish
 
 ####################################################
 # git config

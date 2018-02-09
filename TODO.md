@@ -13,6 +13,11 @@ Super+x,c,v combo on mac
 // emacs: Switch Ctrl and Super keys
 
 
+TODO skim issues - code some rust?
+https://github.com/lotabout/skim/issues/78
+https://github.com/lotabout/skim/issues/77
+
+
 TODO cua-mode for sublime
 https://www.emacswiki.org/emacs/CuaMode
 - probably acheived using "keybinding contexts",
@@ -24,6 +29,12 @@ TODO copy sublime origami-emacs keybindings
 
 TODO add brew, cask, chrome, etc examples from
 https://github.com/junegunn/fzf/wiki/examples
+
+TODO Backup IntelliJ Settings
+Linux: .IntelliJIdea2017.2
+Use regex on first part.
+https://intellij-support.jetbrains.com/hc/en-us/community/posts/206381509-Export-settings-via-command-line-OS-X-
+
 
 TODO emacs as service
 https://nixos.org/nixos/manual/index.html#idm140737316268176

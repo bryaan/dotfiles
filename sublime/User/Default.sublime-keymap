@@ -24,6 +24,11 @@
   { "keys": ["ctrl+t", "u"], "command": "upper_case" },
   { "keys": ["ctrl+t", "l"], "command": "lower_case" },
 
+
+  { "keys": ["ctrl+w"], "command": "close_file" },
+  { "keys": ["ctrl+x", "b", "k"], "command": "close_file" },
+
+
   // TODO should be save quit
   //{ "keys": ["ctrl+c", "q", "q"], "command": "save" },
 

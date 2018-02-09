@@ -1,5 +1,3 @@
-TODO copy ~/.gitconfig and ~/.gitmessage
-
 
 
 
@@ -30,4 +28,8 @@ Backup
 
 
 
+functions/sk should go in system/search/
 
+
+todo match terminator C-x 0 2 3 bindings
+also get copy paste with ctrl working

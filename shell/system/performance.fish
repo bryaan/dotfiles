@@ -10,7 +10,7 @@ alias htop='glances'
 # TODO split into memory.tpl compute.tpl ??? or merge with other files?
 
 # TODO check what ps -f option is on linux to copy here.
-{% if os.mac %}
+if [ $__BRYDOTS_ENV_PLATFORM = "macos" ]
 
   function psmem
     ps aux | sort -nr -k 3 | head -1
@@ -25,10 +25,9 @@ alias htop='glances'
     ps aux | sort -nr -k 3 | head -10
   end
 
-{% endif %}
+end
 
-# TODO Turn alias -> function
-{% if os.linux %}
+if [ $__BRYDOTS_ENV_PLATFORM = "linux" ]
 
   ## pass options to free ##
   alias meminfo='free -m -l -t'
@@ -50,7 +49,7 @@ alias htop='glances'
   ## get GPU ram on desktop / laptop##
   alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
 
-{% endif %}
+end
 
 
 

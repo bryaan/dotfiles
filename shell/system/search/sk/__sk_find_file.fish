@@ -16,9 +16,9 @@ function __sk_find_file -d "List files and folders"
       2> /dev/null "
 
   set -l rg_lookup_cmd "
-    command rg --follow \
-      --glob '!.git/*' --glob '!Library/' \
-      --files 2> /dev/null"
+    command rg --files  \
+      --follow --glob '!.git/*' --glob '!Library/' \
+      2> /dev/null"
 
   eval "$git_lookup_cmd or $rg_lookup_cmd | sed 's@^\./@@' | sort -k1 | "(__skcmd)
 

@@ -433,3 +433,19 @@ https://console.bluemix.net/docs/services/alchemy-language/visual-constraints.ht
 
 
 ----------------------------------------------------
+diff has some options that can be useful to you:
+
+   -E, --ignore-tab-expansion
+          ignore changes due to tab expansion
+
+   -Z, --ignore-trailing-space
+          ignore white space at line end
+
+   -b, --ignore-space-change
+          ignore changes in the amount of white space
+
+   -w, --ignore-all-space
+          ignore all white space
+
+   -B, --ignore-blank-lines
+          ignore changes whose lines are all blank

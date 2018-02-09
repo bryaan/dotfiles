@@ -1,4 +1,4 @@
-# TODO rename home-admin.tpl or move to ./shell/home/
+# TODO move to ./home/admin.fish
 
 
 # TODO So dont put password here, pull password from system keyring.
@@ -35,3 +35,6 @@ alias tv='tvremote'
 
 
 # TODO Chromecast commands
+
+
+

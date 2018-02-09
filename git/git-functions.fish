@@ -18,15 +18,17 @@ function acp --description 'Add, commit and push'
 end
 
 function fco -d "Fuzzy-find and checkout a branch"
-  git branch --all | grep -v HEAD | string trim | fzf | xargs git checkout
+  git branch --all | grep -v HEAD | string trim | sk | \
+    xargs -I@ "git fetch --all; git checkout @"
 end
 
 function fcoc -d "Fuzzy-find and checkout a commit"
-  git log --pretty=oneline --abbrev-commit --reverse | fzf --tac +s -e | awk '{print $1;}' | xargs git checkout
+  git log --pretty=oneline --abbrev-commit --reverse | sk --tac --no-sort --exact | \
+    awk '{print $1;}' | xargs git checkout
 end
 
 # Deletes local snapshot copies of remote branches. refs/remotes/...
-function clean_deleted_branches
+function git.gc_branches -d 'GC local refs of deleted remote branches'
 
   # Deletes all stale remote-tracking branches under.
   # These stale branches have already been removed from the remote repository referenced by , but are still locally available in "remotes/".
@@ -58,6 +60,7 @@ function clean_deleted_branches
   # branch_names | pb_copy
   # pbpaste | xargs git branch -d
 end
+alias git.clean_deleted_branches='git.gc_branches'
 
 
 #################################
@@ -66,8 +69,13 @@ end
 
 # https://stackoverflow.com/questions/19730565/how-to-remove-files-from-git-staging-area
 
-# Unstage all files.
-function git.unstage.all --description 'Remove all files from staging area'
+# Unstage a file (aka reset a file to its last commited state)
+function git.unstage -d 'Remove given files from staging area'
+  git checkout -- $argv
+end
+
+# Unstage all files (aka reset all files to their last commited state)
+function git.unstage.all -d 'Remove all files from staging area'
   # Explantion: git checkout replaces the file/dir that is in the workdir and
   # cache with the file specified. That means when using `.` the replacement will be the
   # same file that is already in the cache.  So this cmd has the effect of
@@ -75,19 +83,10 @@ function git.unstage.all --description 'Remove all files from staging area'
   git checkout -- .
 end
 
-function git.unstage --description 'Remove given files from staging area'
-  git checkout $argv
-end
 
 # TODO so what do these do differently?
-
-function git.reset.staging.all --description 'Remove all files from staging area'
-  git reset HEAD -- .
-end
-
-function git.reset.staging --description 'Remove given files from staging area'
-  git reset HEAD -- $argv
-end
+  # git reset HEAD -- .
+  # git reset HEAD -- $argv
 
 
 # Undo                  With

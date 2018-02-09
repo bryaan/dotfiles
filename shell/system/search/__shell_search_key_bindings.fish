@@ -1,4 +1,4 @@
-function __sk_key_bindings
+function __shell_search_key_bindings
 
 # C-t  File Search
 # C-r  Command History Search (most recent is last in list order)
