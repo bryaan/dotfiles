@@ -125,14 +125,22 @@ rm -rf $HOME/.config/sublime-text-3/Packages/User; \
 ```
 
 ## For Mac
+
+TODO on mac upgrade/overwiste packages clears the Preferences.sublime-settings file,
+this must be fixed.
+
 ```bash
 
-set DOTFILES_ROOT $HOME/src/dotfiles
-set -l subldirbase /Users/bryan/Library/Application\ Support/Sublime\ Text\ 3/Packages/
+#> !! Big note: do not use wildcards bc it doesn't seem to work right on mac.
+# it seems to be more a like copy.  Strange effects all around. dont use.
 
-rm -rf $subldirbase; mkdir $subldirbase; \
-  ln -s $DOTFILES_ROOT/sublime/User/      $subldirbase \
-  ln -s $DOTFILES_ROOT/sublime/Default/   $subldirbase
+# These commands must be run together, or sublime must be off, bc it creates the User folder on delete.
+
+set -l subldirbase /Users/bryan/Library/Application\ Support/Sublime\ Text\ 3/Packages
+
+rm -rf $subldirbase/User; rm -rf $subldirbase/Default;  \
+ ln -sf $DOTFILES_ROOT/sublime/User/      $subldirbase;   \
+ ln -sf $DOTFILES_ROOT/sublime/Default/   $subldirbase
 
 ```
 

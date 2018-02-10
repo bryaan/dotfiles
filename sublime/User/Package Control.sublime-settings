@@ -5,6 +5,33 @@
 	],
 	"installed_packages":
 	[
-		"Origami"
+		"A File Icon",
+		"Asciidoctor",
+		"Ensime",
+		"FileBrowser",
+		"fish",
+		"Git blame",
+		"Git Conflict Resolver",
+		"GitGutter",
+		"HighlightWords",
+		"JDebug",
+		"LineJumper",
+		"MarkdownHighlighting",
+		"Nix",
+		"Origami",
+		"Package Control",
+		"PackageDev",
+		"Pretty JSON",
+		"SideBarEnhancements",
+		"Sublimerge 3",
+		"SyncedSideBar",
+		"Test",
+		"Theme - Afterglow",
+		"Theme - Brogrammer",
+		"Theme - Spacegray",
+		"TodoReview",
+		"TrailingSpaces",
+		"VimL",
+		"Vue Syntax Highlight"
 	]
 }

@@ -19,7 +19,7 @@
 	"bold_folder_labels": true,
 	"caret_style": "phase",
 	"close_windows_when_empty": false,
-	"color_scheme": "Packages/User/SublimeLinter/Darkside (rainglow) (SL).tmTheme",
+	"color_scheme": "Packages/User/Themes/Darkside (rainglow).tmTheme",
 	"create_window_at_startup": true,
 	"default_line_ending": "unix",
 	"ensure_newline_at_eof_on_save": true,
@@ -57,7 +57,6 @@
 		".sass-cache",
 		"tmp"
 	],
-	"font_size": 10,
 	"highlight_line": true,
 	"highlight_modified_tabs": true,
 	"hot_exit": true,
@@ -77,7 +76,7 @@
 	"show_line_endings": true,
 	"tab_size": 2,
 	"tabs_small": true,
-	"theme": "Spacegray Eighties.sublime-theme",
+	"theme": "Alpenglow.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"trim_trailing_white_space_on_save": true
 }
