@@ -126,15 +126,13 @@ rm -rf $HOME/.config/sublime-text-3/Packages/User; \
 
 ## For Mac
 
-TODO on mac upgrade/overwiste packages clears the Preferences.sublime-settings file,
-this must be fixed.
+> !! Big note: do not use wildcards bc it doesn't seem to work right on mac.
+> it seems to be more a like copy.  Strange effects all around. dont use.
+
+> These commands must be run together, or sublime must be off,
+> bc it creates the User folder on delete.
 
 ```bash
-
-#> !! Big note: do not use wildcards bc it doesn't seem to work right on mac.
-# it seems to be more a like copy.  Strange effects all around. dont use.
-
-# These commands must be run together, or sublime must be off, bc it creates the User folder on delete.
 
 set -l subldirbase /Users/bryan/Library/Application\ Support/Sublime\ Text\ 3/Packages
 
