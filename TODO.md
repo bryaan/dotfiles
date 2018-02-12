@@ -5,12 +5,36 @@ Maybe: Tweak tool -> typing -> Ctrl key position -> Swap Left Win key with Left 
 - might want this on say ncl keyboard to mimic
 Super+x,c,v combo on mac
 
-// On keyboards where Super is tougher to reach than Ctrl
-// (usually ctrl,fn,super,alt order keyboards)
-//
-// gnome: Switch Ctrl and Super keys
-// (prob now is in emacs want to use new-Super key as standard-Ctrl, so..)
-// emacs: Switch Ctrl and Super keys
+On keyboards where Super is tougher to reach than Ctrl
+(usually ctrl,fn,super,alt order keyboards)
+
+gnome: Switch Ctrl and Super keys
+(prob now is in emacs want to use new-Super key as standard-Ctrl, so..)
+emacs: Switch Ctrl and Super keys
+
+
+TODO when creating a js fun, put the {} on the next line,
+or just use a snippet and binding
+
+we have a parent library that uses Plotting and add all things outside of the plot canvas
+
+TODO when that { is create after js function def, should have some
+keystoke or mayybe auto, where you move cursor to point where
+where } should be, and it should indent anything in between
+
+TODO shortcut to quickly open a new sublime or emacs window
+prefeably org-mode, where I can drop rich text notes
+it should auto date and save notes.
+Also shortcut to bring up last note
+Key chord to select note to switch to (maybe use projectile and notes fodler?
+or actually org-mode will have a list notes function)
+
+TODO Modifier key + arrow to jump forward words
+
+TODO can we use a modifier key to navigate by words, like we do winows in emacs?
+
+
+TODO if nix doesn't handle everything use a 'Brewfile'
 
 
 TODO skim issues - code some rust?

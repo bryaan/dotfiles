@@ -50,9 +50,10 @@
     };
 
     funopsEnv = with pkgs; buildEnv {
-      name = "all";
+      name = "funopsEnv";
       paths = [
         iftop
+        sublime
         # gtk-config
         # termite-config
         # qtile-config

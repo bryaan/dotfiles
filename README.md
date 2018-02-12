@@ -114,18 +114,6 @@ rm -rf ./nerd-fonts
 2. Sublime Cmd Menu -> Install Package Control
 3. Sublime Cmd Menu -> Package Control: Upgrade/Overide All Packages
 
-## For Linux
-```bash
-
-rm -rf $HOME/.config/sublime-text-3/Packages/User; \
-  rm -rf $HOME/.config/sublime-text-3/Packages/Default; \
-  ln -sfn $DOTFILES_ROOT/sublime/User/ $HOME/.config/sublime-text-3/Packages/; \
-  ln -sfn $DOTFILES_ROOT/sublime/Default/ $HOME/.config/sublime-text-3/Packages/
-
-```
-
-## For Mac
-
 > !! Big note: do not use wildcards bc it doesn't seem to work right on mac.
 > it seems to be more a like copy.  Strange effects all around. dont use.
 
@@ -134,11 +122,15 @@ rm -rf $HOME/.config/sublime-text-3/Packages/User; \
 
 ```bash
 
-set -l subldirbase /Users/bryan/Library/Application\ Support/Sublime\ Text\ 3/Packages
+# On Mac
+set -l subldir /Users/bryan/Library/Application\ Support/Sublime\ Text\ 3/Packages
+
+# On Linux
+set -l subldir $HOME/.config/sublime-text-3/Packages
 
 rm -rf $subldirbase/User; rm -rf $subldirbase/Default;  \
- ln -sf $DOTFILES_ROOT/sublime/User/      $subldirbase;   \
- ln -sf $DOTFILES_ROOT/sublime/Default/   $subldirbase
+ ln -sf $DOTFILES_ROOT/sublime/User/      $subldir;   \
+ ln -sf $DOTFILES_ROOT/sublime/Default/   $subldir
 
 ```
 

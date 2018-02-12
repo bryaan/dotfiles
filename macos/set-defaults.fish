@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env fish
 
 # Sets reasonable macOS defaults.
 #
@@ -9,21 +9,43 @@
 #
 # Run ./set-defaults.sh and you'll be good to go.
 
-# Use AirDrop over every interface. srsly this should be a default.
-defaults write com.apple.NetworkBrowser BrowseAllInterfaces 1
+function setdefault
+  # echo $argv[0]
+  # eval $argv[1]
+  set -l settings $argv
+  set -l count (count $settings)
+  for i in (seq $count)
+    echo $settings[ (math "$i * 2 - 1") ]
+    eval $setting[ (math "$i * 2 - 0") ]
+  end
+end
 
-# Always open everything in Finder's list view. This is important.
-defaults write com.apple.Finder FXPreferredViewStyle Nlsv
+setdefault \
+  'Use AirDrop over every interface.' \
+  'defaults write com.apple.NetworkBrowser BrowseAllInterfaces 1' \
+  #
+  "Deskop: Show Icons" \
+  'defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
+   defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
+   defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
+   defaults write com.apple.finder ShowMountedServersOnDesktop -bool true' \
+  #
+  "Screenshots: Set Save Location" \
+  'defaults write com.apple.screencapture location /Users/bryan/Desktop/Screenshots'
 
-# Always Show Hidden Files in the Finder
-defaults write com.apple.finder AppleShowAllFiles -bool YES
 
-# Show the ~/Library folder.
-chflags nohidden ~/Library
+echo "Avoid creating .DS_Store files on network or USB volumes"
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
-# Set the Finder prefs for showing a few different volumes on the Desktop.
-defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
-defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
+echo "Disable disk image verification"
+# defaults write com.apple.frameworks.diskimages skip-verify -bool true
+# defaults write com.apple.frameworks.diskimages skip-verify-locked -bool true
+# defaults write com.apple.frameworks.diskimages skip-verify-remote -bool true
+
+echo "Disable the warning before emptying the Trash"
+defaults write com.apple.finder WarnOnEmptyTrash -bool false
+
 
 # Run the screensaver if we're in the bottom-left hot corner.
 # defaults write com.apple.dock wvous-bl-corner -int 5
@@ -39,6 +61,14 @@ defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool 
 defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 
+# echo "Disable Safari’s thumbnail cache for History and Top Sites"
+# defaults write com.apple.Safari DebugSnapshotsUpdatePolicy -int 2
+
+echo "Make Safari’s search banners default to Contains instead of Starts With"
+defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly -bool false
+
+# Remove useless icons from Safari’s bookmarks bar
+# defaults write com.apple.Safari ProxiesInBookmarksBar "()"
 
 # Reveal IP address, hostname, OS version, etc. when clicking the clock
 # in the login window
@@ -76,7 +106,7 @@ defaults write com.apple.CrashReporter DialogType none
 
 
 # Temporarily (after reboot) increase speed of time machine backup by not
-# allowind proc to assume low priority. 
+# allowind proc to assume low priority.
 # sudo sysctl debug.lowpri_throttle_enabled=0
 
 # Enable the expanded finder view in document save panel by default
@@ -88,9 +118,6 @@ defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
 defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
 
 
-# Show the file extensions in Finder
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true
-
 # Use plaintext as TextEdit Default
 defaults write com.apple.TextEdit RichText -int 0
 
@@ -101,14 +128,11 @@ defaults write com.apple.Dock autohide-delay -float 0
 # Instantly show mission control - removes that short delay when it shows.
 defaults write com.apple.dock expose-animation-duration -float 0.12
 
-# Stop Full Names from Copying with Email Addresses in OS X Mail
+# Stop People's Names from Copying with Email Addresses in OS X Mail
 defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
 
 # Enable Text Selection in Quick Look Windows
 defaults write com.apple.finder QLEnableTextSelection -bool TRUE
-
-# Where Screenshots Are Saved To
-defaults write com.apple.screencapture location ~/Desktop/Screenshots
 
 # Always show scrollbars - This produced some nasty whitespace on some windows,
 # particularly those associated with dmg installs.
@@ -146,16 +170,15 @@ sudo touch /private/var/vm/sleepimage
 # …and make sure it can’t be rewritten
 sudo chflags uchg /private/var/vm/sleepimage
 
-
-
-
 # Increase Dock Size Beyond Normal
 # defaults write com.apple.dock largesize -float 256
-
 
 ###############################################################################
 # Trackpad, mouse, keyboard, Bluetooth accessories, and input                 #
 ###############################################################################
+
+echo "Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)"
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
 # Trackpad: enable tap to click for this user and for the login screen
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
@@ -172,6 +195,8 @@ defaults -currentHost write NSGlobalDomain com.apple.trackpad.enableSecondaryCli
 # Increase sound quality for Bluetooth headphones/headsets
 defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
 
+echo "Enable tap to click (Trackpad)"
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 
 # Use scroll gesture with the Ctrl (^) modifier key to zoom
 defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
@@ -179,16 +204,26 @@ defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
 # Follow the keyboard focus while zoomed in
 defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 
-# Disable press-and-hold for keys in favor of key repeat
-# TODO which one is new way?
-defaults write -g ApplePressAndHoldEnabled -bool true
-defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool true
+# # Disable press-and-hold for keys in favor of key repeat
+# # TODO which one is new way?
+# defaults write -g ApplePressAndHoldEnabled -bool true
+# defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool true
 
+echo "Disable press-and-hold for keys in favor of key repeat"
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+
+# echo "Set a blazingly fast keyboard repeat rate"
+# defaults write NSGlobalDomain KeyRepeat -int 0.02
 # Set a really fast key repeat. was 5.
-defaults write NSGlobalDomain KeyRepeat -int 10
+
+# echo "Set a shorter Delay until key repeat"
+# defaults write NSGlobalDomain InitialKeyRepeat -int 12
+
+echo "Disable auto-correct"
+defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
 ###############################################################################
-# Screen                                                                      #
+# Screen - Screensaver, Screenshot, ScreenCapture                                                                  #
 ###############################################################################
 
 # Require password immediately after sleep or screen saver begins
@@ -209,47 +244,72 @@ defaults write com.apple.screencapture disable-shadow -bool true
 sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutionEnabled -bool true
 
 
+setdefault \
+  "Dialogs: Expand save panel by default" \
+  'defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true' \
+  #
+  "Dialogs: Expand print panel by default" \
+  'defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true' \
+  #
+  "Dialogs: Disable “Are you sure you want to open this application?”." \
+  'defaults write com.apple.LaunchServices LSQuarantine -bool false'
+
 ###############################################################################
 # Finder                                                                      #
 ###############################################################################
 
-# Finder: allow quitting via ⌘ + Q; doing so will also hide desktop icons
-defaults write com.apple.finder QuitMenuItem -bool true
+setdefault \
+  "Finder: Always open in list view." \
+  'defaults write com.apple.Finder FXPreferredViewStyle Nlsv' \
+  #
+  "Finder: Always Show Hidden Files." \
+  'defaults write write com.apple.finder AppleShowAllFiles -bool YES' \
+  #
+  "Finder: Show the ~/Library folder" \
+  'chflags nohidden ~/Library' \
+  #
+  "Show the /Volumes folder" \
+  'sudo chflags nohidden /Volumes' \
+  #
+  "Finder: Allow quitting via ⌘ + Q; doing so will also hide desktop icons" \
+  'defaults write com.apple.finder QuitMenuItem -bool true' \
+  #
+  "Finder: Enable window animations and Get Info animations" \
+  'defaults write com.apple.finder DisableAllAnimations -bool false' \
+  #
+  # Set Desktop as the default location for new Finder windows: `PfDe`
+  # For other paths use `PfLo`
+  # To use current directory: "SCcf"
+  "Finder: Set Desktop as the default location for new windows" \
+  'defaults write com.apple.finder NewWindowTarget -string "PfDe"
+   defaults write com.apple.finder NewWindowTargetPath -string "file://$HOME/Desktop/"' \
+  #
+  "Finder: When performing a search, search the current folder by default." \
+  'defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"' \
+  #
+  "Finder: Show Path bar" \
+  'defaults write com.apple.finder ShowPathbar -bool true' \
+  #
+  "Finder: Show Status bar" \
+  'defaults write com.apple.finder ShowStatusBar -bool true'
 
-# Finder: disable window animations and Get Info animations
-defaults write com.apple.finder DisableAllAnimations -bool true
+# echo "Remove Dropbox’s green checkmark icons in Finder"
+# file=/Applications/Dropbox.app/Contents/Resources/check.icns
+# [ -e "$file" ] && mv -f "$file" "$file.bak"
+# unset file
 
-# Set Desktop as the default location for new Finder windows
-# For other paths, use `PfLo` and `file:///full/path/here/`
-defaults write com.apple.finder NewWindowTarget -string "PfDe"
-defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/Desktop/"
-
-# Show icons for hard drives, servers, and removable media on the desktop
-defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
-defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
-defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
-defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
-
-# Finder: show hidden files by default
-#defaults write com.apple.finder AppleShowAllFiles -bool true
+#Fix for the ancient UTF-8 bug in QuickLook (http://mths.be/bbo)
+# Commented out, as this is known to cause problems when saving files in Adobe Illustrator CS5 :(
+#echo "0x08000100:0" > ~/.CFUserTextEncoding
 
 # Finder: show all filename extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
-
-# Finder: show status bar
-defaults write com.apple.finder ShowStatusBar -bool true
-
-# Finder: show path bar
-defaults write com.apple.finder ShowPathbar -bool true
 
 # Display full POSIX path as Finder window title
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 
 # Keep folders on top when sorting by name
 defaults write com.apple.finder _FXSortFoldersFirst -bool true
-
-# When performing a search, search the current folder by default
-defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
 # Disable the warning when changing a file extension
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
@@ -259,15 +319,6 @@ defaults write NSGlobalDomain com.apple.springing.enabled -bool true
 
 # Remove the spring loading delay for directories
 defaults write NSGlobalDomain com.apple.springing.delay -float 0
-
-# Avoid creating .DS_Store files on network or USB volumes
-defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
-defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
-
-# Disable disk image verification
-# defaults write com.apple.frameworks.diskimages skip-verify -bool true
-# defaults write com.apple.frameworks.diskimages skip-verify-locked -bool true
-# defaults write com.apple.frameworks.diskimages skip-verify-remote -bool true
 
 # Automatically open a new Finder window when a volume is mounted
 defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
@@ -297,25 +348,11 @@ defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
 # /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:iconSize 80" ~/Library/Preferences/com.apple.finder.plist
 # /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:iconSize 80" ~/Library/Preferences/com.apple.finder.plist
 
-
-# Use list view in all Finder windows by default
-# Four-letter codes for the other view modes: `icnv`, `clmv`, `Flwv`
-defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
-
 # Disable the warning before emptying the Trash
 defaults write com.apple.finder WarnOnEmptyTrash -bool false
 
 # Enable AirDrop over Ethernet and on unsupported Macs running Lion
 defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
-
-# TODO If POWERUSER
-
-# Show the ~/Library folder
-chflags nohidden ~/Library
-
-# Show the /Volumes folder
-sudo chflags nohidden /Volumes
-
 
 
 # Expand the following File Info panes:
@@ -465,9 +502,18 @@ defaults write com.apple.spotlight orderedItems -array \
 	'{"enabled" = 0;"name" = "MENU_EXPRESSION";}' \
 	'{"enabled" = 0;"name" = "MENU_WEBSEARCH";}' \
 	'{"enabled" = 0;"name" = "MENU_SPOTLIGHT_SUGGESTIONS";}'
+
 # Load new settings before rebuilding the index
 killall mds > /dev/null 2>&1
 # Make sure indexing is enabled for the main volume
 sudo mdutil -i on / > /dev/null
 # Rebuild the index from scratch
 sudo mdutil -E / > /dev/null
+
+
+
+echo "Reset Launchpad"
+[ -e ~/Library/Application\ Support/Dock/*.db ] && rm ~/Library/Application\ Support/Dock/*.db
+
+echo "Kill affected applications"
+for app in Safari Finder Dock Mail SystemUIServer; do killall "$app" >/dev/null 2>&1; done
