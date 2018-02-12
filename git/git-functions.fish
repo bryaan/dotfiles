@@ -17,9 +17,26 @@ function acp --description 'Add, commit and push'
   git push
 end
 
+# TODO can we get colors from `git br --all` to passthru to skim?
 function fco -d "Fuzzy-find and checkout a branch"
   git branch --all | grep -v HEAD | string trim | sk | \
-    xargs -I@ "git fetch --all; git checkout @"
+    while read branchName
+      # TODO shouldn't this come *before* skim? Actually at very beggining? can git branch fetch automatically?
+      git fetch --all
+      switch $branchName
+        # when checking out a branch that matches 'remotes/*'
+        # the `remote/origin/` part must be trimmed, otherwise
+        # we will end up in detached HEAD state.
+        case 'remotes/*/*'
+          # ie. most of the time it is `origin`
+          set -l remoteName (echo $branchName | awk -F / '{ print $2 }')
+          set -l remoteBaseName "remotes/$remoteName/"
+          set -l branchBaseName (echo $branchName | string replace $remoteBaseName '')
+          git checkout $branchBaseName
+        case '*'
+          git checkout $branchName
+      end
+    end
 end
 
 function fcoc -d "Fuzzy-find and checkout a commit"
