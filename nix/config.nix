@@ -1,6 +1,7 @@
 # .nixpkgs/config.nix
 # nixpkgs/config.nix site:github.com
 # https://github.com/kamilchm/.nixpkgs
+#
 # nix-env -iA nixpkgs.workEnv
 # nix-env -iA nixpkgs.userEnv
 {
@@ -8,6 +9,7 @@
 
   packageOverrides = pkgs: with pkgs; {
 
+    # This one is for use on any linux. not mac.
     userEnv = pkgs.buildEnv {
       name = "userEnv";
       paths = [
@@ -15,6 +17,8 @@
         signal-desktop
         vim
         vimPlugins.vundle
+        gnome3.dconf-editor
+        mc # Midnight Commander File Browser
       ];
     };
 

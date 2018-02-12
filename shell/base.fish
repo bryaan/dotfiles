@@ -12,6 +12,7 @@
 # Environment Config
 ################################################
 
+setenv SHELL (which fish)
 setenv EDITOR 'vim'
 setenv VISUAL 'subl'
 setenv GIT_EDITOR 'vim'
@@ -40,14 +41,20 @@ setenv MANPAGER 'less'
 # Startup Items
 ################################################
 
+
+# TODO instead we should get it in every shell,
+# however they should auto dissappear when one succeeds. (use `trap`)
+# Kill all jobs running in current shell
+# if SIGUSER1 received.
+# Only job running should be our function below.
+#  trap 'kill $(jobs -p)' SIGUSER1
+
 # When first shell of session starts we start ssh-agent.
 # This makes it so we should only get that message
 # in a single shell.
-# TODO instead we should get it in every shell,
-# however they should auto dissappear when one succeeds. (use `trap`)
 if not [ -e /tmp/brydots.ssh_agent.lock ]
   touch /tmp/brydots.ssh_agent.lock
-  ssh_start_agent
+  ssh_agent_start
   rm /tmp/brydots.ssh_agent.lock
 end
 

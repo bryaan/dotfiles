@@ -10,3 +10,6 @@ abbr -a pid.info 'ps -Flww -p'
 function fkill -d 'fuzzy kill processes'
   ps -ef | sed 1d | sk --multi | awk '{print $2}' | xargs echo
 end
+
+
+# kill $(jobs -p)

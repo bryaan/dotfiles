@@ -69,12 +69,22 @@ if set -q SHOULD_INIT
 
   function load_all_files
     # === source fish functions ===
-    # Sources all *.fish files in shell/* => Do not 'source' within /shell
-    # So idea is no sourcing of other files, like by using index.fish files,
-    # at least in this folder.
-    #> note the --glob "!index.fish" to avoid infinite loop (also prder is important)
-    set -l files (command rg --files --follow \
-      --glob "*.fish" --glob "!*/index.fish" --glob "!.git/*" \
+    # source functions first as they are base level.
+    # Every other folder's functions will depend on them.
+    # They don't depends on any function, unless they source it themselves.
+    set -l functionFiles (command rg --files --glob "functions/*.fish" \
+      $DOTFILES_ROOT/shell/functions)
+
+    for file in $functionFiles
+      #echo [DEBUG] $file
+      source $file
+    end
+
+    # === source fish files ===
+    # Sources all *.fish files in shell/*
+    # - Don't include index.fish (infinite import loop) or functions/ folder.
+    set -l files (command rg --files --glob "*.fish" \
+      --glob "!*/index.fish" --glob "!functions/*" \
       $DOTFILES_ROOT/shell)
 
     for file in $files

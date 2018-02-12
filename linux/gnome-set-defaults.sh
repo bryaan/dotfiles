@@ -1,7 +1,19 @@
 #!/usr/bin/env sh
+#
+# Find keybindings using `dconf-editor`
+#
 
 # Sets the keyrepeat rate; and hold delay before beginning repeat.
 xset r rate 250 50
+
+# unset annoying default keybindings
+gsettings set org.gnome.desktop.wm.keybindings raise-or-lower "['']"
+gsettings set org.gnome.desktop.wm.keybindings set-spew-mark "['']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-11 "['']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-12 "['']"
+gsettings set org.gnome.desktop.wm.keybindings toggle-shaded "['']"
+gsettings set org.gnome.desktop.wm.keybindings lower "['']"
+gsettings set org.gnome.desktop.wm.keybindings raise "['']"
 
 
 # === General Preferences ===
@@ -9,7 +21,7 @@ gsettings set org.gnome.desktop.wm.preferences num-workspaces "6"
 gsettings set org.gnome.desktop.wm.preferences audible-bell false # disable bell
 
 # screenshot
-gsettings set org.gnome.gnome-screenshot auto-save-directory 'file:///home/bryan/Desktop'
+gsettings set org.gnome.gnome-screenshot auto-save-directory 'file:///home/bryan/Desktop/Screenshots'
 gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot-clip "'Print'"
 gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot "'<Primary>Print'"
 gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot-clip "'<Shift>Print'"
@@ -22,18 +34,10 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver '<Primary
 gsettings set org.gnome.settings-daemon.plugins.media-keys screensaver "<Super>9"
 gsettings set org.gnome.desktop.lockdown disable-lock-screen false
 
-# unset annoying default keybindings
-gsettings set org.gnome.desktop.wm.keybindings raise-or-lower "['']"
-gsettings set org.gnome.desktop.wm.keybindings set-spew-mark "['']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-11 "['']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-12 "['']"
-gsettings set org.gnome.desktop.wm.keybindings toggle-shaded "['']"
-gsettings set org.gnome.desktop.wm.keybindings lower "['']"
-gsettings set org.gnome.desktop.wm.keybindings raise "['']"
-
-
-# restrict Alt-Tab to current workspace
-gsettings set org.gnome.shell.app-switcher current-workspace-only true
+# Lock Screen Keybinding
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ name 'screenlock'
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ command 'dbus-send --type=method_call --dest=org.gnome.ScreenSaver /org/gnome/ScreenSaver org.gnome.ScreenSaver.Lock'
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ binding '<Super>l'
 
 # Desktop
 gsettings set org.gnome.shell always-show-log-out true
@@ -53,10 +57,14 @@ gsettings set org.gnome.nautilus.icon-view default-zoom-level 'small'
 gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'
 
 
-# === gnome shell ===
+# === gnome shell tools' shortcuts ===
+gsettings set org.gnome.shell.keybindings focus-active-notification "['']" # "['<Super>n']"
+gsettings set org.gnome.shell.keybindings open-application-menu "['']"
 gsettings set org.gnome.shell.keybindings toggle-application-view "['<Super>a']"
-gsettings set org.gnome.shell.keybindings toggle-overview "['<Super>Space']" # "['<Super>s']"
 gsettings set org.gnome.shell.keybindings toggle-message-tray "['']" # "['<Super>n']"
+# Overview = Mission Control
+gsettings set org.gnome.shell.keybindings toggle-overview "['<Super>Space']" # "['<Super>s']"
+
 
 # === Mouse ===
 # gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier "'<Super>'"
@@ -94,6 +102,37 @@ gsettings set org.gnome.desktop.wm.keybindings move-to-center "[]"
 gsettings set org.gnome.desktop.wm.keybindings move-to-monitor-up "['']"
 gsettings set org.gnome.desktop.wm.keybindings move-to-monitor-down "['']"
 
+# class-overrides is what RHEL updated when I changed setting in Tweak Tool (not dconf)
+# But the one below should be the new way, see how it is on NixOS.
+gsettings set org.gnome.shell.extensions.classic-overrides workspaces-only-on-primary false
+gsettings set org.gnome.shell.overrides workspaces-only-on-primary false
+
+gsettings set org.gnome.shell.overrides dynamic-workspaces true
+# Tile window when dragged to edge of screen.
+gsettings set org.gnome.shell.overrides edge-tiling true
+
+
+# === User Menu ===
+# (That thing usually in the top right with logout shutdown options and user info.)
+gsettings set org.gnome.shell always-show-log-out true
+
+
+# === Overview (Mission Control) ===
+# TODO Should I set this elsewhere?
+# # (The Gnome equivalent of on macos)
+# gsettings set org.gnome.shell favorite-apps "[
+#   'org.gnome.Nautilus.desktop',
+#   'sublime_text.desktop',
+#   'terminator.desktop',
+#   'google-chrome.desktop',
+#   'firefox.desktop'
+# ]"
+
+# === Window List ===
+# (The window bar at the bottom of the screen)
+# TODO only seen this on RHEL, will it work on nix?
+gsettings set org.gnome.shell.extensions.window-list grouping-mode "auto"
+gsettings set org.gnome.shell.extensions.window-list show-on-all-monitors true
 
 # === Windows ===
 gsettings set org.gnome.desktop.wm.keybindings close "['<Alt>F4']" # , '<Super>w'
@@ -114,6 +153,11 @@ gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']"
 gsettings set org.gnome.desktop.wm.keybindings panel-main-menu "['']"
 gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Alt>F1']"
 gsettings set org.gnome.desktop.wm.preferences action-middle-click-titlebar 'none'
+
+
+# === window-switcher ===
+# restrict Alt-Tab to current workspace
+gsettings set org.gnome.shell.app-switcher current-workspace-only true
 
 
 #
@@ -138,7 +182,7 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/or
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding "<Super>e"
 
 # add custom keybings
-gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']"
 
 
 
