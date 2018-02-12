@@ -35,6 +35,22 @@ setenv SYSTEMD_PAGER $PAGER
 # vimpager not working well with manpages on linux. TODO check mac.
 setenv MANPAGER 'less'
 
+
+################################################
+# Startup Items
+################################################
+
+# When first shell of session starts we start ssh-agent.
+# This makes it so we should only get that message
+# in a single shell.
+# TODO instead we should get it in every shell,
+# however they should auto dissappear when one succeeds. (use `trap`)
+if not [ -e /tmp/brydots.ssh_agent.lock ]
+  touch /tmp/brydots.ssh_agent.lock
+  ssh_start_agent
+  rm /tmp/brydots.ssh_agent.lock
+end
+
 ################################################
 # Local Utility Commands
 ################################################

@@ -34,9 +34,6 @@ if set -q SHOULD_INIT
     set -x __BRYDOTS_DO_ONE_SHOT_SETUP 0
   end
 
-
-
-
   # === Load pathfile ===
   source $DOTFILES_ROOT/shell/init.pathfile
 
