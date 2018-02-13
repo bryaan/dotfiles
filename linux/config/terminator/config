@@ -1,0 +1,29 @@
+[global_config]
+  suppress_multiple_term_dialog = True
+[keybindings]
+  close_term = <Alt>0
+  go_down = <Shift>Down
+  go_left = <Shift>Left
+  go_right = <Shift>Right
+  go_up = <Shift>Up
+  split_horiz = <Alt>2
+  split_vert = <Alt>3
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+[plugins]
+[profiles]
+  [[default]]
+    alternate_screen_scroll = False
+    background_image = None
+    copy_on_selection = True
+    font = SauceCodePro NF Medium 9
+    foreground_color = "#00ff00"
+    icon_bell = False
+    scrollback_infinite = True
+    use_system_font = False

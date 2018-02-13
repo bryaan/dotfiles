@@ -13,6 +13,15 @@ gnome: Switch Ctrl and Super keys
 emacs: Switch Ctrl and Super keys
 
 
+TODO symlink all configs in linux/config to ~/.config, but only on linux.
+cp ~/.config/terminator/config ~/src/dotfiles/linux/config/terminator/
+
+
+TODO
+#> this open sequence should be colored as a 'note'
+Also add other sequences as well.
+
+
 TODO when creating a js fun, put the {} on the next line,
 or just use a snippet and binding
 

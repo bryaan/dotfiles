@@ -23,6 +23,9 @@ function fco -d "Fuzzy-find and checkout a branch"
     while read branchName
       # TODO shouldn't this come *before* skim? Actually at very beggining? can git branch fetch automatically?
       git fetch --all
+      # The currently selected branch has a leading asterisk to indicate it is currently open,
+      # This removes it so we have path only.
+      set -l branchName (echo $branchName | string replace '* ' '')
       switch $branchName
         # when checking out a branch that matches 'remotes/*'
         # the `remote/origin/` part must be trimmed, otherwise

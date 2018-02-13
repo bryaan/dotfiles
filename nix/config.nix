@@ -18,6 +18,7 @@
         vim
         vimPlugins.vundle
         gnome3.dconf-editor
+        enlightenment.terminology
         mc # Midnight Commander File Browser
       ];
     };
