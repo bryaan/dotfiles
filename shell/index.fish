@@ -34,10 +34,6 @@ if set -q SHOULD_INIT
     set -x __BRYDOTS_DO_ONE_SHOT_SETUP 0
   end
 
-  # === Load pathfile ===
-  source $DOTFILES_ROOT/shell/init.pathfile
-
-
   # if [ $__BRYDOTS_ENV_PLATFORM = "macos" ]
   # if [ $__BRYDOTS_ENV_PLATFORM = "linux" ]
   switch (uname -a)
@@ -99,6 +95,12 @@ if set -q SHOULD_INIT
     source $DOTFILES_ROOT/git/git.fish
     source $DOTFILES_ROOT/nix/nix.fish
   end
+
+  # === Load pathfile ===
+  source $DOTFILES_ROOT/shell/init.pathfile
+
+  # === Load nix ===
+  #
 
   load_all_files
 end

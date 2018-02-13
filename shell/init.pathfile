@@ -132,6 +132,11 @@ set -x PATH $TMPPATH
 set PATH (string match -v . $PATH)
 
 
+# TODO move this to a function in nix/nix.fish
+# with argument for mac or linux
+# Call it here because it sets up PATHS, or call it in index.fish
+# BUT it requires a explicit import, nooo...
+# Save it in nix/functions which
 # === Load nix ===
 # Comes after above so PATH set by nix script isnt messed with
 #

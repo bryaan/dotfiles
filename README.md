@@ -53,6 +53,15 @@ Search for: "Package Control: Upgrade/Overide All Packages"
 
 ------------------------------------------------------------------------------
 
+- Fractal folders.  So in most first level dirs you will find fish files that contain
+  commands for that particular app.  They may also contain setup, but in this case files should
+  be imported manually so the order of import can be fixed.
+
+- All files ending in `*.symlink`, no matter their location, are to be symlinked into $HOME.
+  TODO Directories should also work, for example the dir /atom.symlink will be symlinked into $HOME/.atom
+
+----------------------------------------------------
+
 # Install Nix and Fish (RHEL 7)
 
 ```
@@ -149,9 +158,6 @@ https://github.com/JorgeBucaran/fish-shell-cookbook#how-to-redirect-stdout-or-st
 
 https://github.com/fisherman/getopts
 
-------------------------------------------------------------------------------
-
-
 
 ------------------------------------------------
 https://github.com/sdegutis/hydra
@@ -168,26 +174,32 @@ git clone https://github.com/NixOS/nixpkgs.git ~/.nixpkgs/channels/unstable
 nix-env -iA nixos.firefox -f ~/nixpkgs-unstable
 nix-env -iA nixos.slack -f ~/.nixpkgs/channels/unstable
 
+And without downloading the git repo:
+
+To install Firefox from the latest revision in the Nixpkgs/NixOS 14.12 channel:
+$ nix-env -f https://github.com/NixOS/nixpkgs-channels/archive/nixos-14.12.tar.gz -iA firefox
+
+------------------------------------------------
+
+trd workstation redundancy plan
+- Req: Concurrent VNC sessions,
+  Req: both users must see the same screen/session,
+  Req: both users must be able to control mouse and keyboard.
+- Req: Backup Power
+  Req: 1 Monitor on UPS, must be able to move windows to this monitor if others are off.
+  Req: On UPS Backup:
+    * Monitor, PSU, EdgeX Router, Comcast modem.
+  Req: cellular via USBC to pc
+  * write a script to quickly connect, optionally a menu bar shortcut
+  * test it in demo by unplugging ethernet, make sure process works.
+  * should always be connected to machine when trading.
+- Server/Client Archi (later, but pretty damn simple..)
+
 
 ------------------------------------------------
 
 
-TODO TODO combine
-nix-env -i emacs mu offlineimap ctags
-with my brymacs config
-into a `brymacs.nix` file
-
-the install should then become
-nix-env -i brymacs
-
-And emacs should be fully configured, and working on everysytem!
-
-Now do that with pretty much everything?
-- For sublime check if they have a package in unstable or someone wrote one, or write one myself that downloads and installs with my config. !!
-
-Also we can combine brymacs and sublime and more into a devenv .nix
-
-
+# TODO add to config.nix
 syncthing
 syncthing-inotify
 borgbackup
@@ -198,46 +210,14 @@ sl
 sshfsFuse
 
 
-
-
-# INSTALL LIST #
-nix-env -i ...
-
-# === system-tools ===
-exa ripgrep ag fd
-cargo install skim
-axel
-fish
-;;fzf
-
-# === communication ===
-slack
-signal-desktop
-
-# === editors ===
-sublime3 vscode atom
-emacs vim mu offlineimap ctags
-vimPlugins.vundle
-
-# === unsorted ===
-git
-gcc
-;; gcc-wrapper
-glibc
-;; binutils - i think linux/nix only
-cmake
-rustc
-cargo
-;; rustBeta.cargo
-yarn
-pip install glances
-vimpager - from github compile
-yarn global add gulp tern
-
+# COMMANDS #
+nix-env -i ...  # Install
+nix-env -e ...  # Uninstall
+nix-env -q --installed # List Installed
+nox ...         # Search
 
 
 # Mac install list #
-
 TODO alfred
 https://www.alfredapp.com/
 
@@ -249,39 +229,11 @@ highlight check works with fzf preview
 brew cask install virtualbox
 brew cask install virtualbox-extension-pack
 
+iterm2
+
 ## Enable Extra Casks (Beta Nightly mostly)
 brew tap caskroom/versions
 brew cask install firefox-nightly
-
-
-### sublimerge
-- and also the binary download
-
-
-# nix-env -q --installed
-
-binutils-2.28.1
-cargo-0.23.0
-cmake-3.10.2
-fish-2.7.1
-gcc-6.4.0
-git-2.16.1
-glibc-2.26-131
-nix-1.11.16
-patchelf-0.9
-rustc-1.22.1
-yarn-1.3.2
-workEnv
-
-
-
-asdf? or fish? Recommnded Pkgs:
-  brew install coreutils automake autoconf openssl libyaml readline libxslt libtool unixodbc
-
-gnome3.gnome-characters Simple utility application to find and insert unusual characters
-
-# Mac Extra
-iterm2
 
 https://caskroom.github.io/search
 brew cask install \
@@ -291,7 +243,13 @@ brew cask install \
     firefox \
     sublime-text \
 
-# Linux Extra
+
+### sublimerge
+- and also the binary download
+
+
+gnome3.gnome-characters Simple utility application to find and insert unusual characters
+
 
 
 # For Krypton:
@@ -325,14 +283,6 @@ JSON Viewer
 Visual Event
 Vue.js devtools
 No Coin
-
-
-
-----------------------------------------------------
-
-- Fractal folders.  So in zsh/ git/ etc we have an aliases file and other commons and specifics.
-- All files ending in *.symlink, no matter where they are, are to be symlinked into home.
-  - Directories should also work.  For example the dir /atom.symlink will be symlinked into $HOME/.atom
 
 
 
