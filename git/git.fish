@@ -28,6 +28,27 @@ if _should_do_one_shot_setup
   # Global .gitignore file.
   git config --global core.excludesfile ~/.gitignore_global
 
+
+  # git push will by default push all branches that have the same name on the remote.
+  # To limit this behavior to just the current branch
+  git config --global push.default tracking
+
+  # Because branch merges in git are recorded with a merge commit,
+  # they are supposed to be meaningful—for example, to indicate
+  # when a feature has been merged to a release branch. However,
+  # during a regular daily workflow where several team members
+  # sync a single branch often, the timeline gets polluted with
+  # unnecessary micro-merges on regular git pull.
+  # Rebasing ensures that the commits are always re-applied so
+  # that the history stays linear.
+  #
+  # Setup rebase for every *remote* tracking branch
+  git config --global branch.autosetuprebase remote
+
+#############################################
+# Diff & Merge
+#############################################
+
   # Makes `git diff` Pretty Print submodule info.
   git config --global diff.submodule log
 

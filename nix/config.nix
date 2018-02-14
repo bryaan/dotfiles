@@ -16,7 +16,7 @@
   # TODO Define custom packages
   #foo = import ~/.nix-defexpr/foo;
   #bar = import ~/.nix-defexpr/bar;
-
+  # there is also: https://github.com/kamilchm/.nixpkgs/blob/master/config.nix
 
   packageOverrides = pkgs: with pkgs; {
 
@@ -29,6 +29,9 @@
       ];
     };
 
+    # TODO check out packages here
+    # https://gist.github.com/spinus/c9ab55a02d557245cc5d2d83be606eaa
+
     # TODO secondary installs
     # vimpager - from github compile
     # yarn global add gulp tern
@@ -37,17 +40,27 @@
       name = "system-tools";
       paths = [
         fish
-        # === system-tools ===
-        exa
-        ripgrep
-        ag
-        fd
+        git
+        # === file-tools ===
+        exa ripgrep ag fd
         # TODO cargo install skim
         axel
-        git
-        iftop
+        # === perf-tools ===
+        iftop iotop
         # pip install glances
+        # === system-tools ===
+        dtrx # archive swiss knife
         cargo
+        tmux
+        # file # this is basic sys command, does nix come with it? if not move these very basic ones to a nix only env.
+        sqlite-interactive
+        # tcpdump
+        # telnet
+        # tree
+        # unrar
+        # unzip
+        # pigz
+        # traceroute
       ];
     };
 
@@ -58,6 +71,7 @@
         gnome3.dconf-editor
         enlightenment.terminology
         patchelf
+        xsel xclip
         #;; binutils - i think linux/nix only
         #enlightenment.efl # needed to build terminologoy-themes-git
         mc # Midnight Commander File Browser
@@ -72,6 +86,7 @@
         #
         gcc
         cmake
+        # gnumake
         yarn
         sublime
         #rustc
@@ -142,7 +157,6 @@
             # python34Packages.pandas
 #         ];
 #     };
-
 
 # # custom python environment with python packages embedded
 # # nixos isolates each language specific dependency, they are not automatically exposed to the interpreter

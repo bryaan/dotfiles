@@ -170,10 +170,11 @@ abbr -a mount 'mount | column -t'
 # Safety Nets
 ################################################
 
-# confirmation #
-alias mv='mv -i'
-alias cp='cp -i'
-alias ln='ln -i'
+# # confirmation #
+# More of an anoyance.. lets see if I change my mind.
+# alias mv='mv -i'
+# alias cp='cp -i'
+# alias ln='ln -i'
 
 # NOTE fish shell doesn't append functions like bash does with aliases.
 # fish handles aliases, but warns of infinite loop when appending later.

@@ -41,14 +41,11 @@ setenv MANPAGER 'less'
 # Startup Items
 ################################################
 
-
-# TODO instead we should get it in every shell,
-# however they should auto dissappear when one succeeds. (use `trap`)
-# Kill all jobs running in current shell
-# if SIGUSER1 received.
-# Only job running should be our function below.
-#  trap 'kill $(jobs -p)' SIGUSER1
-
+# TODO instead we need to start a terminal with this command running.
+# That way it's a single terminal window, and only when its needed.
+# TODO Check if ssh-agent needs to run, if yes, start new terminal with cmd.
+# TODO move back to ./git and use function here.
+#
 # When first shell of session starts we start ssh-agent.
 # This makes it so we should only get that message
 # in a single shell.

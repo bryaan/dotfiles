@@ -39,22 +39,6 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/or
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ command 'dbus-send --type=method_call --dest=org.gnome.ScreenSaver /org/gnome/ScreenSaver org.gnome.ScreenSaver.Lock'
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ binding '<Super>l'
 
-# Desktop
-gsettings set org.gnome.shell always-show-log-out true
-gsettings set org.gnome.nautilus.desktop home-icon-visible true
-gsettings set org.gnome.nautilus.desktop trash-icon-visible true
-gsettings set org.gnome.desktop.background show-desktop-icons true
-gsettings set org.gnome.desktop.interface clock-show-date true
-gsettings set org.gnome.desktop.privacy show-full-name-in-top-bar false
-gsettings set org.gnome.desktop.privacy remember-recent-files false
-gsettings set org.gnome.desktop.interface clock-show-seconds true
-gsettings set org.gnome.desktop.notifications show-banners false
-gsettings set org.gnome.desktop.media-handling autorun-never true
-gsettings set org.gnome.desktop.search-providers disable-external true
-
-# Nautilus
-gsettings set org.gnome.nautilus.icon-view default-zoom-level 'small'
-gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'
 
 
 # === gnome shell tools' shortcuts ===
@@ -127,6 +111,57 @@ gsettings set org.gnome.shell always-show-log-out true
 #   'google-chrome.desktop',
 #   'firefox.desktop'
 # ]"
+
+# === File Browser (nautilus) ===
+gsettings set org.gnome.nautilus.window-state geometry '1000x618+50+50'
+gsettings set org.gnome.nautilus.window-state sidebar-width '188'
+gsettings set org.gnome.nautilus.preferences always-use-location-entry true
+gsettings set org.gnome.nautilus.preferences automatic-decompression true
+gsettings set org.gnome.nautilus.preferences click-policy 'single'
+gsettings set org.gnome.nautilus.preferences confirm-trash false
+gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view'
+gsettings set org.gnome.nautilus.preferences default-sort-order 'name'
+gsettings set org.gnome.nautilus.preferences executable-text-activation 'ask'
+gsettings set org.gnome.nautilus.preferences search-view 'list-view'
+gsettings set org.gnome.nautilus.preferences show-create-link true
+gsettings set org.gnome.nautilus.preferences show-delete-permanently true
+gsettings set org.gnome.nautilus.preferences show-hidden-files false
+gsettings set org.gnome.nautilus.preferences tabs-open-position 'end'
+
+gsettings set org.gnome.nautilus.icon-view default-zoom-level 'small'
+gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'
+gsettings set org.gnome.nautilus.list-view default-visible-columns "['name', 'size', 'owner', 'permissions', 'date_modified_with_time']"
+gsettings set org.gnome.nautilus.list-view use-tree-view true
+
+# === Desktop ===
+gsettings set org.gnome.shell always-show-log-out true
+
+gsettings set org.gnome.nautilus.desktop home-icon-visible true
+gsettings set org.gnome.nautilus.desktop trash-icon-visible true
+
+gsettings set org.gnome.desktop.background show-desktop-icons true
+gsettings set org.gnome.desktop.interface clock-show-date true
+gsettings set org.gnome.desktop.privacy show-full-name-in-top-bar false
+gsettings set org.gnome.desktop.privacy remember-recent-files false
+gsettings set org.gnome.desktop.interface clock-show-seconds true
+gsettings set org.gnome.desktop.notifications show-banners false
+gsettings set org.gnome.desktop.media-handling autorun-never true
+gsettings set org.gnome.desktop.search-providers disable-external true
+
+
+# === File Chooser (When you do say `open file`) ===
+gsettings set org.gtk.Settings.FileChooser clock-format '24h'
+gsettings set org.gtk.Settings.FileChooser date-format 'regular'
+gsettings set org.gtk.Settings.FileChooser location-mode 'filename-entry'
+gsettings set org.gtk.Settings.FileChooser show-hidden false
+gsettings set org.gtk.Settings.FileChooser show-size-column true
+gsettings set org.gtk.Settings.FileChooser sidebar-width 155
+gsettings set org.gtk.Settings.FileChooser sort-column 'name'
+gsettings set org.gtk.Settings.FileChooser sort-directories-first true
+gsettings set org.gtk.Settings.FileChooser sort-order 'ascending'
+gsettings set org.gtk.Settings.FileChooser startup-mode 'cwd'
+gsettings set org.gtk.Settings.FileChooser window-position '(263, 97)'
+gsettings set org.gtk.Settings.FileChooser window-size '(1200, 741)'
 
 # === Window List ===
 # (The window bar at the bottom of the screen)

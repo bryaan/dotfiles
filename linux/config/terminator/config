@@ -1,13 +1,17 @@
 [global_config]
   suppress_multiple_term_dialog = True
 [keybindings]
-  close_term = <Alt>0
+  close_term = <Primary>0
+  copy = <Primary>c
   go_down = <Shift>Down
   go_left = <Shift>Left
   go_right = <Shift>Right
   go_up = <Shift>Up
-  split_horiz = <Alt>2
-  split_vert = <Alt>3
+  paste = <Primary>v
+  split_horiz = <Primary>2
+  split_vert = <Primary>3
+  zoom_in = <Primary>KP_Add
+  zoom_normal = <Primary>KP_Enter
 [layouts]
   [[default]]
     [[[child1]]]

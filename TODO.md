@@ -1,4 +1,7 @@
-
+# Pending Github issues
+https://github.com/NixOS/nix/issues/1866
+https://github.com/lotabout/skim/issues/78
+https://github.com/lotabout/skim/issues/77
 # TODOs
 
 Maybe: Tweak tool -> typing -> Ctrl key position -> Swap Left Win key with Left Ctrl key
@@ -12,6 +15,19 @@ gnome: Switch Ctrl and Super keys
 (prob now is in emacs want to use new-Super key as standard-Ctrl, so..)
 emacs: Switch Ctrl and Super keys
 
+TODO backups
+1TB is $50 per year on wasabi, its S3 compatible so can
+https://wasabi.com/pricing/
+backup the borgbackup backups to wasabi, via rclone
+how to here: https://opensource.com/article/17/10/backing-your-machines-borg
+
+
+TODO !!!! add to AI
+https://www.maketecheasier.com/betty-linux-command-line-helper/
+https://github.com/pickhardt/betty
+
+TODO ask what emacs theme this is
+https://github.com/dennisog/julia-shell-mode
 
 TODO symlink all configs in linux/config to ~/.config, but only on linux.
 cp ~/.config/terminator/config ~/src/dotfiles/linux/config/terminator/

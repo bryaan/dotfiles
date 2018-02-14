@@ -4,8 +4,16 @@
 # NCL Dev
 ###########################################################
 
+# TODO nix package definition
+# # TODO should get current version with regex on page.
+# mkdir /tmp/charles-install; cd /tmp/charles-install
+# axel -n 4 https://www.charlesproxy.com/assets/release/4.2.1/charles-proxy-4.2.1_amd64.tar.gz
+# dtrx charles-proxy-4.2.1_amd64.tar.gz
+# mv ./charles $HOME/.local/share/
+# rm -rf /tmp/charles-install
+
 function charles.run
-  ~/bin/charlieLoop
+  sh ~/bin/charlesLoop.sh
 end
 
 # Make our common paths global for use in other programs.

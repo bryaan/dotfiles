@@ -102,5 +102,6 @@ if set -q SHOULD_INIT
   # === Load nix ===
   #
 
+  # === Load fish files ===
   load_all_files
 end
