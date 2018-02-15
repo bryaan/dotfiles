@@ -133,6 +133,21 @@ gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'
 gsettings set org.gnome.nautilus.list-view default-visible-columns "['name', 'size', 'owner', 'permissions', 'date_modified_with_time']"
 gsettings set org.gnome.nautilus.list-view use-tree-view true
 
+# === File Chooser (When you do say `open file`) ===
+gsettings set org.gtk.Settings.FileChooser clock-format '24h'
+gsettings set org.gtk.Settings.FileChooser date-format 'regular'
+gsettings set org.gtk.Settings.FileChooser location-mode 'filename-entry'
+gsettings set org.gtk.Settings.FileChooser show-hidden false
+gsettings set org.gtk.Settings.FileChooser show-size-column true
+gsettings set org.gtk.Settings.FileChooser sidebar-width 155
+gsettings set org.gtk.Settings.FileChooser sort-column 'name'
+gsettings set org.gtk.Settings.FileChooser sort-directories-first true
+gsettings set org.gtk.Settings.FileChooser sort-order 'ascending'
+gsettings set org.gtk.Settings.FileChooser startup-mode 'cwd'
+gsettings set org.gtk.Settings.FileChooser window-position '(263, 97)'
+gsettings set org.gtk.Settings.FileChooser window-size '(1200, 741)'
+
+
 # === Desktop ===
 gsettings set org.gnome.shell always-show-log-out true
 
@@ -148,20 +163,6 @@ gsettings set org.gnome.desktop.notifications show-banners false
 gsettings set org.gnome.desktop.media-handling autorun-never true
 gsettings set org.gnome.desktop.search-providers disable-external true
 
-
-# === File Chooser (When you do say `open file`) ===
-gsettings set org.gtk.Settings.FileChooser clock-format '24h'
-gsettings set org.gtk.Settings.FileChooser date-format 'regular'
-gsettings set org.gtk.Settings.FileChooser location-mode 'filename-entry'
-gsettings set org.gtk.Settings.FileChooser show-hidden false
-gsettings set org.gtk.Settings.FileChooser show-size-column true
-gsettings set org.gtk.Settings.FileChooser sidebar-width 155
-gsettings set org.gtk.Settings.FileChooser sort-column 'name'
-gsettings set org.gtk.Settings.FileChooser sort-directories-first true
-gsettings set org.gtk.Settings.FileChooser sort-order 'ascending'
-gsettings set org.gtk.Settings.FileChooser startup-mode 'cwd'
-gsettings set org.gtk.Settings.FileChooser window-position '(263, 97)'
-gsettings set org.gtk.Settings.FileChooser window-size '(1200, 741)'
 
 # === Window List ===
 # (The window bar at the bottom of the screen)

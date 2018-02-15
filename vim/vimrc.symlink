@@ -1,3 +1,5 @@
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+
 syntax enable
 set background=dark
 colorscheme murphy
@@ -17,17 +19,18 @@ call vundle#begin('~/.vim/bundle')
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+" Plugins
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-utils/vim-man'
 "help review logs files within VIM. Particularly for Java.
 Plugin 'andreshazard/vim-logreview'
+" Hundereds of language packs
+Plugin 'sheerun/vim-polyglot'
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
+" required, All of your Plugins must be added before the following line
+call vundle#end()
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
+
 " Brief help
 " :PluginList       - lists configured plugins
 " :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
@@ -35,8 +38,30 @@ filetype plugin indent on    " required
 " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
 "
 " see :h vundle for more details or wiki for FAQ
-
+"
 " Put your non-Plugin stuff after this line
 " Put your non-Plugin stuff after this line
 " Put your non-Plugin stuff after this line
 
+" Configure Backup Directories
+" Should have double trailing slash for some reason
+set swapfile
+set directory=$HOME/.local/tmp/vim/swap//
+set backupdir=$HOME/.local/tmp/vim/backup//
+set undodir=$HOME/.local/tmp/vim/undo//
+
+
+set conceallevel=1
+
+let g:javascript_conceal_function             = "ƒ"
+let g:javascript_conceal_null                 = "ø"
+let g:javascript_conceal_this                 = "@"
+let g:javascript_conceal_return               = "⇚"
+let g:javascript_conceal_undefined            = "¿"
+let g:javascript_conceal_NaN                  = "ℕ"
+let g:javascript_conceal_prototype            = "¶"
+let g:javascript_conceal_static               = "•"
+let g:javascript_conceal_super                = "Ω"
+let g:javascript_conceal_arrow_function       = "⇒"
+" let g:javascript_conceal_noarg_arrow_function = "🞅"
+" let g:javascript_conceal_underscore_arrow_function = "🞅"

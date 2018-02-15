@@ -15,6 +15,8 @@ if _should_do_one_shot_setup
   ln -sf $DOTFILES_ROOT/git/gitmessage $HOME/.gitmessage
   ln -sf $DOTFILES_ROOT/git/gitignore_global $HOME/.gitignore_global
 
+  # TODO emails to secrets file?
+
   git config --global user.name 'Bryan A. Rivera'
   git config --global user.email 'mail@bryaan.com'
 

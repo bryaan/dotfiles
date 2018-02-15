@@ -2,9 +2,10 @@
 
 ~~My Modified Best Practices~~
 
-http://refspecs.linuxfoundation.org/FHS_3.0/fhs-3.0.html
+## $HOME/.local/{bin,lib,share,man,etc,var,opt}
 
-https://unix.stackexchange.com/questions/11544/what-is-the-difference-between-opt-and-usr-local
+- Duplicate the basic system hierarchy.  Aim to keep everything in here except if:
+  - Program or configuration should be available to more than current user.
 
 ## /usr/local/bin -> /opt/local/bin
 
@@ -24,3 +25,10 @@ says /usr/local/ must have a certain set of dirs under it and nothing more.  So.
 - has `local` and all other dirs are program names.  then as a subfolder use program version `/opt/go/1.9/...`
 
 - For example, someapp would be installed in /opt/someapp/1.5/, with one of its command being /opt/someapp/1.5/bin/foo, its configuration file would be in /etc/opt/someapp/foo.conf, and its log files in /var/opt/someapp/logs/foo.access.
+
+
+
+
+http://refspecs.linuxfoundation.org/FHS_3.0/fhs-3.0.html
+
+https://unix.stackexchange.com/questions/11544/what-is-the-difference-between-opt-and-usr-local

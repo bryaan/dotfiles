@@ -22,7 +22,7 @@ end
 function fco -d "Fuzzy-find and checkout a branch"
   git branch --all | grep -v HEAD | string trim | sk | \
     while read branchName
-      # TODO shouldn't this come *before* skim? Actually at very beggining?
+      # TODO shouldn't this come *before* skim? Actually at very beginning?
       git fetch --all
       # The currently selected branch has a leading asterisk to indicate it is currently open,
       # This removes it so we have the path only.
@@ -47,7 +47,7 @@ function fco -d "Fuzzy-find and checkout a branch"
     end
 end
 
-# TODO likely same thing as above must be applied here.
+# TODO maybe same thing as above must be applied here?
 function fcoc -d "Fuzzy-find and checkout a commit"
   git log --pretty=oneline --abbrev-commit --reverse | sk --tac --no-sort --exact | \
     awk '{print $1;}' | xargs git checkout

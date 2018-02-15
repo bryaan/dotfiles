@@ -101,18 +101,24 @@ setup_nixenv() {
   success 'nix setup complete!'
 }
 
-# TODO Resolve vim bundles.
-# Only package we need to automate install is vundle.
-# So really just tell user to do a:
+# TODO auto install Vundle
 setup_vim() {
   info 'setting up vim'
+
+  # Create backup and swap dirs which are set in .vimrc
+  mkdir -p ~/.local/tmp/vim/backup
+  mkdir -p ~/.local/tmp/vim/swap
+  mkdir -p ~/.local/tmp/vim/undo
 
   # Check test -d ~/.vim/bundle/Vundle.vim/ exists
   # If not tell user:
   # git clone <url> ~/.vim/bundle/Vundle.vim
-# And only after that should the vimrc and other folders be synced.
-# This means delete everything but bundle folder when symlinking.
+  # And only after that should the vimrc and other folders be synced.
+  # This means delete everything but bundle folder when symlinking.
   # ln -sfn $DOTFILES_ROOT/vim/* $HOME/.vim/
+
+  # TODO Install vundle plugins from command line, but when is this done?
+  # vim +PluginInstall +qall
 
   success 'vim setup complete!'
 }

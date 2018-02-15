@@ -123,9 +123,6 @@ rm -rf ./nerd-fonts
 2. Sublime Cmd Menu -> Install Package Control
 3. Sublime Cmd Menu -> Package Control: Upgrade/Overide All Packages
 
-> !! Big note: do not use wildcards bc it doesn't seem to work right on mac.
-> it seems to be more a like copy.  Strange effects all around. dont use.
-
 > These commands must be run together, or sublime must be off,
 > bc it creates the User folder on delete.
 
@@ -179,35 +176,9 @@ And without downloading the git repo:
 To install Firefox from the latest revision in the Nixpkgs/NixOS 14.12 channel:
 $ nix-env -f https://github.com/NixOS/nixpkgs-channels/archive/nixos-14.12.tar.gz -iA firefox
 
-------------------------------------------------
-
-trd workstation redundancy plan
-- Req: Concurrent VNC sessions,
-  Req: both users must see the same screen/session,
-  Req: both users must be able to control mouse and keyboard.
-- Req: Backup Power
-  Req: 1 Monitor on UPS, must be able to move windows to this monitor if others are off.
-  Req: On UPS Backup:
-    * Monitor, PSU, EdgeX Router, Comcast modem.
-  Req: cellular via USBC to pc
-  * write a script to quickly connect, optionally a menu bar shortcut
-  * test it in demo by unplugging ethernet, make sure process works.
-  * should always be connected to machine when trading.
-- Server/Client Archi (later, but pretty damn simple..)
-
 
 ------------------------------------------------
 
-
-# TODO add to config.nix
-syncthing
-syncthing-inotify
-borgbackup
-encfs
-gnupg
-gitAndTools.git-annex
-sl
-sshfsFuse
 
 
 # COMMANDS #
@@ -244,9 +215,8 @@ brew cask install \
     sublime-text \
 
 
-### sublimerge
+sublimerge
 - and also the binary download
-
 
 gnome3.gnome-characters Simple utility application to find and insert unusual characters
 
@@ -284,9 +254,8 @@ Visual Event
 Vue.js devtools
 No Coin
 
-
-
 ----------------------------------------------------
+
 # Tips / Useful / Misc
 
 # Record a shell session
@@ -298,10 +267,6 @@ exit
 ```
 
 ----------------------------------------------------
-
-Gitkraken ssap
-hqfaf@slipry.net11
-
 
 pip install howdoi
 
@@ -317,7 +282,6 @@ npx dist-upgrade
 
 https://github.com/js-n/awesome-npx
 npx npm-check
-
 
 ----------------------------------------------------
 
@@ -362,9 +326,7 @@ $ brew cask install \
     valentina-studio \
     vlc
 
-
 ----------------------------------------------------
-
 
 TODO move to ai / jarvis
 
@@ -377,10 +339,8 @@ https://console.bluemix.net/docs/services/alchemy-language/customizing.html#over
 https://console.bluemix.net/docs/services/alchemy-language/migration.html#index
 https://console.bluemix.net/docs/services/alchemy-language/visual-constraints.html#visualConstraints
 
-
-
-
 ----------------------------------------------------
+
 diff has some options that can be useful to you:
 
    -E, --ignore-tab-expansion
@@ -397,3 +357,17 @@ diff has some options that can be useful to you:
 
    -B, --ignore-blank-lines
           ignore changes whose lines are all blank
+
+
+
+----------------------------------------------------
+
+
+ssh-keygen -t rsa -b 4096 -C "xxx@xxx.com"
+
+ssh-agent
+ssh-add <pubkey_filepath>
+
+
+
+

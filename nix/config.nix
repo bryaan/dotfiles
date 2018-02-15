@@ -36,6 +36,22 @@
     # vimpager - from github compile
     # yarn global add gulp tern
 
+    # # TODO add to config.nix
+    # syncthing
+    # syncthing-inotify
+    # borgbackup
+    # encfs
+    # gnupg
+    # gitAndTools.git-annex
+    # sl
+    # sshfsFuse
+
+    # TODO https://github.com/herrbischoff/awesome-command-line-apps
+    # jq httpie ranger clog-cli
+
+    # TODO add hub
+    # https://hub.github.com/
+
     systemTools = pkgs.buildEnv {
       name = "system-tools";
       paths = [
