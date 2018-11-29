@@ -36,24 +36,25 @@ setenv SYSTEMD_PAGER $PAGER
 # vimpager not working well with manpages on linux. TODO check mac.
 setenv MANPAGER 'less'
 
+# Prevent MSFT things telemetry
+# TODO Would be great to add IPs to block lists.
+setenv DOTNET_CLI_TELEMETRY_OPTOUT '1'
 
 ################################################
 # Startup Items
 ################################################
 
-# TODO instead we need to start a terminal with this command running.
-# That way it's a single terminal window, and only when its needed.
-# TODO Check if ssh-agent needs to run, if yes, start new terminal with cmd.
-# TODO move back to ./git and use function here.
+# TODO running this causes an annoying enter pw every terminal start, even though its only in one window.
+# So only run it when you need it.  Or better yet there is a way to let ssh config use mac keychain.
 #
 # When first shell of session starts we start ssh-agent.
-# This makes it so we should only get that message
-# in a single shell.
-if not [ -e /tmp/brydots.ssh_agent.lock ]
-  touch /tmp/brydots.ssh_agent.lock
-  ssh_agent_start
-  rm /tmp/brydots.ssh_agent.lock
-end
+# Only one shell gets this message.
+#
+# if not [ -e /tmp/brydots.ssh_agent.lock ]
+#   touch /tmp/brydots.ssh_agent.lock
+#   ssh_agent_start
+#   rm /tmp/brydots.ssh_agent.lock
+# end
 
 ################################################
 # Local Utility Commands
@@ -130,27 +131,6 @@ end
 function fish.reload.soft
   source ~/.config/fish/config.fish
 end
-
-# TODO reload.terminals
-
-
-
-# TODO mkdir shell/fish and split these sections to files.
-
-
-
-# TODO Copy prev commands.
-# This copies the *args* from the previously run command.
-# Ex. cd prev
-# alias prev='​​!:1-$'
-# Nvm this doesnt quite work.  What we need is something that
-# either we exec, then it asks for the command.  but this is inflexible.
-# Instead, do something like sudo where pressing a key twice will copy those args.
-# And paste them at cursor.
-
-
-# TODO move to util.tpl or to functions/util or each file.
-# Actually move to their own files
 
 
 # TODO add imagemagick to sys deps

@@ -6,9 +6,7 @@
 abbr -a axel 'axel -n 4'
 
 # Resume downloads by default
-function wget
-  wget -c $argv
-end
+abbr -a wget 'wget -c $argv'
 
 
 # get web server headers

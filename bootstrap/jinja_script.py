@@ -67,6 +67,8 @@ def clean_target():
   shutil.rmtree(BUILD_DIR, ignore_errors=True)
   os.makedirs(BUILD_DIR, exist_ok=True)
 
+# Get info about the current OS and machine.
+# Hostname, OS, location, etc.
 def get_env_vars():
   env_dict = {
     'geo': {}
@@ -77,7 +79,6 @@ def get_env_vars():
   # Geolocation
   if ('nclmiami.ncl.com' in socket.gethostname() or
       'dev-ncl' in socket.gethostname()) :
-    print(socket.gethostname())
     env_dict.update({ 'geo': {'work': 'true'} })
 
   # Operating System
@@ -138,8 +139,8 @@ from pathlib import Path
 
 HOME_DIR = Path(expanduser("~"))
 
-# Finds all project files with *.symlink and
-# links them in the user's $HOME.
+# Finds all project files with *.symlink in the PROJECT_ROOT,
+# however many levels deep, and links them in the user's $HOME.
 def install_dotfiles():
   files = Path(PROJECT_ROOT).glob('**/*.symlink')
   for src in files:

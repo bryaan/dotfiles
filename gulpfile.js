@@ -2,9 +2,11 @@ var gulp  = require('gulp')
 var gutil = require('gulp-util')
 var exec = require('child_process').exec
 
-// Possibly use spinners from here
+// TODO reduce the deps by removing nix-shell and js/gulp and leave only python
+// TODO reduce the deps by removing nix-shell and js/gulp and leave only python
+// TODO reduce the deps by removing nix-shell and js/gulp and leave only python
+
 // https://www.npmjs.com/package/multispinner
-// but that requires integration with the py script.
 
 // TODO gaze.js error
 // By default, the maximum number of files that Mac OS X can open is set to 12,288 and the maximum number of files a given process can open is 10,240
@@ -32,12 +34,6 @@ gulp.task('bootstrap', function (cb) {
   })
 })
 
-
-const emacsDirs = [
-  'emacs/**',
-  '!emacs/workdir/**'
-]
-
 // Watch Files For Changes
 // Template filenames must match end with *.tpl
 gulp.task('watch', function () {
@@ -48,7 +44,6 @@ gulp.task('watch', function () {
   const watchedDirs = [
     '**/*.tpl',
     'shell/**',
-    ...emacsDirs,
     '!.git/*',
     '!build/**',
     '!**/*.md',

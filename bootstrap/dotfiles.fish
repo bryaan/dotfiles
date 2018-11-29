@@ -9,5 +9,5 @@ function dots
 end
 
 function dots.bootstrap
-  $DOTFILES_ROOT/bootstrap/bootstrap.sh
+    cd $DOTFILES_ROOT; gulp bootstrap
 end

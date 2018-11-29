@@ -1,8 +1,7 @@
 [user]
 	name = Bryan A. Rivera
-	email = brivera@ncl.com
+	email = mail@bryaan.com
 [core]
-    # editor = subl -n --wait
 	editor = subl -n --wait
 	excludesfile = /home/bryan/.gitignore_global
 [alias]
@@ -12,8 +11,20 @@
     co = checkout
     cp = cherry-pick
 [push]
+    # git push will by default push all branches that have the same name on the remote.
+    # Limit this behavior to just the current branch.
     default = tracking
 [branch]
+    # Because branch merges in git are recorded with a merge commit,
+    # they are supposed to be meaningful—for example, to indicate
+    # when a feature has been merged to a release branch. However,
+    # during a regular daily workflow where several team members
+    # sync a single branch often, the timeline gets polluted with
+    # unnecessary micro-merges on regular git pull.
+    # Rebasing ensures that the commits are always re-applied so
+    # that the history stays linear.
+    #
+    # Setup rebase for every *remote* tracking branch
     autosetuprebase = remote
 [commit]
     template = ~/.gitmessage

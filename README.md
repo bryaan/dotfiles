@@ -4,39 +4,39 @@
 
 Anything with an extension of .symlink will get symlinked (without .symlink extension) into $HOME when you run ./install.sh.
 
+TODO Try to replace the python script with a bash script.
+Then delte ./default.nix
+If we haven't done this then on linux must run 'nix-shell' to get the proper host config.
+
+TODO Mac should only use brew not nix.  nix is to be used on linux so we get consistent packages.
+
+
+## Run Bootstrap just once
+```
+dots.bootstrap
+```
+
+## Development: Active Bootstrap on File Change
+```
+$ dots
+```
+
+-----------------------------------------------------------------------------------
+
 # Setup
 
 Must have the nix package manager installed.
 
-## Development
-```bash
-cd $DOTFILES
-nix-shell
-nix-shell --command 'env HOME=/tmp/foo fish'
-yarn install
-gulp
-```
-
 ## Cloning To New Machine
 ```bash
-cd ~/src/dotfiles
-git clone ...
-start at Install Nix instructions below
-
-#git submodule init
-#git submodule update
+git clone ... ~/src/dotfiles
+See Install Nix instructions below
 ```
 
 ## Updating Machines
 ```bash
 cd $DOTFILES; git pull; dots.bootstrap; reload
 ```
-
-<!-- ### To update submodules:
-```bash
-git submodule update --remote
-git submodule update --remote <submodule-repo-name>
-``` -->
 
 ------------------------------------------------------------------------------
 
@@ -63,6 +63,7 @@ Search for: "Package Control: Upgrade/Overide All Packages"
 ----------------------------------------------------
 
 # Install Nix and Fish (RHEL 7)
+TODO These instructions are out of date!
 
 ```
 curl https://nixos.org/nix/install | sh
@@ -155,12 +156,7 @@ https://github.com/JorgeBucaran/fish-shell-cookbook#how-to-redirect-stdout-or-st
 
 https://github.com/fisherman/getopts
 
-
 ------------------------------------------------
-https://github.com/sdegutis/hydra
-
-https://nixos.org/nixos/nix-pills/index.html
-
 
 # To install from unstable while running stable
 > Shouldnt need to do this, even on non nix host.
@@ -171,36 +167,20 @@ git clone https://github.com/NixOS/nixpkgs.git ~/.nixpkgs/channels/unstable
 nix-env -iA nixos.firefox -f ~/nixpkgs-unstable
 nix-env -iA nixos.slack -f ~/.nixpkgs/channels/unstable
 
-And without downloading the git repo:
-
-To install Firefox from the latest revision in the Nixpkgs/NixOS 14.12 channel:
+To instead download without the git repo, by specifying a Nixpkgs/NixOS channel:
 $ nix-env -f https://github.com/NixOS/nixpkgs-channels/archive/nixos-14.12.tar.gz -iA firefox
 
 
 ------------------------------------------------
 
 
-
 # COMMANDS #
+
 nix-env -i ...  # Install
 nix-env -e ...  # Uninstall
 nix-env -q --installed # List Installed
 nox ...         # Search
 
-
-# Mac install list #
-TODO alfred
-https://www.alfredapp.com/
-
-brew install vimpager
-brew install diff-so-fancy
-
-highlight check works with fzf preview
-
-brew cask install virtualbox
-brew cask install virtualbox-extension-pack
-
-iterm2
 
 ## Enable Extra Casks (Beta Nightly mostly)
 brew tap caskroom/versions
@@ -214,7 +194,6 @@ brew cask install \
     firefox \
     sublime-text \
 
-
 sublimerge
 - and also the binary download
 
@@ -222,37 +201,19 @@ gnome3.gnome-characters Simple utility application to find and insert unusual ch
 
 
 
-# For Krypton:
-
-> Figure out what each one of these does:
-> I think we just need teamviewer-host
-teamviewer teamviewer-host teamviewer-quickjoin quicksupport supportcollector
-
-brew cask install \
-    virtualbox \
-    google-chrome \
-    google-drive \
-    firefox \
-    puppet-agent \ # Actually this should be regualr brew since no gui.
-
-# TODO windows backup
-borgbackup
-> Try chocolatey install first on dad's
-https://chocolatey.org/packages/borgbackup/
-https://github.com/billyc/borg-releases
-
-
 # Chrome Extensions:
 
+uBlock Origin
 Autofill
 Lastpass
 sessionbuddy
+
 BrowserStack
 iMacros for Chrome
 JSON Viewer
 Visual Event
 Vue.js devtools
-No Coin
+
 
 ----------------------------------------------------
 
@@ -266,22 +227,6 @@ script screen.log
 exit
 ```
 
-----------------------------------------------------
-
-pip install howdoi
-
-sudo dmidecode --type chassis
-
-TODO Install/Check useful Gnome Shell Extensions
-- Desktop Scroller
-- Docker Integration
-- Jump List, but requires install of zeitgeist
-
-Upgrades node+npm. Works great!
-npx dist-upgrade
-
-https://github.com/js-n/awesome-npx
-npx npm-check
 
 ----------------------------------------------------
 
@@ -328,7 +273,7 @@ $ brew cask install \
 
 ----------------------------------------------------
 
-TODO move to ai / jarvis
+TODO move to aii
 
 http://strategoxt.org/
 http://strategoxt.org/Spoofax/WebHome
@@ -338,36 +283,4 @@ http://strategoxt.org/Stratego/StrategoLanguage
 https://console.bluemix.net/docs/services/alchemy-language/customizing.html#overview
 https://console.bluemix.net/docs/services/alchemy-language/migration.html#index
 https://console.bluemix.net/docs/services/alchemy-language/visual-constraints.html#visualConstraints
-
-----------------------------------------------------
-
-diff has some options that can be useful to you:
-
-   -E, --ignore-tab-expansion
-          ignore changes due to tab expansion
-
-   -Z, --ignore-trailing-space
-          ignore white space at line end
-
-   -b, --ignore-space-change
-          ignore changes in the amount of white space
-
-   -w, --ignore-all-space
-          ignore all white space
-
-   -B, --ignore-blank-lines
-          ignore changes whose lines are all blank
-
-
-
-----------------------------------------------------
-
-
-ssh-keygen -t rsa -b 4096 -C "xxx@xxx.com"
-
-ssh-agent
-ssh-add <pubkey_filepath>
-
-
-
 

@@ -94,6 +94,15 @@
       ];
     };
 
+    macEnv = with pkgs; buildEnv {
+      name = "mac-env";
+      paths = [
+        nix nox
+        vim
+        vimPlugins.vundle
+      ];
+    };
+
     devEnv = with pkgs; buildEnv {
       name = "dev-env";
       paths = [
@@ -120,9 +129,6 @@
         # qtile-config
         # bash-config
         # elixir-config
-        # TODO these should go in funops/devenv
-        vim
-        vimPlugins.vundle
       ];
     };
 

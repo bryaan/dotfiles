@@ -1,86 +1,82 @@
-#!/usr/bin/env fish
+#!/usr/bin/env bash
 
-# Sets reasonable macOS defaults.
-#
-# Or, in other words, set shit how I like in macOS.
-#
-# The original idea (and a couple settings) were grabbed from:
-#   https://github.com/mathiasbynens/dotfiles/blob/master/.macos
+# Sets my macOS defaults.
 #
 # Run ./set-defaults.sh and you'll be good to go.
 
-function setdefault
-  # echo $argv[0]
-  # eval $argv[1]
-  set -l settings $argv
-  set -l count (count $settings)
-  for i in (seq $count)
-    echo $settings[ (math "$i * 2 - 1") ]
-    eval $setting[ (math "$i * 2 - 0") ]
-  end
-end
+# Ask for the administrator password upfront
+sudo -v
 
-setdefault \
-  'Use AirDrop over every interface.' \
-  'defaults write com.apple.NetworkBrowser BrowseAllInterfaces 1' \
-  #
-  "Deskop: Show Icons" \
-  'defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
-   defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
-   defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
-   defaults write com.apple.finder ShowMountedServersOnDesktop -bool true' \
-  #
-  "Screenshots: Set Save Location" \
-  'defaults write com.apple.screencapture location /Users/bryan/Desktop/Screenshots'
+# Keep-alive: update existing `sudo` time stamp until script has finished
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 
-echo "Avoid creating .DS_Store files on network or USB volumes"
+source ./defaults/mac-apps.sh
+source ./defaults/terminal.sh
+source ./defaults/transmission.sh
+
+###############################################################################
+# General                                                                     #
+###############################################################################
+
+# Screenshots: Set Save Location"
+defaults write com.apple.screencapture location /Users/bryan/Desktop/Screenshots
+
+# Avoid creating .DS_Store files on network or USB volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
-echo "Disable disk image verification"
+# Disable disk image verification
 # defaults write com.apple.frameworks.diskimages skip-verify -bool true
 # defaults write com.apple.frameworks.diskimages skip-verify-locked -bool true
 # defaults write com.apple.frameworks.diskimages skip-verify-remote -bool true
 
-echo "Disable the warning before emptying the Trash"
+# Disable the warning before emptying the Trash
 defaults write com.apple.finder WarnOnEmptyTrash -bool false
 
+# Enable AirDrop over Ethernet and on unsupported Macs running Lion
+defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
 
-# Run the screensaver if we're in the bottom-left hot corner.
-# defaults write com.apple.dock wvous-bl-corner -int 5
-# defaults write com.apple.dock wvous-bl-modifier -int 0
+# Disable the crash reporter
+# Don't show that popup asking whether to send crash report.
+defaults write com.apple.CrashReporter DialogType none
 
-# Hide Safari's bookmark bar.
-defaults write com.apple.Safari ShowFavoritesBar -bool false
+# Enable the expanded finder view in document save panel by default
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
 
-# Set up Safari for development.
-defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
-defaults write com.apple.Safari IncludeDevelopMenu -bool true
-defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
-defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+# Expand print panel by default
+defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
+defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
 
-# echo "Disable Safari’s thumbnail cache for History and Top Sites"
-# defaults write com.apple.Safari DebugSnapshotsUpdatePolicy -int 2
+# Save to disk (not to iCloud) by default
+defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
-echo "Make Safari’s search banners default to Contains instead of Starts With"
-defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly -bool false
+# Automatically quit printer app once the print jobs complete
+defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 
-# Remove useless icons from Safari’s bookmarks bar
-# defaults write com.apple.Safari ProxiesInBookmarksBar "()"
+# Disable the “Are you sure you want to open this application?” dialog
+# defaults write com.apple.LaunchServices LSQuarantine -bool false
 
-# Reveal IP address, hostname, OS version, etc. when clicking the clock
-# in the login window
-sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
+# Remove duplicates in the “Open With” menu (also see `lscleanup` alias)
+/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user
 
+# Enable Text Selection in Quick Look Windows
+defaults write com.apple.finder QLEnableTextSelection -bool TRUE
 
-# Set a custom wallpaper image. `DefaultDesktop.jpg` is already a symlink, and
-# all wallpapers are in `/Library/Desktop Pictures/`. The default is `Wave.jpg`.
-#rm -rf ~/Library/Application Support/Dock/desktoppicture.db
-#sudo rm -rf /System/Library/CoreServices/DefaultDesktop.jpg
-#sudo ln -s /path/to/your/image /System/Library/CoreServices/DefaultDesktop.jpg
+# Always show scrollbars - This produced some nasty whitespace on some windows,
+# particularly those associated with dmg installs.
+# Possible values: `WhenScrolling`, `Automatic` and `Always`
+# default = Automatic
+# defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
+defaults write NSGlobalDomain AppleShowScrollBars -string "Automatic"
 
+# Prevent Time Machine from prompting to use new hard drives as backup volume
+defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+
+###############################################################################
+# Typing                                                                      #
+###############################################################################
 
 # Disable auto-correct
 # defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
@@ -97,81 +93,6 @@ defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 # Disable smart quotes as they’re annoying when typing code
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 
-
-# Crash Reports
-
-# Disable the crash reporter
-# Don't show that popup asking whether to send crash report.
-defaults write com.apple.CrashReporter DialogType none
-
-
-# Temporarily (after reboot) increase speed of time machine backup by not
-# allowind proc to assume low priority.
-# sudo sysctl debug.lowpri_throttle_enabled=0
-
-# Enable the expanded finder view in document save panel by default
-defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
-defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
-
-# Expand print panel by default
-defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
-defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
-
-
-# Use plaintext as TextEdit Default
-defaults write com.apple.TextEdit RichText -int 0
-
-# Instantly show dock - removes that short delay when it shows.
-# TODO Should only happen for those who hide their docks.
-defaults write com.apple.Dock autohide-delay -float 0
-
-# Instantly show mission control - removes that short delay when it shows.
-defaults write com.apple.dock expose-animation-duration -float 0.12
-
-# Stop People's Names from Copying with Email Addresses in OS X Mail
-defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
-
-# Enable Text Selection in Quick Look Windows
-defaults write com.apple.finder QLEnableTextSelection -bool TRUE
-
-# Always show scrollbars - This produced some nasty whitespace on some windows,
-# particularly those associated with dmg installs.
-# Possible values: `WhenScrolling`, `Automatic` and `Always`
-# default = Automatic
-# defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
-defaults write NSGlobalDomain AppleShowScrollBars -string "Automatic"
-
-
-# Save to disk (not to iCloud) by default
-defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
-
-# Automatically quit printer app once the print jobs complete
-defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
-
-# Disable the “Are you sure you want to open this application?” dialog
-# defaults write com.apple.LaunchServices LSQuarantine -bool false
-
-# Remove duplicates in the “Open With” menu (also see `lscleanup` alias)
-/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user
-
-
-
-###############################################################################
-# SSD-specific tweaks                                                         #
-###############################################################################
-
-# Disable hibernation (speeds up entering sleep mode)
-sudo pmset -a hibernatemode 0
-
-# Remove the sleep image file to save disk space
-sudo rm -f /private/var/vm/sleepimage
-# Create a zero-byte file instead…
-sudo touch /private/var/vm/sleepimage
-# …and make sure it can’t be rewritten
-sudo chflags uchg /private/var/vm/sleepimage
-
-# Increase Dock Size Beyond Normal
-# defaults write com.apple.dock largesize -float 256
 
 ###############################################################################
 # Trackpad, mouse, keyboard, Bluetooth accessories, and input                 #
@@ -204,14 +125,12 @@ defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
 # Follow the keyboard focus while zoomed in
 defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 
-# # Disable press-and-hold for keys in favor of key repeat
-# # TODO which one is new way?
-# defaults write -g ApplePressAndHoldEnabled -bool true
-# defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool true
-
-echo "Disable press-and-hold for keys in favor of key repeat"
-defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
-
+echo "Enable press-and-hold"
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool true
+#
+# echo "Disable press-and-hold for keys in favor of key repeat"
+# defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+#
 # echo "Set a blazingly fast keyboard repeat rate"
 # defaults write NSGlobalDomain KeyRepeat -int 0.02
 # Set a really fast key repeat. was 5.
@@ -255,52 +174,67 @@ setdefault \
   'defaults write com.apple.LaunchServices LSQuarantine -bool false'
 
 ###############################################################################
+# Desktop, Dock, Titlebar                                                     #
+###############################################################################
+
+# Reveal IP address, hostname, OS version, etc. when clicking the clock
+# in the login window
+sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
+
+# Set the icon size of Dock items to 36 pixels
+# defaults write com.apple.dock tilesize -int 36
+
+# Instantly show dock - removes that short delay when it shows.
+defaults write com.apple.Dock autohide-delay -float 0
+
+# Instantly show mission control - removes that short delay when it shows.
+defaults write com.apple.dock expose-animation-duration -float 0.12
+
+###############################################################################
 # Finder                                                                      #
 ###############################################################################
 
-setdefault \
-  "Finder: Always open in list view." \
-  'defaults write com.apple.Finder FXPreferredViewStyle Nlsv' \
-  #
-  "Finder: Always Show Hidden Files." \
-  'defaults write write com.apple.finder AppleShowAllFiles -bool YES' \
-  #
-  "Finder: Show the ~/Library folder" \
-  'chflags nohidden ~/Library' \
-  #
-  "Show the /Volumes folder" \
-  'sudo chflags nohidden /Volumes' \
-  #
-  "Finder: Allow quitting via ⌘ + Q; doing so will also hide desktop icons" \
-  'defaults write com.apple.finder QuitMenuItem -bool true' \
-  #
-  "Finder: Enable window animations and Get Info animations" \
-  'defaults write com.apple.finder DisableAllAnimations -bool false' \
+# Finder: Always open in list view.
+defaults write com.apple.Finder FXPreferredViewStyle Nlsv
+
   #
   # Set Desktop as the default location for new Finder windows: `PfDe`
   # For other paths use `PfLo`
   # To use current directory: "SCcf"
-  "Finder: Set Desktop as the default location for new windows" \
-  'defaults write com.apple.finder NewWindowTarget -string "PfDe"
-   defaults write com.apple.finder NewWindowTargetPath -string "file://$HOME/Desktop/"' \
-  #
-  "Finder: When performing a search, search the current folder by default." \
-  'defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"' \
-  #
-  "Finder: Show Path bar" \
-  'defaults write com.apple.finder ShowPathbar -bool true' \
-  #
-  "Finder: Show Status bar" \
-  'defaults write com.apple.finder ShowStatusBar -bool true'
 
-# echo "Remove Dropbox’s green checkmark icons in Finder"
-# file=/Applications/Dropbox.app/Contents/Resources/check.icns
-# [ -e "$file" ] && mv -f "$file" "$file.bak"
-# unset file
+# Finder: Set Desktop as the default location for new windows" \
+defaults write com.apple.finder NewWindowTarget -string "PfDe"
+defaults write com.apple.finder NewWindowTargetPath -string "file://$HOME/Desktop/"
 
-#Fix for the ancient UTF-8 bug in QuickLook (http://mths.be/bbo)
-# Commented out, as this is known to cause problems when saving files in Adobe Illustrator CS5 :(
-#echo "0x08000100:0" > ~/.CFUserTextEncoding
+# Finder: Always Show Hidden Files
+defaults write write com.apple.finder AppleShowAllFiles -bool YES
+
+# Finder: Show the ~/Library folder
+chflags nohidden ~/Library
+
+# Show the /Volumes folder
+sudo chflags nohidden /Volumes
+
+# Finder: Allow quitting via ⌘ + Q; doing so will also hide desktop icons
+defaults write com.apple.finder QuitMenuItem -bool true
+
+# Finder: Enable window animations and Get Info animations
+defaults write com.apple.finder DisableAllAnimations -bool false
+
+# Finder: When performing a search, search the current folder by default.
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+
+# Finder: Show Path bar
+defaults write com.apple.finder ShowPathbar -bool true
+
+# Finder: Show Status bar
+defaults write com.apple.finder ShowStatusBar -bool true
+
+
+defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
+defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
+defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
+defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
 
 # Finder: show all filename extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
@@ -460,25 +394,35 @@ defaults write com.apple.dock wvous-tr-modifier -int 0
 defaults write com.apple.dock wvous-bl-corner -int 5
 defaults write com.apple.dock wvous-bl-modifier -int 0
 
+###############################################################################
+# SSD-specific tweaks                                                         #
+###############################################################################
+
+# Disable hibernation (speeds up entering sleep mode)
+sudo pmset -a hibernatemode 0
+
+# Remove the sleep image file to save disk space
+sudo rm -f /private/var/vm/sleepimage
+
+# Create a zero-byte sleep image file instead…
+sudo touch /private/var/vm/sleepimage
+
+# …and make sure it can’t be rewritten
+sudo chflags uchg /private/var/vm/sleepimage
 
 ###############################################################################
-# Spotlight                                                                   #
+# Spotlight Search                                                            #
 ###############################################################################
 
 # Hide Spotlight tray-icon (and subsequent helper)
-#sudo chmod 600 /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search
+# sudo chmod 600 /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search
+
 # Disable Spotlight indexing for any volume that gets mounted and has not yet
 # been indexed before.
-# Use `sudo mdutil -i off "/Volumes/foo"` to stop indexing any volume.
+# Use `sudo mdutil -i off "/Volumes/foo"` to stop indexing any/all volumes.
 sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
+
 # Change indexing order and disable some search results
-# Yosemite-specific search results (remove them if you are using macOS 10.9 or older):
-# 	MENU_DEFINITION
-# 	MENU_CONVERSION
-# 	MENU_EXPRESSION
-# 	MENU_SPOTLIGHT_SUGGESTIONS (send search queries to Apple)
-# 	MENU_WEBSEARCH             (send search queries to Apple)
-# 	MENU_OTHER
 defaults write com.apple.spotlight orderedItems -array \
 	'{"enabled" = 1;"name" = "APPLICATIONS";}' \
 	'{"enabled" = 1;"name" = "SYSTEM_PREFS";}' \
@@ -510,10 +454,37 @@ sudo mdutil -i on / > /dev/null
 # Rebuild the index from scratch
 sudo mdutil -E / > /dev/null
 
-
-
-echo "Reset Launchpad"
-[ -e ~/Library/Application\ Support/Dock/*.db ] && rm ~/Library/Application\ Support/Dock/*.db
+###############################################################################
+# Kill affected applications                                                  #
+###############################################################################
 
 echo "Kill affected applications"
-for app in Safari Finder Dock Mail SystemUIServer; do killall "$app" >/dev/null 2>&1; done
+# for app in Safari Finder Dock Mail SystemUIServer; do killall "$app" >/dev/null 2>&1; done
+
+# Reset Launchpad
+[ -e ~/Library/Application\ Support/Dock/*.db ] && rm ~/Library/Application\ Support/Dock/*.db
+
+for app in "Activity Monitor" \
+  "Address Book" \
+  "Calendar" \
+  "cfprefsd" \
+  "Contacts" \
+  "Dock" \
+  "Finder" \
+  "Google Chrome Canary" \
+  "Google Chrome" \
+  "Mail" \
+  "Messages" \
+  "Opera" \
+  "Photos" \
+  "Safari" \
+  "SizeUp" \
+  "Spectacle" \
+  "SystemUIServer" \
+  "Terminal" \
+  "Transmission" \
+  "iCal"; do
+  killall "${app}" &> /dev/null
+done
+
+echo "Done. Note that some of these changes require a logout/restart to take effect."

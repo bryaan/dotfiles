@@ -12,10 +12,6 @@ function gitkraken
   sh /usr/local/src/gitkraken/gitkraken ^/dev/null &
 end
 
-function torrent
-  transmission-cli -w ~/Downloads
-end
-
 
 function terminator.conf
   eval $VISUAL ~/.config/terminator/config
@@ -30,7 +26,6 @@ function tmux.reload
 end
 
 # TODO should open gui calc
-# TODO find a good gui calc, maybe good terminal calc?
 function calc
   bc -l
 end

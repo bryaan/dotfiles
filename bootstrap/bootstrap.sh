@@ -123,14 +123,14 @@ setup_vim() {
   success 'vim setup complete!'
 }
 
-# TODO Foreach folder in emacs/, build a workdir folder and symlink files in.
-setup_emacs() {
-  info 'setting up emacs'
-  local workdir=$DOTFILES_ROOT/emacs/workdir/brymacs/.emacs.d
-  mkdir -p $workdir
-  ln -sf $DOTFILES_ROOT/emacs/brymacs/* $workdir
-  success 'emacs setup complete!'
-}
+# # TODO Foreach folder in emacs/, build a workdir folder and symlink files in.
+# setup_emacs() {
+#   info 'setting up emacs'
+#   local workdir=$DOTFILES_ROOT/emacs/workdir/brymacs/.emacs.d
+#   mkdir -p $workdir
+#   ln -sf $DOTFILES_ROOT/emacs/brymacs/* $workdir
+#   success 'emacs setup complete!'
+# }
 
 ####################################################
 # Bootstrap
@@ -141,6 +141,5 @@ setup_fish
 setup_sublime
 setup_nixenv
 # setup_vim # TODO fix
-setup_emacs
 
 success 'bootstrap complete!'
