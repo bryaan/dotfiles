@@ -2,6 +2,7 @@
 # Here we source all files in the /shell directory.
 ####################################################
 
+# SHOULD_INIT is used so the block only runs once.
 set -l SHOULD_INIT 1
 
 if set -q BRYDOTS_IS_NIXSH_ENV
@@ -48,7 +49,11 @@ if set -q SHOULD_INIT
       setenv __BRYDOTS_ENV_PLATFORM 'linux'
   end
 
-  # === set __BRYDOTS_ENV_PLATFORM ===
+  ###################
+  # Set Workstation-specific env vars
+  # These are used to optionally enable/disable or change
+  # behaviour of functions throughout.
+  ###################
   switch (hostname)
     case 'dev-ncl*'
       setenv __BRYDOTS_ENV_GEO 'work'
@@ -84,7 +89,6 @@ if set -q SHOULD_INIT
       $DOTFILES_ROOT/shell)
 
     for file in $files
-      #echo [DEBUG] $file
       source $file
     end
 

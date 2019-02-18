@@ -20,9 +20,8 @@ setenv SUDO_EDITOR 'vim'
 
 setenv BROWSER "/usr/bin/google-chrome"
 # /usr/bin/firefox
-# /usr/bin/chrome-gnome-shell  # What is this?
 
-setenv SSH_KEY_PATH "~/.ssh/rsa_id"
+setenv SSH_KEY_PATH "$HOME/.ssh/rsa_id"
 
 setenv FILTER 'fzf'  # used by `fisher omf/marlin`
 
@@ -39,6 +38,27 @@ setenv MANPAGER 'less'
 # Prevent MSFT things telemetry
 # TODO Would be great to add IPs to block lists.
 setenv DOTNET_CLI_TELEMETRY_OPTOUT '1'
+
+#####################
+# Program Specific
+#####################
+
+# Directory for all python venv(s)
+# NOTE Must use $
+setenv WORKON_HOME "$HOME/.virtualenvs"
+
+# For VirtualFish a Python venv wrapper
+eval (python -m virtualfish compat_aliases auto_activation)
+
+## Google Cloud SDK.
+# if [ -f '/Users/bryan/Downloads/google-cloud-sdk/path.fish.inc' ]; . '/Users/bryan/Downloads/google-cloud-sdk/path.fish.inc'; end
+if [ -f ~/src/google-cloud-sdk/path.fish.inc ]; . ~/src/google-cloud-sdk/path.fish.inc; end
+
+#####################
+# B6TP Specific
+#####################
+
+
 
 ################################################
 # Startup Items
@@ -70,6 +90,12 @@ end
 function warn.program-not-installed
   warn "Package '$1' Not Installed!\nAlternatively, check that it is available on your PATH.\n"
 end
+
+################################################
+# Python
+################################################
+
+alias prp='pipenv run python'
 
 ################################################
 # Utility Commands

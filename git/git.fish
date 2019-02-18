@@ -18,9 +18,6 @@ if _should_do_one_shot_setup
   # NOTE You should use 'git config' here to change it depending on
   # env vars like location and hostname.
 
-  git config --global user.name 'Bryan A. Rivera'
-  git config --global user.email 'mail@bryaan.com'
-
   # if [ $__BRYDOTS_ENV_GEO = 'work' ]
   #   git config --global user.email 'brivera@ncl.com'
   # end
