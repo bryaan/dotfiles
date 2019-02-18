@@ -41,11 +41,11 @@ function append_path
   set -l dir $argv
   # FIXME see `checkIfDirectory`  also fix shell/functions/append_path.fish
   # checkIfDirectory $dir && PATH=$PATH:$dir
-  set -x TMPPATH $TMPPATH $argv
+  set --export TMPPATH $TMPPATH $argv
 end
 
-# Clear current TMPPATH
-set -x TMPPATH ''
+set --erase TMPPATH
+set --export TMPPATH ''
 
 ############################################################################
 # Linux
@@ -118,12 +118,10 @@ else if [ $platform = 'macos' ]
 
 end
 
-set -eg PATH
-set -ex PATH
-set -x PATH ''
-
-# Final explicit export
-set -x PATH $TMPPATH
+set --erase --global PATH
+set --export PATH ''
+set --export PATH $TMPPATH
+set --erase TMPPATH
 
 # TODO File a bug report on fish, show echos and outputs
 # For some reason a `.` is being added to the beginning of PATH
@@ -134,11 +132,7 @@ set -x PATH $TMPPATH
 set PATH (string match -v . $PATH)
 
 
-# TODO move this to a function in nix/nix.fish
-# with argument for mac or linux
-# Call it here because it sets up PATHS, or call it in index.fish
-# BUT it requires a explicit import, nooo...
-# Save it in nix/functions which
+# TODO move this to index.fish
 # === Load nix ===
 # Comes after above so PATH set by nix script isnt messed with
 #
@@ -149,13 +143,9 @@ if [ $platform = 'linux' ]
   end
 
 else if [ $platform = 'macos' ]
+  # TODO This must be updated for Nix 2.x - no longer works.
 
-  # TODO shouldn't this match the linux one?
-  # Or at least correct it to pull from user's ~/nix-profile
-  if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-    bass source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ^/dev/null
-  end
-  # if test -e $HOME/.nix-profile/etc/profile.d/nix-daemon.sh
-  #   bass source $HOME/.nix-profile/etc/profile.d/nix-daemon.sh ^/dev/null
-  # end
+  #if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  #  bass source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ^/dev/null
+  #end
 end
