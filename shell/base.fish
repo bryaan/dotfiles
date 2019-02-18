@@ -3,10 +3,9 @@
 # https://github.com/jaagr/dots/blob/master/.aliases
 #
 
-# TODO rename file util.tpl and move setenv stuff to pathfile or index?
+# TODO Move /shell to /fish
 
-# TODO android.tpl
-# add the adb backup commands.
+# TODO rename file util.tpl and move setenv stuff to pathfile or index?
 
 ################################################
 # Environment Config
@@ -111,6 +110,7 @@ alias e='eval $EDITOR'   # "Edit"
 alias eg='eval $VISUAL'  # "Edit Gui"
 alias b='eval $BROWSER'  # TODO? use ob for "Open Browser"
 
+alias cleanbrew='$DOTFILES/macos/clean-brew.sh'
 
 alias h='history'
 alias j='jobs -l'
