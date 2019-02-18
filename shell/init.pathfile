@@ -111,6 +111,7 @@ else if [ $platform = 'macos' ]
 
   ### Default Mac Paths ###
   append_path /usr/local/bin
+  append_path /usr/local/sbin
   append_path /usr/bin
   append_path /bin
   append_path /usr/sbin
@@ -119,9 +120,9 @@ else if [ $platform = 'macos' ]
 end
 
 set --erase --global PATH
-set --export PATH ''
 set --export PATH $TMPPATH
-set --erase TMPPATH
+# set --erase TMPPATH
+# set -g fish_user_paths "" $fish_user_paths
 
 # TODO File a bug report on fish, show echos and outputs
 # For some reason a `.` is being added to the beginning of PATH
@@ -131,6 +132,8 @@ set --erase TMPPATH
 # Could be that dot means current directory?
 set PATH (string match -v . $PATH)
 
+# TODO Read each path var and drop any with a dot. But also look for where
+# /usr/local/opt/jpeg-turbo/bin bc maybe its there, but prob not.
 
 # TODO move this to index.fish
 # === Load nix ===

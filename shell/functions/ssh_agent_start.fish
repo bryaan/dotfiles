@@ -13,6 +13,22 @@
 # But might want it for ssh sessions.
 
 
+################################################
+# Startup Items
+################################################
+
+# TODO running this causes an annoying enter pw every terminal start, even though its only in one window.
+# So only run it when you need it.  Or better yet there is a way to let ssh config use mac keychain.
+#
+# When first shell of session starts we start ssh-agent.
+# Only one shell gets this message.
+#
+# if not [ -e /tmp/brydots.ssh_agent.lock ]
+#   touch /tmp/brydots.ssh_agent.lock
+#   ssh_agent_start
+#   rm /tmp/brydots.ssh_agent.lock
+# end
+
 setenv SSH_ENV $HOME/.ssh/environment
 
 function __start_agent

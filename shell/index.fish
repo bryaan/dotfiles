@@ -1,8 +1,9 @@
-####################################################
-# Here we source all files in the /shell directory.
-####################################################
+###
+# Here we source init.pathfile and all fish files in the /shell directory.
+#
 
-# SHOULD_INIT is used so the block only runs once.
+# Make sure this function only runs once per shell reload.
+# TODO Why was this needed?
 set -l SHOULD_INIT 1
 
 if set -q BRYDOTS_IS_NIXSH_ENV
@@ -18,7 +19,7 @@ if set -q SHOULD_INIT
   end
 
   function one_shot_setup -d "set system defaults from dotfiles"
-    echo "performing one_shot_setup..."
+    echo "Performing one_shot_setup..."
     set -x __BRYDOTS_DO_ONE_SHOT_SETUP 1
 
     echo "one_shot_setup --- load_all_files ..."
@@ -45,7 +46,7 @@ if set -q SHOULD_INIT
     case '*'
       # no need to fail if unkown, if some fun somewhere does if unkn,
       # fail there but nor here.
-      echo '[WARN](shell/index.tpl) unknown host OS: (uname -a)'
+      echo '[WARN](shell/index.tpl) Unknown Host OS:' (uname -a)
       setenv __BRYDOTS_ENV_PLATFORM 'linux'
   end
 
@@ -54,6 +55,7 @@ if set -q SHOULD_INIT
   # These are used to optionally enable/disable or change
   # behaviour of functions throughout.
   ###################
+  # TODO You should be able to write a grep on a config file and do this with less code.
   switch (hostname)
     case 'dev-ncl*'
       setenv __BRYDOTS_ENV_GEO 'work'
@@ -64,35 +66,35 @@ if set -q SHOULD_INIT
     case '*'
       # no need to fail if unkown, if some fun somewhere does if unkn,
       # fail there but nor here.
-      echo '[WARN](shell/index.tpl) unknown hostname: (hostname)'
+      echo '[WARN](dotfiles/shell/index.tpl) Unknown Hostname:' (hostname)
       setenv __BRYDOTS_ENV_GEO '???'
   end
 
   function load_all_files
-    # === source fish functions ===
-    # source functions first as they are base level.
-    # Every other folder's functions will depend on them.
-    # They don't depends on any function, unless they source it themselves.
-    set -l functionFiles (command rg --files --glob "functions/*.fish" \
+
+    # === Source Fish Functions ===
+    # First source helper functions as they are dependencies of rest.
+    # TODO These should actually be on the PATH, that way they don't need to
+    # source other helper function dependencies from within a function that uses one.
+    set -l files (command rg --files \
+      --glob "*.fish" \
       $DOTFILES_ROOT/shell/functions)
 
-    for file in $functionFiles
-      #echo [DEBUG] $file
-      source $file
-    end
-
-    # === source fish files ===
+    # === Source Fish Files ===
     # Sources all *.fish files in shell/*
     # - Don't include index.fish (infinite import loop) or functions/ folder.
-    set -l files (command rg --files --glob "*.fish" \
-      --glob "!*/index.fish" --glob "!functions/*" \
+    set -l files $files (command rg --files \
+      --glob "*.fish" \
+      --glob "!index.fish" \
+      --glob "!functions/*" \
       $DOTFILES_ROOT/shell)
 
     for file in $files
+      # echo \n\n [DEBUG] $file \n $PATH
       source $file
     end
 
-    # === Explicit Imports ===
+    # === Source Explicit ===
     # Explicitly source all *.fish files outside of ./shell
     source $DOTFILES_ROOT/bootstrap/dotfiles.fish
     source $DOTFILES_ROOT/development/ncl.fish
@@ -103,9 +105,7 @@ if set -q SHOULD_INIT
   # === Load pathfile ===
   source $DOTFILES_ROOT/shell/init.pathfile
 
-  # === Load nix ===
-  #
-
-  # === Load fish files ===
+  # === Load Fish Files ===
   load_all_files
+
 end

@@ -4,6 +4,7 @@
 #
 
 # TODO Move /shell to /fish
+# TODO Rename $DOTFILES_ROOT to DOTFILES
 
 # TODO rename file util.tpl and move setenv stuff to pathfile or index?
 
@@ -11,7 +12,7 @@
 # Environment Config
 ################################################
 
-setenv SHELL (which fish)
+set --global SHELL (which fish)
 setenv EDITOR 'vim'
 setenv VISUAL 'subl'
 setenv GIT_EDITOR 'vim'
@@ -38,9 +39,18 @@ setenv MANPAGER 'less'
 # TODO Would be great to add IPs to block lists.
 setenv DOTNET_CLI_TELEMETRY_OPTOUT '1'
 
-#####################
-# Program Specific
-#####################
+################################################
+# Misc
+################################################
+
+## Google Cloud SDK.
+if [ -f ~/src/google-cloud-sdk/path.fish.inc ]; . ~/src/google-cloud-sdk/path.fish.inc; end
+
+################################################
+# Python
+################################################
+
+alias prp 'pipenv run python'
 
 # Directory for all python venv(s)
 # NOTE Must use $
@@ -48,32 +58,6 @@ setenv WORKON_HOME "$HOME/.virtualenvs"
 
 # For VirtualFish a Python venv wrapper
 eval (python -m virtualfish compat_aliases auto_activation)
-
-## Google Cloud SDK.
-# if [ -f '/Users/bryan/Downloads/google-cloud-sdk/path.fish.inc' ]; . '/Users/bryan/Downloads/google-cloud-sdk/path.fish.inc'; end
-if [ -f ~/src/google-cloud-sdk/path.fish.inc ]; . ~/src/google-cloud-sdk/path.fish.inc; end
-
-#####################
-# B6TP Specific
-#####################
-
-
-
-################################################
-# Startup Items
-################################################
-
-# TODO running this causes an annoying enter pw every terminal start, even though its only in one window.
-# So only run it when you need it.  Or better yet there is a way to let ssh config use mac keychain.
-#
-# When first shell of session starts we start ssh-agent.
-# Only one shell gets this message.
-#
-# if not [ -e /tmp/brydots.ssh_agent.lock ]
-#   touch /tmp/brydots.ssh_agent.lock
-#   ssh_agent_start
-#   rm /tmp/brydots.ssh_agent.lock
-# end
 
 ################################################
 # Local Utility Commands
@@ -91,29 +75,23 @@ function warn.program-not-installed
 end
 
 ################################################
-# Python
-################################################
-
-alias prp='pipenv run python'
-
-################################################
 # Utility Commands
 ################################################
 
 # alias su='sudo -i'
 # alias su='sudo su -'
 
-alias c='clear'
-alias cl='clear; ll'
-alias rr='reload'
-alias e='eval $EDITOR'   # "Edit"
-alias eg='eval $VISUAL'  # "Edit Gui"
-alias b='eval $BROWSER'  # TODO? use ob for "Open Browser"
+alias c 'clear'
+alias cl 'clear; ll'
+alias rr 'reload'
+alias e 'eval $EDITOR'   # "Edit"
+alias eg 'eval $VISUAL'  # "Edit Gui"
+alias b 'eval $BROWSER'  # TODO? use ob for "Open Browser"
 
-alias cleanbrew='$DOTFILES/macos/clean-brew.sh'
+alias cleanbrew '$DOTFILES_ROOT/macos/clean-brew.sh'
 
-alias h='history'
-alias j='jobs -l'
+alias h 'history'
+alias j 'jobs -l'
 
 function path -d 'prints the $PATH'
   bash -c 'echo ${PATH//:/\\n}'
@@ -123,6 +101,8 @@ alias now='date +"%T"'
 alias nowtime=now
 alias nowdate='date +"%d-%m-%Y"'
 
+# To clear 'z' directory jumping history.
+# rm ~/.local/share/z/data
 
 abbr -a reboot 'sudo reboot'
 abbr -a poweroff 'sudo poweroff'
@@ -131,9 +111,6 @@ function hibernate
   systemctl --no-wall hybrid-sleep
 end
 
-################################################
-# reloading
-################################################
 
 function reload
   clear; fish.reload
