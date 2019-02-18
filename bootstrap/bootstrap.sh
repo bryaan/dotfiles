@@ -5,7 +5,7 @@ set -e
 # Sets DOTFILES_ROOT to where the dotfiles project was cloned on machine.
 # Must expand to full path.
 cd "$(dirname "$0")/.."
-export DOTFILES_ROOT=$(pwd -P)
+export DOTFILES=$(pwd -P)
 
 ############################################################################
 # Helpers
@@ -55,17 +55,17 @@ setup_fish () {
   if [ -d "$HOME/.config/fish/" ]; then
     # Link files in ./fish/ to ~/.config/fish/
     # Do not change method... Problems with recursive links and whatnot await.
-    for file in $(ls $DOTFILES_ROOT/fish); do
-      ln -sfn $DOTFILES_ROOT/fish/$file $HOME/.config/fish/$file
+    for file in $(ls $DOTFILES/fish); do
+      ln -sfn $DOTFILES/fish/$file $HOME/.config/fish/$file
     done
     #
-    # ln -sf $DOTFILES_ROOT/fish/fishfile $HOME/.config/fish/
-    # ln -sf $DOTFILES_ROOT/fish/config.fish $HOME/.config/fish/
+    # ln -sf $DOTFILES/fish/fishfile $HOME/.config/fish/
+    # ln -sf $DOTFILES/fish/config.fish $HOME/.config/fish/
 
     # Make sure brew plugin is added to fishfile if we are on macos.
     if [[ "$platform" == 'macos' ]]; then
       LINE='oh-my-fish/plugin-brew'
-      FILE=$DOTFILES_ROOT/fish/fishfile
+      FILE=$DOTFILES/fish/fishfile
       grep -qF "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
     fi
   else
@@ -97,7 +97,7 @@ setup_sublime() {
 setup_nixenv() {
   info 'setting up nix'
   mkdir -p $HOME/.nixpkgs/
-  ln -sf $DOTFILES_ROOT/nix/* $HOME/.nixpkgs/
+  ln -sf $DOTFILES/nix/* $HOME/.nixpkgs/
   success 'nix setup complete!'
 }
 
@@ -115,7 +115,7 @@ setup_vim() {
   # git clone <url> ~/.vim/bundle/Vundle.vim
   # And only after that should the vimrc and other folders be synced.
   # This means delete everything but bundle folder when symlinking.
-  # ln -sfn $DOTFILES_ROOT/vim/* $HOME/.vim/
+  # ln -sfn $DOTFILES/vim/* $HOME/.vim/
 
   # TODO Install vundle plugins from command line, but when is this done?
   # vim +PluginInstall +qall
@@ -126,9 +126,9 @@ setup_vim() {
 # # TODO Foreach folder in emacs/, build a workdir folder and symlink files in.
 # setup_emacs() {
 #   info 'setting up emacs'
-#   local workdir=$DOTFILES_ROOT/emacs/workdir/brymacs/.emacs.d
+#   local workdir=$DOTFILES/emacs/workdir/brymacs/.emacs.d
 #   mkdir -p $workdir
-#   ln -sf $DOTFILES_ROOT/emacs/brymacs/* $workdir
+#   ln -sf $DOTFILES/emacs/brymacs/* $workdir
 #   success 'emacs setup complete!'
 # }
 

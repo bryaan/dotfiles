@@ -57,6 +57,7 @@ reloadTerminals() {
 # Source
 ####################################################
 
-export DOTFILES_ROOT=$HOME/src/dotfiles
+export DOTFILES=$HOME/src/dotfiles
+export DOTFILES_ROOT=$DOTFILES
 
-#source $DOTFILES_ROOT/build/shell/index.zsh
+#source $DOTFILES/build/shell/index.zsh

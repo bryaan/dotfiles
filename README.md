@@ -136,8 +136,8 @@ set -l subldir /Users/bryan/Library/Application\ Support/Sublime\ Text\ 3/Packag
 set -l subldir $HOME/.config/sublime-text-3/Packages
 
 rm -rf $subldirbase/User; rm -rf $subldirbase/Default;  \
- ln -sf $DOTFILES_ROOT/sublime/User/      $subldir;   \
- ln -sf $DOTFILES_ROOT/sublime/Default/   $subldir
+ ln -sf $DOTFILES/sublime/User/      $subldir;   \
+ ln -sf $DOTFILES/sublime/Default/   $subldir
 
 ```
 

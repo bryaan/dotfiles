@@ -1,1 +1,1 @@
-source $DOTFILES_ROOT/shell/pathfile
+source $DOTFILES/shell/pathfile

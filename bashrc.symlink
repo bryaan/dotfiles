@@ -24,7 +24,8 @@ if [ "macos" = "$platform" ]; then
 fi
 
 # === dotfiles ===
-export DOTFILES_ROOT="$HOME/src/dotfiles"
+export DOTFILES="$HOME/src/dotfiles"
+export DOTFILES_ROOT="$DOTFILES"
 
 
 #  first we are using skim/sk now, second

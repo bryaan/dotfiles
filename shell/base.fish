@@ -4,7 +4,6 @@
 #
 
 # TODO Move /shell to /fish
-# TODO Rename $DOTFILES_ROOT to DOTFILES
 
 # TODO rename file util.tpl and move setenv stuff to pathfile or index?
 
@@ -78,8 +77,8 @@ end
 # Utility Commands
 ################################################
 
-# alias su='sudo -i'
-# alias su='sudo su -'
+# alias su 'sudo -i'
+alias su 'sudo su -'
 
 alias c 'clear'
 alias cl 'clear; ll'
@@ -88,7 +87,7 @@ alias e 'eval $EDITOR'   # "Edit"
 alias eg 'eval $VISUAL'  # "Edit Gui"
 alias b 'eval $BROWSER'  # TODO? use ob for "Open Browser"
 
-alias cleanbrew '$DOTFILES_ROOT/macos/clean-brew.sh'
+alias cleanbrew '$DOTFILES/macos/clean-brew.sh'
 
 alias h 'history'
 alias j 'jobs -l'
@@ -135,6 +134,23 @@ function fish.reload.soft
   source ~/.config/fish/config.fish
 end
 
+################################################
+# Dotfile Dev Commands
+################################################
+
+abbr -a r reload
+
+function dots
+  cd $DOTFILES; gulp
+end
+
+function dots.bootstrap
+    cd $DOTFILES; gulp bootstrap
+end
+
+################################################
+# Misc
+################################################
 
 # TODO add imagemagick to sys deps
 set -x SCREENSHOT_DIR $HOME/Desktop/Screenshots

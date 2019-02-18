@@ -4,22 +4,22 @@ function brymacs
   # -q Inhibit loading of site-start.el and default.el that may be
   # pre-existing site-wide configurations. TODO this also ignores the init.el
   env OHOME=$HOME \
-      HOME=$DOTFILES_ROOT/emacs/workdir/brymacs \
+      HOME=$DOTFILES/emacs/workdir/brymacs \
       emacs
 end
 
 function brymacs.nogui
   env OHOME=$HOME \
-      HOME=$DOTFILES_ROOT/emacs/workdir/brymacs \
+      HOME=$DOTFILES/emacs/workdir/brymacs \
       emacs -nw
 end
 
 # Install Prelude to dotfiles workdir
-# sh -c 'export PRELUDE_INSTALL_DIR="$DOTFILES_ROOT/emacs/workdir/prelude/.emacs.d" && curl -L https://github.com/bbatsov/prelude/raw/master/utils/installer.sh | sh'
+# sh -c 'export PRELUDE_INSTALL_DIR="$DOTFILES/emacs/workdir/prelude/.emacs.d" && curl -L https://github.com/bbatsov/prelude/raw/master/utils/installer.sh | sh'
 
 function prelude
   env OHOME=$HOME \
-      HOME=$DOTFILES_ROOT/emacs/workdir/prelude \
+      HOME=$DOTFILES/emacs/workdir/prelude \
       emacs
 end
 

@@ -2,14 +2,6 @@
 # pathfile - Set your $PATH here and never be left wondering again.
 ############################################################################
 
-# TODO Rename this file and refs to paths.fish or pathfile.fish
-
-# # TODO on non-nix linux we might want these dirs:
-# mkdir -p $HOME/.local/bin
-# mkdir -p /opt/local/bin
-# mkdir -p /opt/local/sbin
-
-
 # Default Path
 # Temporarily set to run basic shell utilities below.
 set -x PATH /usr/local/bin /usr/bin /bin /usr/sbin /sbin

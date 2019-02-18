@@ -1,7 +1,7 @@
 # git/index.fish.tpl
 #
 
-source $DOTFILES_ROOT/git/git-functions.fish
+source $DOTFILES/git/git-functions.fish
 
 ####################################################
 # git config
@@ -11,9 +11,9 @@ source $DOTFILES_ROOT/git/git-functions.fish
 
 if _should_do_one_shot_setup
 
-  ln -sf $DOTFILES_ROOT/git/gitconfig $HOME/.gitconfig
-  ln -sf $DOTFILES_ROOT/git/gitmessage $HOME/.gitmessage
-  ln -sf $DOTFILES_ROOT/git/gitignore_global $HOME/.gitignore_global
+  ln -sf $DOTFILES/git/gitconfig $HOME/.gitconfig
+  ln -sf $DOTFILES/git/gitmessage $HOME/.gitmessage
+  ln -sf $DOTFILES/git/gitignore_global $HOME/.gitignore_global
 
   # NOTE You should use 'git config' here to change it depending on
   # env vars like location and hostname.

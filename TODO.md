@@ -1,10 +1,12 @@
 # TODOs
 
 ---- TODO ----
+Rename this init.pathfile to paths.fish or pathfile.fish
+
+---- TODO ----
 Add this to some global setup/update script
 pip3 install --upgrade pip setuptools wheel
 pip install --upgrade pip setuptools wheel
-
 
 ---- TODO ----
 After running clean-brew.sh in particular the 'brew clean' step

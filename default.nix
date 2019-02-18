@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
 # python3   python3Full   python36Full
 
 # To run:
-# cd $DOTFILES_ROOT
+# cd $DOTFILES
 # nix-shell --command 'env HOME=/tmp/foo fish'
 #
 # To start fish so it doesnt inherit sys path, we clear the env.

@@ -78,7 +78,7 @@ if set -q SHOULD_INIT
     # source other helper function dependencies from within a function that uses one.
     set -l files (command rg --files \
       --glob "*.fish" \
-      $DOTFILES_ROOT/shell/functions)
+      $DOTFILES/shell/functions)
 
     # === Source Fish Files ===
     # Sources all *.fish files in shell/*
@@ -87,7 +87,7 @@ if set -q SHOULD_INIT
       --glob "*.fish" \
       --glob "!index.fish" \
       --glob "!functions/*" \
-      $DOTFILES_ROOT/shell)
+      $DOTFILES/shell)
 
     for file in $files
       # echo \n\n [DEBUG] $file \n $PATH
@@ -96,14 +96,14 @@ if set -q SHOULD_INIT
 
     # === Source Explicit ===
     # Explicitly source all *.fish files outside of ./shell
-    source $DOTFILES_ROOT/bootstrap/dotfiles.fish
-    source $DOTFILES_ROOT/development/ncl.fish
-    source $DOTFILES_ROOT/git/git.fish
-    source $DOTFILES_ROOT/nix/nix.fish
+    source $DOTFILES/bootstrap/dotfiles.fish
+    source $DOTFILES/development/ncl.fish
+    source $DOTFILES/git/git.fish
+    source $DOTFILES/nix/nix.fish
   end
 
   # === Load pathfile ===
-  source $DOTFILES_ROOT/shell/init.pathfile
+  source $DOTFILES/shell/init.pathfile
 
   # === Load Fish Files ===
   load_all_files

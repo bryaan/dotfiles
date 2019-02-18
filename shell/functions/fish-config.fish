@@ -1,6 +1,4 @@
-# This file is for settings related to fish and fish utilities.
-
-# TODO move to ./fish and import
+# TODO Rename theme config or fish shell theme config
 
 ################################################
 # `bobthefish` Theme Specific Settings
