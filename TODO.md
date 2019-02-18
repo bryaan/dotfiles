@@ -1,5 +1,20 @@
 # TODOs
 
+# View and upgrade Mac App Store (mas) apps.
+mas outdated
+mas upgrade
+
+# building ~/Brewfile alias
+brew bundle dump --force
+
+### Record a shell session
+
+```bash
+script screen.log
+...
+exit
+```
+
 ---- TODO ----
 Rename this init.pathfile to paths.fish or pathfile.fish
 

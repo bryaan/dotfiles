@@ -17,10 +17,10 @@ setenv VISUAL 'subl'
 setenv GIT_EDITOR 'vim'
 setenv SUDO_EDITOR 'vim'
 
-setenv BROWSER "/usr/bin/google-chrome"
+setenv BROWSER '/usr/bin/google-chrome'
 # /usr/bin/firefox
 
-setenv SSH_KEY_PATH "$HOME/.ssh/rsa_id"
+setenv SSH_KEY_PATH '$HOME/.ssh/rsa_id'
 
 setenv FILTER 'fzf'  # used by `fisher omf/marlin`
 
@@ -207,23 +207,23 @@ function bind_dollar
   end
 end
 
-# If the command line has content, it prepends sudo.
-# If there is no content, it prepends sudo to the last item in the history.
-function prepend_command
-  set -l prepend $argv[1]
-  if test -z "$prepend"
-    echo "prepend_command needs one argument."
-    return 1
-  end
+# # If the command line has content, it prepends sudo.
+# # If there is no content, it prepends sudo to the last item in the history.
+# function prepend_command
+#   set -l prepend $argv[1]
+#   if test -z "$prepend"
+#     echo "prepend_command needs one argument."
+#     return 1
+#   end
 
-  set -l cmd (commandline)
-  if test -z "$cmd"
-    commandline -r $history[1]
-  end
+#   set -l cmd (commandline)
+#   if test -z "$cmd"
+#     commandline -r $history[1]
+#   end
 
-  set -l old_cursor (commandline -C)
-  commandline -C 0
-  commandline -i "$prepend "
-  commandline -C (math $old_cursor + (echo $prepend | wc -c))
-end
+#   set -l old_cursor (commandline -C)
+#   commandline -C 0
+#   commandline -i "$prepend "
+#   commandline -C (math $old_cursor + (echo $prepend | wc -c))
+# end
 
