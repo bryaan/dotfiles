@@ -10,7 +10,7 @@ dots
 
 ## (Optional) Set System Config Defaults
 sh ./os_macos/set-defaults.sh
-sh ./os_linux/gnome-set-defaults.sh
+sh ./os_linux/set-defaults.sh
 ```
 
 

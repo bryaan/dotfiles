@@ -1,0 +1,1 @@
+./gnome-set-defaults.sh
