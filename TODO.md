@@ -16,6 +16,9 @@ exit
 ```
 
 ---- TODO ----
+Move bashrc.symlink to ./bash
+
+---- TODO ----
 Consider replacing the python script with a bash script.
 Then delete ./default.nix
 If we haven't done this then on linux must run 'nix-shell' to get the proper host config.
