@@ -31,9 +31,9 @@ if set -q SHOULD_INIT
     # if at all beyond the first time.
     # echo "one_shot_setup --- sh set-defaults.sh ..."
     # if [ $__BRYDOTS_ENV_PLATFORM = "linux" ]
-    #   sh ./linux/gnome-set-defaults.sh
+    #   sh ./os_linux/gnome-set-defaults.sh
     # else if [ $__BRYDOTS_ENV_PLATFORM = "macos" ]
-    #   sh ./macos/set-defaults.sh
+    #   sh ./os_macos/set-defaults.sh
     # end
 
     echo "one_shot_setup complete!"

@@ -87,7 +87,7 @@ alias e 'eval $EDITOR'   # "Edit"
 alias eg 'eval $VISUAL'  # "Edit Gui"
 alias b 'eval $BROWSER'  # TODO? use ob for "Open Browser"
 
-alias cleanbrew '$DOTFILES/macos/clean-brew.sh'
+alias cleanbrew '$DOTFILES/os_macos/clean-brew.sh'
 
 alias h 'history'
 alias j 'jobs -l'

@@ -2,6 +2,18 @@
 
 **Makes me feel at $HOME**
 
+```bash
+## Run Bootstrap Once
+dots.bootstrap
+## Run Bootstrap Loop
+dots
+
+## (Optional) Set System Config Defaults
+sh ./os_macos/set-defaults.sh
+sh ./os_linux/gnome-set-defaults.sh
+```
+
+
 Anything with an extension of .symlink will get symlinked (without .symlink extension) into $HOME when you run ./install.sh.
 
 TODO Try to replace the python script with a bash script.
@@ -15,19 +27,6 @@ If we haven't done this then on linux must run 'nix-shell' to get the proper hos
 - All files ending in `*.symlink`, no matter their location, are to be symlinked into $HOME.
   TODO Directories should also work, for example the dir /atom.symlink will be symlinked into $HOME/.atom
 
-
-```bash
-## Run Bootstrap Once
-dots.bootstrap
-## Run Bootstrap Loop
-dots
-
-## (Optional) Set System Config Defaults
-sh ./macos/set-defaults.sh
-sh ./linux/gnome-set-defaults.sh
-```
-
------------------------------------------------------------------------------------
 
 ## Setup
 

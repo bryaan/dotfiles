@@ -1,0 +1,35 @@
+[credential]
+	helper = manager
+
+[user]
+	email = mail@bryaan.com
+	name = Bryan A. Rivera
+
+[alias]
+	a = add --all
+	#############
+	b = branch
+  #############
+	c = commit
+	cm = commit -m
+	#############
+	ls = ls-files
+	#############
+	s = status
+	sb = status -s -b
+	#############
+	sl = stash list
+  #############
+	aliases = !git config -l | grep alias | cut -c 7-
+	# Snapshot - Stashes current working copy, then reapplies it.
+	snap = !git stash save 'snapshot: $(date)' && git stash apply 'stash@{0}'
+
+[includeIf "gitdir:~/b6tp/"]
+    path = ~/b6tp/.gitconfig
+
+# And then your work specific config ~/b6tp/.gitconfig would look like this:
+#
+# [user]
+#     email = bryan.rivera@b6tp.com
+[core]
+	autocrlf = true
