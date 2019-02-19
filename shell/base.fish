@@ -121,7 +121,7 @@ function fish.reload -d "Reload fish process via exec, keeping some context"
   set -q CI; and return 0
   #clear; commandline -f repaint
 
-  # see what those vars do. And i thinks history is getting saved already.
+  # Keeping here just in case I want to change how history is saved.
   # history --save
   # set -gx dirprev $dirprev
   # set -gx dirnext $dirnext
@@ -151,14 +151,15 @@ end
 # Misc
 ################################################
 
-# TODO add imagemagick to sys deps
-set -x SCREENSHOT_DIR $HOME/Desktop/Screenshots
-function screenshot
-  set -l date (date +"%d-%m-%Y")
-  set -l time (date +"%T")
-  mkdir -p $SCREENSHOT_DIR
-  import $SCREENSHOT_DIR/$date-$time.png
-end
+# TODO Implement this.
+#set -x SCREENSHOT_DIR $HOME/Desktop/Screenshots
+#
+# function screenshot
+#   set -l date (date +"%d-%m-%Y")
+#   set -l time (date +"%T")
+#   mkdir -p $SCREENSHOT_DIR
+#   import $SCREENSHOT_DIR/$date-$time.png
+# end
 # gnome-screenshot -a
 
 
@@ -171,8 +172,6 @@ if type --quiet colordiff
   alias diff='colordiff'
 end
 
-
-
 # So that funced uses vim.
 # https://github.com/fish-shell/fish-shell/issues/4677
 function func
@@ -180,10 +179,13 @@ function func
 end
 abbr -a funced 'funced --editor $EDITOR'
 
-
 function fishhistory
   eval $EDITOR ~/.local/share/fish/fish_history
 end
+
+
+# TODO These are more generic and should be moved to single function files.
+# TODO These are more generic and should be moved to single function files.
 
 # Typing `!!<SPC>` will get it replaced with the previous cmd.
 function bind_bang
