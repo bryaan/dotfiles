@@ -21,6 +21,10 @@ If we haven't done this then on linux must run 'nix-shell' to get the proper hos
 dots.bootstrap
 ## Run Bootstrap Loop
 dots
+
+## (Optional) Set System Config Defaults
+sh ./macos/set-defaults.sh
+sh ./linux/gnome-set-defaults.sh
 ```
 
 -----------------------------------------------------------------------------------

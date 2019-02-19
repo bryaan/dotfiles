@@ -18,6 +18,8 @@ if set -q SHOULD_INIT
     [ $__BRYDOTS_DO_ONE_SHOT_SETUP = 1 ]
   end
 
+  # TODO Verify this is running. Or just remove bc what does it do?
+  # After all I do believe this file only runs once per shell negating the need for this.
   function one_shot_setup -d "set system defaults from dotfiles"
     echo "Performing one_shot_setup..."
     set -x __BRYDOTS_DO_ONE_SHOT_SETUP 1
@@ -25,12 +27,14 @@ if set -q SHOULD_INIT
     echo "one_shot_setup --- load_all_files ..."
     load_all_files
 
-    echo "one_shot_setup --- sh set-defaults.sh ..."
-    if [ $__BRYDOTS_ENV_PLATFORM = "linux" ]
-      sh ./linux/gnome-set-defaults.sh
-    else if [ $__BRYDOTS_ENV_PLATFORM = "macos" ]
-      sh ./macos/set-defaults.sh
-    end
+    # Removed bc sometimes these fall out of sync. It's best to do manually, 
+    # if at all beyond the first time.
+    # echo "one_shot_setup --- sh set-defaults.sh ..."
+    # if [ $__BRYDOTS_ENV_PLATFORM = "linux" ]
+    #   sh ./linux/gnome-set-defaults.sh
+    # else if [ $__BRYDOTS_ENV_PLATFORM = "macos" ]
+    #   sh ./macos/set-defaults.sh
+    # end
 
     echo "one_shot_setup complete!"
     set -x __BRYDOTS_DO_ONE_SHOT_SETUP 0
