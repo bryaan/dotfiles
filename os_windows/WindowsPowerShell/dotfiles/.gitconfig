@@ -31,5 +31,8 @@
 #
 # [user]
 #     email = bryan.rivera@b6tp.com
+
 [core]
+	# This is needed on Windows only,
+	# so git changes don't go crazy with line endings.
 	autocrlf = true

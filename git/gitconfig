@@ -52,3 +52,12 @@
 	cmd = subl -n --wait \"$REMOTE\" \"$LOCAL\" --command \"sublimerge_diff_views {\\\"left_read_only\\\": true, \\\"right_read_only\\\": true}
 [mergetool "sublimerge"]
 	cmd = subl -n --wait \"$REMOTE\" \"$BASE\" \"$LOCAL\" \"$MERGED\" --command \"sublimerge_diff_views\"
+
+
+[includeIf "gitdir:~/b6tp/"]
+    path = ~/b6tp/.gitconfig
+
+# And then your work specific config ~/b6tp/.gitconfig would look like this:
+#
+# [user]
+#     email = bryan.rivera@b6tp.com

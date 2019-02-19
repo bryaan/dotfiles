@@ -7,7 +7,7 @@
 set -l SHOULD_INIT 1
 
 if set -q BRYDOTS_IS_NIXSH_ENV
-  set -e SHOULD_INIT
+  set --erase SHOULD_INIT
 end
 
 if set -q SHOULD_INIT
@@ -27,7 +27,7 @@ if set -q SHOULD_INIT
     echo "one_shot_setup --- load_all_files ..."
     load_all_files
 
-    # Removed bc sometimes these fall out of sync. It's best to do manually, 
+    # Removed bc sometimes these fall out of sync. It's best to do manually,
     # if at all beyond the first time.
     # echo "one_shot_setup --- sh set-defaults.sh ..."
     # if [ $__BRYDOTS_ENV_PLATFORM = "linux" ]
@@ -40,8 +40,6 @@ if set -q SHOULD_INIT
     set -x __BRYDOTS_DO_ONE_SHOT_SETUP 0
   end
 
-  # if [ $__BRYDOTS_ENV_PLATFORM = "macos" ]
-  # if [ $__BRYDOTS_ENV_PLATFORM = "linux" ]
   switch (uname -a)
     case "*Darwin*"
       setenv __BRYDOTS_ENV_PLATFORM "macos"
@@ -78,8 +76,8 @@ if set -q SHOULD_INIT
 
     # === Source Fish Functions ===
     # First source helper functions as they are dependencies of rest.
-    # TODO These should actually be on the PATH, that way they don't need to
-    # source other helper function dependencies from within a function that uses one.
+    # TODO These should actually be on the PATH, that way they can
+    # source other helper functions without a direct import.
     set -l files (command rg --files \
       --glob "*.fish" \
       $DOTFILES/shell/functions)
