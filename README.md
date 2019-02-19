@@ -2,6 +2,15 @@
 
 **Makes me feel at $HOME**
 
+- Fractal folders.  So in most first level dirs you will find fish files that contain
+  commands for that particular app.  They may also contain setup, but in this case files should
+  be imported manually so the order of import can be fixed.
+
+- Anything with an extension of .symlink will get symlinked into $HOME when
+  you run ./install.sh. (without .symlink extension)
+
+## Bootstrap all symlinks and copy files
+
 ```bash
 ## Run Bootstrap Once
 dots.bootstrap
@@ -112,6 +121,15 @@ rm -rf $subldirbase/User; rm -rf $subldirbase/Default;  \
  ln -sf $DOTFILES/sublime/Default/   $subldir
 
 ```
+
+## Resources
+
+[OMF Packages](https://github.com/oh-my-fish/packages-main/tree/master/packages)
+
+
+---------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+
 
 ### Enable Extra Casks (Beta Nightly mostly)
 

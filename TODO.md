@@ -15,6 +15,14 @@ script screen.log
 exit
 ```
 
+
+
+TODO Try to replace the python script with a bash script.
+Then delte ./default.nix
+If we haven't done this then on linux must run 'nix-shell' to get the proper host config.
+
+
+
 ---- TODO ----
 See if in function reload can use 'spin'
 
