@@ -110,10 +110,11 @@ function hibernate
   systemctl --no-wall hybrid-sleep
 end
 
+abbr -a r 'clear; reload'
 
 function reload
-  clear; fish.reload
-  # clear; spin fish.reload
+  fish.reload
+  # spin fish.reload
 end
 
 function fish.reload -d "Reload fish process via exec, keeping some context"
@@ -137,8 +138,6 @@ end
 ################################################
 # Dotfile Dev Commands
 ################################################
-
-abbr -a r reload
 
 function dots
   cd $DOTFILES; gulp

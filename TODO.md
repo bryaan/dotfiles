@@ -16,6 +16,9 @@ exit
 ```
 
 ---- TODO ----
+See if in function reload can use 'spin'
+
+---- TODO ----
 Move bashrc.symlink to ./bash
 
 ---- TODO ----
