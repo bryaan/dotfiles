@@ -13,19 +13,13 @@ sh ./os_macos/set-defaults.sh
 sh ./os_linux/set-defaults.sh
 ```
 
+## Structure
 
 Anything with an extension of .symlink will get symlinked (without .symlink extension) into $HOME when you run ./install.sh.
 
-TODO Try to replace the python script with a bash script.
-Then delte ./default.nix
-If we haven't done this then on linux must run 'nix-shell' to get the proper host config.
+- Fractal folders.  So in most first level dirs you will find fish files that contain commands for that particular app.  They may also contain setup, but in this case files should be imported manually so the order of import can be fixed.
 
-- Fractal folders.  So in most first level dirs you will find fish files that contain
-  commands for that particular app.  They may also contain setup, but in this case files should
-  be imported manually so the order of import can be fixed.
-
-- All files ending in `*.symlink`, no matter their location, are to be symlinked into $HOME.
-  TODO Directories should also work, for example the dir /atom.symlink will be symlinked into $HOME/.atom
+- All files ending in `*.symlink`, no matter their location, are to be symlinked into $HOME.  TODO Directories should also work, for example the dir /atom.symlink will be symlinked into $HOME/.atom
 
 
 ## Setup
@@ -52,6 +46,14 @@ They go in ~/.config/fish/completions
 Update Sublime and Sublime Packages
 Open Command Menu (Super + Shift + p)
 Search for: "Package Control: Upgrade/Overide All Packages"
+
+
+## Resources
+
+[OMF Packages](https://github.com/oh-my-fish/packages-main/tree/master/packages)
+
+
+-------------------------------------------------
 
 
 ## RHEL - Enable Passwordless sudo for user
@@ -88,7 +90,6 @@ git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
 rm -rf ./nerd-fonts
 ```
 
-
 ## Sublime Install + Setup
 
 1. Run functions below to copy settings over.
@@ -111,12 +112,6 @@ rm -rf $subldirbase/User; rm -rf $subldirbase/Default;  \
  ln -sf $DOTFILES/sublime/Default/   $subldir
 
 ```
-
-## Resources
-
-[OMF Packages](https://github.com/oh-my-fish/packages-main/tree/master/packages)
-
-
 
 ### Enable Extra Casks (Beta Nightly mostly)
 
@@ -146,6 +141,9 @@ JSON Viewer
 Visual Event
 Vue.js devtools
 
+# Brewfile
+
+TODO Replace this with a brewfile obtained from brew dump.
 
 Quick Look plugins
 These plugins adds support for the corresponding file type to Mac Quick Look (In Finder, mark a file and press Space to start Quick Look). The plugins includes features like syntax highlighting, markdown rendering, preview of JSON, patch files, csv, zip files and more.
