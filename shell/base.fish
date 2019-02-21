@@ -137,6 +137,15 @@ function fish.reload.soft
   source ~/.config/fish/config.fish
 end
 
+
+function spoof_mac
+  set -l interface en0
+  set -l random_mac (openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
+  sudo ifconfig $interface ether $random_mac
+  echo "Interface:" $interface
+  echo "MAC:" (ifconfig en0 | grep ether)
+end
+
 ################################################
 # Dotfile Dev Commands
 ################################################
