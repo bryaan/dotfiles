@@ -58,6 +58,8 @@ setenv WORKON_HOME "$HOME/.virtualenvs"
 # For VirtualFish a Python venv wrapper
 eval (python -m virtualfish compat_aliases auto_activation)
 
+eval (pipenv --completion)
+
 ################################################
 # Local Utility Commands
 ################################################
