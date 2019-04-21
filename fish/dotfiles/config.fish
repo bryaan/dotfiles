@@ -6,4 +6,4 @@ set -x DOTFILES $HOME/src/dotfiles
 set -x DOTFILES_ROOT $DOTFILES
 
 # This first sources init.pathfile, then sources all other fish files.
-source $DOTFILES/shell/index.fish
+source $DOTFILES/fish/shell/index.fish

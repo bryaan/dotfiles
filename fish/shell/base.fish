@@ -115,11 +115,11 @@ end
 abbr -a r 'clear; reload'
 
 function reload
-  fish.reload
-  # spin fish.reload
+  fish.hardreload
+  # spin fish.hardreload
 end
 
-function fish.reload -d "Reload fish process via exec, keeping some context"
+function fish.hardreload -d "Reload fish process via exec, keeping some context"
   set -q CI; and return 0
   #clear; commandline -f repaint
 
@@ -133,17 +133,8 @@ function fish.reload -d "Reload fish process via exec, keeping some context"
   exec fish
 end
 
-function fish.reload.soft
+function fish.softreload
   source ~/.config/fish/config.fish
-end
-
-
-function spoof_mac
-  set -l interface en0
-  set -l random_mac (openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
-  sudo ifconfig $interface ether $random_mac
-  echo "Interface:" $interface
-  echo "MAC:" (ifconfig en0 | grep ether)
 end
 
 ################################################
@@ -156,6 +147,7 @@ end
 
 function dots.bootstrap
     cd $DOTFILES; gulp bootstrap
+    #exec $DOTFILES/bootstrap/bootstrap.sh
 end
 
 ################################################

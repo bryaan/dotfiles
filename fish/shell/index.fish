@@ -72,7 +72,7 @@ if set -q SHOULD_INIT
       setenv __BRYDOTS_ENV_GEO '???'
   end
 
-  function load_all_files
+  function load_fish_shell_files
 
     # === Source Fish Functions ===
     # First source helper functions as they are dependencies of rest.
@@ -80,34 +80,34 @@ if set -q SHOULD_INIT
     # source other helper functions without a direct import.
     set -l files (command rg --files \
       --glob "*.fish" \
-      $DOTFILES/shell/functions)
+      $DOTFILES/fish/shell/functions)
 
-    # === Source Fish Files ===
-    # Sources all *.fish files in shell/*
+    # === Source Fish Files in ./shell ===
     # - Don't include index.fish (infinite import loop) or functions/ folder.
     set -l files $files (command rg --files \
       --glob "*.fish" \
       --glob "!index.fish" \
       --glob "!functions/*" \
-      $DOTFILES/shell)
+      $DOTFILES/fish/shell)
 
     for file in $files
       # echo \n\n [DEBUG] $file \n $PATH
       source $file
     end
 
+# TODO Im thinking of doing if the folder has aindex.fish orfish/index.fish then load that file.
+
     # === Source Explicit ===
     # Explicitly source all *.fish files outside of ./shell
-    source $DOTFILES/bootstrap/dotfiles.fish
-    source $DOTFILES/development/ncl.fish
-    source $DOTFILES/git/git.fish
-    source $DOTFILES/nix/nix.fish
+    #source $DOTFILES/development/ncl.fish
+    source $DOTFILES/git/index.fish
+    source $DOTFILES/nix/index.fish
   end
 
   # === Load pathfile ===
-  source $DOTFILES/shell/init.pathfile
+  source $DOTFILES/fish/shell/init.pathfile
 
   # === Load Fish Files ===
-  load_all_files
+  load_fish_shell_files
 
 end

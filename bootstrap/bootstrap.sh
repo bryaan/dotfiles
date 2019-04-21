@@ -50,78 +50,29 @@ compile_templates() {
 # Copy fish shell configs over to its expected dir.
 # Only runs if fish is installed.
 # Works on mac and linux.
-setup_fish () {
+ setup_fish() {
   info 'installing fish files'
-  if [ -d "$HOME/.config/fish/" ]; then
-    # Link files in ./fish/ to ~/.config/fish/
-    # Do not change method... Problems with recursive links and whatnot await.
-    for file in $(ls $DOTFILES/fish); do
-      ln -sfn $DOTFILES/fish/$file $HOME/.config/fish/$file
-    done
-    #
-    # ln -sf $DOTFILES/fish/fishfile $HOME/.config/fish/
-    # ln -sf $DOTFILES/fish/config.fish $HOME/.config/fish/
 
-    # Make sure brew plugin is added to fishfile if we are on macos.
-    if [[ "$platform" == 'macos' ]]; then
-      LINE='oh-my-fish/plugin-brew'
-      FILE=$DOTFILES/fish/fishfile
-      grep -qF "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
-    fi
+  if [ -d "$HOME/.config/fish/" ]; then
+
+    DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+    ln -sf $DIR/dotfiles/fishfile $HOME/.config/fish/fishfile
+    ln -sf $DIR/dotfiles/config.fish $HOME/.config/fish/config.fish
+
+    # I think the plugin doesn't care if its on windows.
+    # # Make sure brew plugin is added to fishfile if we are on macos.
+    # if [[ "$platform" == 'macos' ]]; then
+    #   LINE='oh-my-fish/plugin-brew'
+    #   FILE=$DOTFILES/fish/fishfile
+    #   grep -qF "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+    # fi
   else
-    warn_not_installed "Fish Shell"
+    warn_not_installed "fish shell"
   fi
   success 'fish files installed!'
 }
 
-# TODO need to add symlink stuff for the sublime files.
-# Pull section from readme.
-# Only runs if sublime is installed.
-setup_sublime() {
-  info 'setting up sublime'
-  # TODO Update with chnages
-  # # This just links the subl binary to ~/.local/bin/
-  # # Only needed on mac.
-  # if [[ "$platform" == 'macos' ]]; then
-  #   local subl_app_path="/Applications/Sublime Text.app"
-  #   local subl_bin_path=$subl_app_path/Contents/SharedSupport/bin/subl
-  #   if [ -d "$subl_app_path" ]; then
-  #     ln -sf $subl_bin_path $HOME/.local/bin/
-  #   else
-  #     warn_not_installed "Sublime Text"
-  #   fi
-  # fi
-  success 'sublime setup complete!'
-}
-
-setup_nixenv() {
-  info 'setting up nix'
-  mkdir -p $HOME/.nixpkgs/
-  ln -sf $DOTFILES/nix/* $HOME/.nixpkgs/
-  success 'nix setup complete!'
-}
-
-# TODO auto install Vundle
-setup_vim() {
-  info 'setting up vim'
-
-  # Create backup and swap dirs which are set in .vimrc
-  mkdir -p ~/.local/tmp/vim/backup
-  mkdir -p ~/.local/tmp/vim/swap
-  mkdir -p ~/.local/tmp/vim/undo
-
-  # Check test -d ~/.vim/bundle/Vundle.vim/ exists
-  # If not tell user:
-  # git clone <url> ~/.vim/bundle/Vundle.vim
-  # And only after that should the vimrc and other folders be synced.
-  # This means delete everything but bundle folder when symlinking.
-  # ln -sfn $DOTFILES/vim/* $HOME/.vim/
-
-  # TODO Install vundle plugins from command line, but when is this done?
-  # vim +PluginInstall +qall
-
-  success 'vim setup complete!'
-}
 
 # # TODO Foreach folder in emacs/, build a workdir folder and symlink files in.
 # setup_emacs() {
@@ -136,10 +87,21 @@ setup_vim() {
 # Bootstrap
 ####################################################
 
-compile_templates
+# compile_templates
 setup_fish
-setup_sublime
-setup_nixenv
-# setup_vim # TODO fix
+info 'setting up git'
+source $DOTFILES/git/bootstrap.sh
+# source $DOTFILES/nix/bootstrap.sh
+# source $DOTFILES/sublime/bootstrap.sh
+
+# info 'setting up vim'
+# source $DOTFILES/vim/bootstrap.sh # TODO Fix it
+# success 'vim setup complete!'
+
+# setup_sublime
+
+info 'setting up julia'
+source $DOTFILES/languages/julia/bootstrap.sh
+
 
 success 'bootstrap complete!'
