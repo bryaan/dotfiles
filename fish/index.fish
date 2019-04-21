@@ -72,42 +72,38 @@ if set -q SHOULD_INIT
       setenv __BRYDOTS_ENV_GEO '???'
   end
 
-  function load_fish_shell_files
-
-    # === Source Fish Functions ===
-    # First source helper functions as they are dependencies of rest.
-    # TODO These should actually be on the PATH, that way they can
-    # source other helper functions without a direct import.
-    set -l files (command rg --files \
-      --glob "*.fish" \
-      $DOTFILES/fish/shell/functions)
-
-    # === Source Fish Files in ./shell ===
-    # - Don't include index.fish (infinite import loop) or functions/ folder.
-    set -l files $files (command rg --files \
-      --glob "*.fish" \
-      --glob "!index.fish" \
-      --glob "!functions/*" \
-      $DOTFILES/fish/shell)
-
-    for file in $files
-      # echo \n\n [DEBUG] $file \n $PATH
-      source $file
-    end
-
-# TODO Im thinking of doing if the folder has an index.fish or fish/index.fish then load that file.
-
-    # === Source Explicit ===
-    # Explicitly source all *.fish files outside of ./shell
-    #source $DOTFILES/development/ncl.fish
-    source $DOTFILES/git/index.fish
-    source $DOTFILES/nix/index.fish
-  end
 
   # === Load pathfile ===
-  source $DOTFILES/fish/shell/init.pathfile
+  source $DOTFILES/fish/pathfile.fish
 
   # === Load Fish Files ===
-  load_fish_shell_files
 
+  # === Source Fish Functions ===
+  # First source helper functions as they are dependencies of rest.
+  # TODO These should actually be on the PATH, that way they can
+  # source other helper functions without a direct import.
+  set -l files (command rg --files \
+    --glob "*.fish" \
+    $DOTFILES/fish/shell/functions)
+
+  # === Source Fish Files in ./shell ===
+  # - Don't include index.fish (infinite import loop) or functions/ folder.
+  set -l files $files (command rg --files \
+    --glob "*.fish" \
+    --glob "!index.fish" \
+    --glob "!functions/*" \
+    $DOTFILES/fish/shell)
+
+  for file in $files
+    # echo \n\n [DEBUG] $file \n $PATH
+    source $file
+  end
+
+  # TODO Im thinking of doing if the folder has an index.fish or fish/index.fish then load that file.
+
+  # === Source Explicit ===
+  # Explicitly source all *.fish files outside of ./shell
+  #source $DOTFILES/development/ncl.fish
+  source $DOTFILES/git/index.fish
+  source $DOTFILES/nix/index.fish
 end

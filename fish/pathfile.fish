@@ -2,6 +2,9 @@
 # pathfile - Set your $PATH here and never be left wondering again.
 ############################################################################
 
+# TODO This file should be moved to bash.
+# TODO This file should be moved to bash.
+
 # Default Path
 # Temporarily set to run basic shell utilities below.
 set -x PATH /usr/local/bin /usr/bin /bin /usr/sbin /sbin
