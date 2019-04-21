@@ -95,7 +95,7 @@ if set -q SHOULD_INIT
       source $file
     end
 
-# TODO Im thinking of doing if the folder has aindex.fish orfish/index.fish then load that file.
+# TODO Im thinking of doing if the folder has an index.fish or fish/index.fish then load that file.
 
     # === Source Explicit ===
     # Explicitly source all *.fish files outside of ./shell

@@ -146,8 +146,8 @@ function dots
 end
 
 function dots.bootstrap
-    cd $DOTFILES; gulp bootstrap
-    #exec $DOTFILES/bootstrap/bootstrap.sh
+    #cd $DOTFILES; gulp bootstrap
+    exec $DOTFILES/bootstrap/bootstrap.sh
 end
 
 ################################################

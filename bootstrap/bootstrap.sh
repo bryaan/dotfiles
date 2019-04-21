@@ -2,10 +2,12 @@
 
 set -e
 
-# Sets DOTFILES_ROOT to where the dotfiles project was cloned on machine.
-# Must expand to full path.
-cd "$(dirname "$0")/.."
-export DOTFILES=$(pwd -P)
+# # Sets DOTFILES_ROOT to where the dotfiles project was cloned on machine.
+# # Must expand to full path.
+# cd "$(dirname "$0")/.."
+# export DOTFILES=$(pwd -P)
+
+DOTFILES=$HOME/src/dotfiles
 
 ############################################################################
 # Helpers
@@ -88,17 +90,35 @@ compile_templates() {
 ####################################################
 
 # compile_templates
-setup_fish
+
+info 'setting up fish shell'
+if [ -d "$HOME/.config/fish/" ]; then
+
+  ln -sf $DOTFILES/fish/dotfiles/fishfile $HOME/.config/fish/fishfile
+  ln -sf $DOTFILES/fish/dotfiles/config.fish $HOME/.config/fish/config.fish
+
+  # I think the plugin doesn't care if its on windows.
+  # # Make sure brew plugin is added to fishfile if we are on macos.
+  # if [[ "$platform" == 'macos' ]]; then
+  #   LINE='oh-my-fish/plugin-brew'
+  #   FILE=$DOTFILES/fish/fishfile
+  #   grep -qF "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+  # fi
+else
+  warn_not_installed "fish shell"
+fi
+
 info 'setting up git'
 source $DOTFILES/git/bootstrap.sh
+
+# info 'setting up nix'
 # source $DOTFILES/nix/bootstrap.sh
+
+# info 'setting up sublime'
 # source $DOTFILES/sublime/bootstrap.sh
 
 # info 'setting up vim'
 # source $DOTFILES/vim/bootstrap.sh # TODO Fix it
-# success 'vim setup complete!'
-
-# setup_sublime
 
 info 'setting up julia'
 source $DOTFILES/languages/julia/bootstrap.sh
